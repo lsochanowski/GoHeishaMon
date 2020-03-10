@@ -517,38 +517,4 @@ func decode_heatpump_data(data []byte, mclient mqtt.Client, token mqtt.Token) {
 
 	}
 
-	// 	for (unsigned int Topic_Number = 0 ; Topic_Number < NUMBER_OF_TOPICS ; Topic_Number++) {
-	// 	  byte Input_Byte;
-	// 	  String Topic_Value;
-	// 	  switch (Topic_Number) { //switch on topic numbers, some have special needs
-	// 		case 1:
-	// 		  Topic_Value = getPumpFlow(data);
-	// 		  break;
-	// 		case 11:
-	// 		  Topic_Value = String(word(data[183], data[182]) - 1);
-	// 		  break;
-	// 		case 12:
-	// 		  Topic_Value = String(word(data[180], data[179]) - 1);
-	// 		  break;
-	// 		case 90:
-	// 		  Topic_Value = String(word(data[186], data[185]) - 1);
-	// 		  break;
-	// 		case 91:
-	// 		  Topic_Value = String(word(data[189], data[188]) - 1);
-	// 		  break;
-	// 		case 44:
-	// 		  Topic_Value = getErrorInfo(data);
-	// 		  break;
-	// 		default:
-	// 		  Input_Byte = data[topicBytes[Topic_Number]];
-	// 		  Topic_Value = topicFunctions[Topic_Number](Input_Byte);
-	// 		  break;
-	// 	  }
-	// 	  if ((updatenow) || ( actData[Topic_Number] != Topic_Value )) {
-	// 		actData[Topic_Number] = Topic_Value;
-	// 		sprintf(log_msg, "received TOP%d %s: %s", Topic_Number, topics[Topic_Number], Topic_Value.c_str()); log_message(log_msg);
-	// 		sprintf(mqtt_topic, "%s/%s", mqtt_topic_base, topics[Topic_Number]); mqtt_client.publish(mqtt_topic, Topic_Value.c_str(), MQTT_RETAIN_VALUES);
-	// 	  }
-	// 	}
-
 }
