@@ -7,9 +7,11 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/BurntSushi/toml"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"go.bug.st/serial"
 )
 
@@ -19,6 +21,7 @@ var PANASONICQUERYSIZE int = 110
 //should be the same number
 var NUMBER_OF_TOPICS int = 92
 var AllTopics [92]TopicData
+var MqttKeepalive time.Duration
 
 var actData [92]string
 var config Config
@@ -43,10 +46,19 @@ type TopicData struct {
 }
 
 type Config struct {
-	Readonly     bool
-	Loghex       bool
-	Device       string
-	ReadInterval int
+	Readonly               bool
+	Loghex                 bool
+	Device                 string
+	ReadInterval           int
+	MqttServer             string
+	MqttPort               string
+	MqttLogin              string
+	Aquarea2mqttCompatible bool
+	Mqtt_topic_base        string
+	Aquarea2mqttPumpID     string
+	MqttPass               string
+	MqttClientID           string
+	MqttKeepalive          int
 }
 
 func ReadConfig() Config {
@@ -65,7 +77,10 @@ func ReadConfig() Config {
 
 func main() {
 	config = ReadConfig()
-
+	if config.Readonly != true {
+		log_message("Not sending this command. Heishamon in listen only mode! - this POC version don't support writing yet....")
+		os.Exit(0)
+	}
 	ports, err := serial.GetPortsList()
 	if err != nil {
 		log.Fatal(err)
@@ -88,24 +103,55 @@ func main() {
 	}
 	PoolInterval := time.Second * time.Duration(config.ReadInterval)
 	ParseTopicList()
+	MqttKeepalive = time.Second * time.Duration(config.MqttKeepalive)
+	MC, MT := MakeMQTTConn()
 
 	for {
 		send_command(panasonicQuery, PANASONICQUERYSIZE)
-		readSerial()
+		readSerial(MC, MT)
 		time.Sleep(PoolInterval)
 
 	}
 
 }
 
-func loopRead() {
-	for {
-		fmt.Println("loop\n")
-		fmt.Println(readSerial())
-		PoolInterval := time.Second * time.Duration(config.ReadInterval)
+func MakeMQTTConn() (mqtt.Client, mqtt.Token) {
+	opts := mqtt.NewClientOptions()
+	opts.AddBroker(fmt.Sprintf("%s://%s:%s", "tcp", config.MqttServer, config.MqttPort))
+	opts.SetPassword(config.MqttPass)
+	opts.SetUsername(config.MqttLogin)
+	opts.SetClientID(config.MqttClientID)
 
-		time.Sleep(PoolInterval)
+	opts.SetKeepAlive(MqttKeepalive)
+	opts.SetOnConnectHandler(startsub)
+	opts.SetConnectionLostHandler(connLostHandler)
+
+	// connect to broker
+	client := mqtt.NewClient(opts)
+	//defer client.Disconnect(uint(2))
+
+	token := client.Connect()
+	if token.Wait() && token.Error() != nil {
+		fmt.Printf("Fail to connect broker, %v", token.Error())
 	}
+	return client, token
+
+}
+
+func connLostHandler(c mqtt.Client, err error) {
+	fmt.Printf("Connection lost, reason: %v\n", err)
+
+	//Perform additional action...
+}
+
+func startsub(c mqtt.Client) {
+	c.Subscribe("aquarea/+/+/set", 2, HandleMSGfromMQTT)
+
+	//Perform additional action...
+}
+
+func HandleMSGfromMQTT(mclient mqtt.Client, msg mqtt.Message) {
+
 }
 
 func log_message(a string) {
@@ -169,10 +215,6 @@ func ReadCsv(filename string) ([][]string, error) {
 
 func send_command(command []byte, length int) bool {
 
-	if config.Readonly == true {
-		log_message("Not sending this command. Heishamon in listen only mode!")
-		return false
-	}
 	if sending {
 		log_message("Already sending data. Buffering this send request")
 		//	pushCommandBuffer(command, length)
@@ -215,7 +257,7 @@ func send_command(command []byte, length int) bool {
 // 	}
 //   }
 
-func readSerial() bool {
+func readSerial(MC mqtt.Client, MT mqtt.Token) bool {
 
 	totalreads++
 	data := make([]byte, 203)
@@ -251,7 +293,7 @@ func readSerial() bool {
 	readpercentage = ((goodreads / totalreads) * 100)
 	log_msg := fmt.Sprintf("Total reads : %f and total good reads : %f (%.2f %%)", totalreads, goodreads, readpercentage)
 	log_message(log_msg)
-	decode_heatpump_data(data)
+	decode_heatpump_data(data, MC, MT)
 	return true
 
 }
@@ -387,7 +429,7 @@ func getErrorInfo(data []byte) string { // TOP44 //
 	return Error_string
 }
 
-func decode_heatpump_data(data []byte) {
+func decode_heatpump_data(data []byte, mclient mqtt.Client, token mqtt.Token) {
 
 	var updatenow bool = false
 	m := map[string]func(byte) string{
@@ -415,7 +457,7 @@ func decode_heatpump_data(data []byte) {
 	for k, v := range AllTopics {
 		var Input_Byte byte
 		var Topic_Value string
-
+		var value string
 		switch k {
 		case 1:
 			Topic_Value = getPumpFlow(data)
@@ -454,6 +496,23 @@ func decode_heatpump_data(data []byte) {
 		if (updatenow) || (actData[k] != Topic_Value) {
 			actData[k] = Topic_Value
 			fmt.Printf("received TOP%d %s: %s \n", k, v.TopicName, Topic_Value)
+			value = strings.TrimSpace(Topic_Value)
+			value = strings.ToUpper(Topic_Value)
+			if config.Aquarea2mqttCompatible {
+				TOP := "aquarea/state/" + fmt.Sprintf("%s/%s", config.Aquarea2mqttPumpID, v.TopicName)
+				fmt.Println("Publikuje do ", TOP, "warosc", value)
+				token = mclient.Publish(TOP, byte(0), false, value)
+				if token.Wait() && token.Error() != nil {
+					fmt.Printf("Fail to publish, %v", token.Error())
+				}
+			}
+			TOP := fmt.Sprintf("%s/%s", config.Mqtt_topic_base, v.TopicName)
+			fmt.Println("Publikuje do ", TOP, "warosc", value)
+			token = mclient.Publish(TOP, byte(0), false, value)
+			if token.Wait() && token.Error() != nil {
+				fmt.Printf("Fail to publish, %v", token.Error())
+			}
+
 		}
 
 	}
