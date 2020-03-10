@@ -1,0 +1,13 @@
+Readonly=true
+Device="COM1"
+Loghex=true
+ReadInterval=1
+Aquarea2mqttCompatible=true
+Aquarea2mqttPumpID=""
+Mqtt_topic_base="panasonic_heat_pump/sdc"
+MqttServer=""
+MqttPort=""
+MqttLogin=""
+MqttPass=""
+MqttClientID=""
+MqttKeepalive=60
