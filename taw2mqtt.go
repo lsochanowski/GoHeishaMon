@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/rs/xid"
+
 	"github.com/BurntSushi/toml"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"go.bug.st/serial"
@@ -22,6 +24,7 @@ var PANASONICQUERYSIZE int = 110
 var NUMBER_OF_TOPICS int = 92
 var AllTopics [92]TopicData
 var MqttKeepalive time.Duration
+var CommandsToSend map[xid.ID][]byte
 
 var actData [92]string
 var config Config
@@ -43,6 +46,7 @@ type TopicData struct {
 	TopicBit      int
 	TopicFunction string
 	TopicUnit     string
+	TopicA2M      string
 }
 
 type Config struct {
@@ -76,6 +80,8 @@ func ReadConfig() Config {
 }
 
 func main() {
+	CommandsToSend = make(map[xid.ID][]byte)
+
 	config = ReadConfig()
 	if config.Readonly != true {
 		log_message("Not sending this command. Heishamon in listen only mode! - this POC version don't support writing yet....")
@@ -107,12 +113,29 @@ func main() {
 	MC, MT := MakeMQTTConn()
 
 	for {
-		send_command(panasonicQuery, PANASONICQUERYSIZE)
+		if len(CommandsToSend) > 0 {
+			for key, value := range CommandsToSend {
+				send_command(value, len(value))
+				delete(CommandsToSend, key)
+			}
+		} else {
+			send_command(panasonicQuery, PANASONICQUERYSIZE)
+		}
 		readSerial(MC, MT)
 		time.Sleep(PoolInterval)
 
 	}
 
+}
+
+func ClearActData() {
+	for {
+		time.Sleep(time.Minute * 5)
+		for k, _ := range actData {
+			actData[k] = "nil" //funny i know ;)
+		}
+
+	}
 }
 
 func MakeMQTTConn() (mqtt.Client, mqtt.Token) {
@@ -146,12 +169,48 @@ func connLostHandler(c mqtt.Client, err error) {
 
 func startsub(c mqtt.Client) {
 	c.Subscribe("aquarea/+/+/set", 2, HandleMSGfromMQTT)
+	c.Subscribe("panasonic_heat_pump/SetZ1HeatRequestTemperature", 2, HandleSetZ1HeatRequestTemperature)
+	c.Subscribe("panasonic_heat_pump/SetHeatpump", 2, HandleSetHeatpump)
 
 	//Perform additional action...
 }
 
 func HandleMSGfromMQTT(mclient mqtt.Client, msg mqtt.Message) {
 
+}
+
+func HandleSetZ1HeatRequestTemperature(mclient mqtt.Client, msg mqtt.Message) {
+	var command []byte
+	var request_temp byte
+	if err != nil {
+		panic(err)
+	}
+	e, _ := strconv.Atoi(string(msg.Payload()))
+	e = e + 128
+	request_temp = byte(e)
+	fmt.Printf("set z1 heat request temperature to %d", request_temp-128)
+	command = []byte{0xf1, 0x6c, 0x01, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, request_temp, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
+	fmt.Println(command)
+	CommandsToSend[xid.New()] = command
+}
+
+func HandleSetHeatpump(mclient mqtt.Client, msg mqtt.Message) {
+	var command []byte
+	var heatpump_state byte
+	if err != nil {
+		panic(err)
+	}
+	e := 1
+	a, _ := strconv.Atoi(string(msg.Payload()))
+	if a == 1 {
+		e = 2
+	}
+
+	heatpump_state = byte(e)
+	fmt.Printf("set heatpump state to %d", heatpump_state)
+	command = []byte{0xf1, 0x6c, 0x01, 0x10, heatpump_state, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
+	fmt.Println(command)
+	CommandsToSend[xid.New()] = command
 }
 
 func log_message(a string) {
@@ -188,6 +247,7 @@ func ParseTopicList() {
 			TopicBit:      TB,
 			TopicFunction: line[3],
 			TopicUnit:     line[4],
+			TopicA2M:      line[5],
 		}
 		AllTopics[TNUM] = data
 		//a	fmt.Println(data)
@@ -215,12 +275,6 @@ func ReadCsv(filename string) ([][]string, error) {
 
 func send_command(command []byte, length int) bool {
 
-	if sending {
-		log_message("Already sending data. Buffering this send request")
-		//	pushCommandBuffer(command, length)
-		return false
-	}
-	sending = true //simple semaphore to only allow one send command at a time, semaphore ends when answered data is received
 	var chk byte
 	chk = calcChecksum(command, length)
 	var bytesSent int
@@ -273,7 +327,6 @@ func readSerial(MC mqtt.Client, MT mqtt.Token) bool {
 	data_length := 203
 	//panasonic read is always 203 on valid receive, if not yet there wait for next read
 	log_message("Received 203 bytes data")
-	sending = false //we received an answer after our last command so from now on we can start a new send request again
 	if config.Loghex {
 		logHex(data, data_length)
 	}
@@ -348,7 +401,7 @@ func getIntMinus1Div5(input byte) string {
 	value := int(input) - 1
 	var out float32
 	out = float32(value) / 5
-	return fmt.Sprintf("%f", out)
+	return fmt.Sprintf("%.2f", out)
 
 }
 
@@ -408,7 +461,7 @@ func getPumpFlow(data []byte) string { // TOP1 //
 	PumpFlow2 := ((float64(data[169]) - 1) / 256)
 	PumpFlow := float64(PumpFlow1) + PumpFlow2
 	//return String(PumpFlow,2);
-	return fmt.Sprintf("%f", PumpFlow)
+	return fmt.Sprintf("%.2f", PumpFlow)
 }
 
 func getErrorInfo(data []byte) string { // TOP44 //
@@ -496,10 +549,10 @@ func decode_heatpump_data(data []byte, mclient mqtt.Client, token mqtt.Token) {
 		if (updatenow) || (actData[k] != Topic_Value) {
 			actData[k] = Topic_Value
 			fmt.Printf("received TOP%d %s: %s \n", k, v.TopicName, Topic_Value)
-			value = strings.TrimSpace(Topic_Value)
-			value = strings.ToUpper(Topic_Value)
 			if config.Aquarea2mqttCompatible {
-				TOP := "aquarea/state/" + fmt.Sprintf("%s/%s", config.Aquarea2mqttPumpID, v.TopicName)
+				TOP := "aquarea/state/" + fmt.Sprintf("%s/%s", config.Aquarea2mqttPumpID, v.TopicA2M)
+				value = strings.TrimSpace(Topic_Value)
+				value = strings.ToUpper(Topic_Value)
 				fmt.Println("Publikuje do ", TOP, "warosc", value)
 				token = mclient.Publish(TOP, byte(0), false, value)
 				if token.Wait() && token.Error() != nil {
