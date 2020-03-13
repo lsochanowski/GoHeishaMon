@@ -65,6 +65,7 @@ type Config struct {
 	MqttPass               string
 	MqttClientID           string
 	MqttKeepalive          int
+	ForceRefreshTime       int
 }
 
 func ReadConfig() Config {
@@ -138,7 +139,7 @@ func main() {
 
 func ClearActData() {
 	for {
-		time.Sleep(time.Minute * 5)
+		time.Sleep(time.Second * time.Duration(config.ForceRefreshTime))
 		for k, _ := range actData {
 			actData[k] = "nil" //funny i know ;)
 		}
@@ -152,7 +153,7 @@ func MakeMQTTConn() (mqtt.Client, mqtt.Token) {
 	opts.SetPassword(config.MqttPass)
 	opts.SetUsername(config.MqttLogin)
 	opts.SetClientID(config.MqttClientID)
-
+	opts.SetWill(config.Mqtt_set_base+"/LWT", "Online", 2, false)
 	opts.SetKeepAlive(MqttKeepalive)
 	opts.SetOnConnectHandler(startsub)
 	opts.SetConnectionLostHandler(connLostHandler)
@@ -437,7 +438,7 @@ func log_message(a string) {
 
 func logHex(command []byte, length int) {
 	for i := range command {
-		fmt.Printf("%x ", i)
+		fmt.Printf("%v ", i)
 	}
 }
 

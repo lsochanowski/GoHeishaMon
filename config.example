@@ -6,7 +6,7 @@ Aquarea2mqttCompatible=true
 Aquarea2mqttPumpID=""
 Mqtt_topic_base="panasonic_heat_pump/sdc"
 Mqtt_set_base="panasonic_heat_pump"
-
+ForceRefreshTime=60
 MqttServer=""
 MqttPort=""
 MqttLogin=""
