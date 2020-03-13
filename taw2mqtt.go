@@ -117,9 +117,14 @@ func main() {
 
 	for {
 		if len(CommandsToSend) > 0 {
+			i := 0
 			for key, value := range CommandsToSend {
+				if i > 1 {
+					break
+				}
 				send_command(value, len(value))
 				delete(CommandsToSend, key)
+				i++
 			}
 		} else {
 			send_command(panasonicQuery, PANASONICQUERYSIZE)
