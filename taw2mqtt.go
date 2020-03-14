@@ -122,10 +122,12 @@ func main() {
 			for key, value := range CommandsToSend {
 				if i > 1 {
 					break
+				} else {
+					send_command(value, len(value))
+					delete(CommandsToSend, key)
+					PoolInterval = PoolInterval + time.Second*time.Duration(2)
+					i++
 				}
-				send_command(value, len(value))
-				delete(CommandsToSend, key)
-				i++
 			}
 		} else {
 			send_command(panasonicQuery, PANASONICQUERYSIZE)
