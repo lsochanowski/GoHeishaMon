@@ -9,21 +9,20 @@
 
       all: test build
     build: 
-            $(GOBUILD) -o $(BINARY_NAME) -v
+        $(GOBUILD) -o $(BINARY_NAME) -v
     test: 
-            $(GOTEST) -v ./...
+        $(GOTEST) -v ./...
     clean: 
-            $(GOCLEAN)
-            rm -f $(BINARY_NAME)
-            rm -f $(BINARY_UNIX)
+        $(GOCLEAN)
+        rm -f $(BINARY_NAME)
+        rm -f $(BINARY_UNIX)
     run:
-            $(GOBUILD) -o $(BINARY_NAME) -v ./...
-            ./$(BINARY_NAME)
+        $(GOBUILD) -o $(BINARY_NAME) -v ./...
+        ./$(BINARY_NAME)
     deps:
-            $(GOGET) github.com/eclipse/paho.mqtt.golang
-            $(GOGET) go.bug.st/serial
-		    $(GOGET) github.com/BurntSushi/toml
-            $(GOGET) github.com/rs/xid
-
+        $(GOGET) github.com/eclipse/paho.mqtt.golang
+        $(GOGET) go.bug.st/serial
+        $(GOGET) github.com/BurntSushi/toml
+        $(GOGET) github.com/rs/xid
     build-linux:
-            CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_UNIX) -v
+        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_UNIX) -v
