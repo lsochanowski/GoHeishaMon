@@ -66,6 +66,7 @@ type Config struct {
 	MqttClientID           string
 	MqttKeepalive          int
 	ForceRefreshTime       int
+	SleepAfterCommand      int
 }
 
 func ReadConfig() Config {
@@ -127,7 +128,7 @@ func main() {
 					send_command(value, len(value))
 					delete(CommandsToSend, key)
 					in++
-					time.Sleep(PoolInterval)
+					time.Sleep(time.Second * time.Duration(config.SleepAfterCommand))
 
 				} else {
 					fmt.Println("numer komenty  ", in, " jest za duzy zrobie to w nastepnym cyklu")

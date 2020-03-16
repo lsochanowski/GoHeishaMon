@@ -11,5 +11,6 @@ MqttServer=""
 MqttPort=""
 MqttLogin=""
 MqttPass=""
+SleepAfterCommand=3
 MqttClientID=""
 MqttKeepalive=60
