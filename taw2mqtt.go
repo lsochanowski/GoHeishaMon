@@ -126,10 +126,25 @@ func main() {
 
 					send_command(value, len(value))
 					PoolInterval = PoolInterval + time.Second*time.Duration(2)
-					readSerial(MC, MT)
-					time.Sleep(PoolInterval)
+					//	fmt.Println("czytam dane \n")
+
+					//readSerial(MC, MT)
+					fmt.Println("Usuwam  \n")
+
 					delete(CommandsToSend, key)
+					fmt.Println("dodaje licznik \n")
+
 					in++
+					fmt.Println("Wysylam magik pakiet \n")
+
+					send_command(panasonicQuery, PANASONICQUERYSIZE)
+					fmt.Println("czytam dane \n")
+					readSerial(MC, MT)
+
+					fmt.Println("czekam", PoolInterval, "sekund\n")
+
+					time.Sleep(PoolInterval)
+
 				} else {
 					fmt.Println("numer komenty  ", in, " jest za duzy zrobie to w nastepnym cyklu\n")
 					break
