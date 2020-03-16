@@ -28,9 +28,10 @@
 	$(GOGET) go.bug.st/serial
 	$(GOGET) github.com/BurntSushi/toml
 	$(GOGET) github.com/rs/xid
+	mkdir dist
     build-linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_UNIX) -v
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o dist/$(BINARY_UNIX) -v
     build-mips:
-	CGO_ENABLED=0 GOOS=linux GOARCH=mips GOMIPS=softfloat  $(GOBUILD) -o $(BINARY_MIPS) -v
+	CGO_ENABLED=0 GOOS=linux GOARCH=mips GOMIPS=softfloat  $(GOBUILD) -o dist/$(BINARY_MIPS) -v
     build-rpi:
-	GOOS=linux GOARCH=arm GOARM=5 $(GOBUILD) -o $(BINARY_ARM) -v
+	GOOS=linux GOARCH=arm GOARM=5 $(GOBUILD) -o dist/$(BINARY_ARM) -v
