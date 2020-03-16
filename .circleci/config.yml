@@ -29,14 +29,14 @@ jobs:
       - run: make
       - run: mkdir ./artifacts
       - store_artifacts:
-        path: GoHeishaMon_ARM
-        destination: ./artifacts/GoHeishaMon_ARM
+          path: GoHeishaMon_ARM
+          destination: ./artifacts/GoHeishaMon_ARM
       - store_artifacts:
-        path: GoHeishaMon_AMD64
-        destination: ./artifacts/GoHeishaMon_AMD64
+          path: GoHeishaMon_AMD64
+          destination: ./artifacts/GoHeishaMon_AMD64
       - store_artifacts:
-        path: GoHeishaMon_MIPS
-        destination: ./artifacts/GoHeishaMon_MIPS
+          path: GoHeishaMon_MIPS
+          destination: ./artifacts/GoHeishaMon_MIPS
       - attach_workspace:
           at: ./artifacts
       - run:
