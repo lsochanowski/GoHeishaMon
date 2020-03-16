@@ -127,7 +127,6 @@ func main() {
 					send_command(value, len(value))
 					delete(CommandsToSend, key)
 					in++
-					send_command(panasonicQuery, PANASONICQUERYSIZE)
 
 				} else {
 					fmt.Println("numer komenty  ", in, " jest za duzy zrobie to w nastepnym cyklu\n")
@@ -137,12 +136,9 @@ func main() {
 
 			}
 
-		} else {
-			fmt.Println("jest juz zero komend  \n")
-
-			send_command(panasonicQuery, PANASONICQUERYSIZE)
-
 		}
+		send_command(panasonicQuery, PANASONICQUERYSIZE)
+
 		go func() {
 			tbool := readSerial(MC, MT)
 			c1 <- tbool
@@ -462,7 +458,7 @@ func log_message(a string) {
 
 func logHex(command []byte, length int) {
 	for i := range command {
-		fmt.Printf("%v ", i)
+		fmt.Printf("%s ", i)
 	}
 }
 
