@@ -70,8 +70,12 @@ type Config struct {
 	SleepAfterCommand      int
 }
 
+var cfgfile *string
+var topicfile *string
+
 func ReadConfig() Config {
-	cfgfile := flag.String("c", "config", "a config file patch")
+	cfgfile = flag.String("c", "config", "a config file patch")
+	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
 	flag.Parse()
 
 	var configfile = *cfgfile
@@ -534,8 +538,6 @@ func calcChecksum(command []byte, length int) byte {
 }
 
 func ParseTopicList() {
-	topicfile := flag.String("t", "Topics.csv", "a topic file patch")
-	flag.Parse()
 
 	tf := *topicfile
 	lines, err := ReadCsv(tf)
