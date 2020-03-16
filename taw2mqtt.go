@@ -147,7 +147,7 @@ func main() {
 		select {
 		case res := <-c1:
 			fmt.Println("read ma status", res)
-		case <-time.After(3 * time.Second):
+		case <-time.After(5 * time.Second):
 			fmt.Println("out of time for read :(")
 		}
 
