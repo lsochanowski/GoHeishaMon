@@ -87,6 +87,8 @@ func ReadConfig() Config {
 }
 
 func main() {
+	flag.Parse()
+
 	c1 := make(chan bool, 1)
 	go ClearActData()
 	CommandsToSend = make(map[xid.ID][]byte)
@@ -272,7 +274,12 @@ func HandleSetDHWTemp(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var heatpump_state byte
 
-	a, _ := strconv.Atoi(string(msg.Payload()))
+	a, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		a = int(f)
+	}
+
 	e := a + 128
 	heatpump_state = byte(e)
 	fmt.Printf("set DHW temperature to   %d", a)
@@ -287,7 +294,12 @@ func HandleSetPowerfulMode(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var heatpump_state byte
 
-	a, _ := strconv.Atoi(string(msg.Payload()))
+	a, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		a = int(f)
+	}
+
 	e := a + 73
 	heatpump_state = byte(e)
 	fmt.Printf("set powerful mode to  %d", a)
@@ -302,7 +314,12 @@ func HandleSetHolidayMode(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var heatpump_state byte
 	e := 16
-	a, _ := strconv.Atoi(string(msg.Payload()))
+	a, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		a = int(f)
+	}
+
 	if a == 1 {
 		e = 32
 	}
@@ -319,7 +336,12 @@ func HandleSetForceSterilization(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var heatpump_state byte
 	e := 0
-	a, _ := strconv.Atoi(string(msg.Payload()))
+	a, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		a = int(f)
+	}
+
 	if a == 1 {
 		e = 4
 	}
@@ -336,7 +358,12 @@ func HandleSetForceDefrost(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var heatpump_state byte
 	e := 0
-	a, _ := strconv.Atoi(string(msg.Payload()))
+	a, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		a = int(f)
+	}
+
 	if a == 1 {
 		e = 2
 	}
@@ -353,7 +380,12 @@ func HandleSetForceDHW(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var heatpump_state byte
 	e := 64
-	a, _ := strconv.Atoi(string(msg.Payload()))
+	a, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		a = int(f)
+	}
+
 	if a == 1 {
 		e = 128
 	}
@@ -369,7 +401,12 @@ func HandleSetForceDHW(mclient mqtt.Client, msg mqtt.Message) {
 func HandleSetZ1HeatRequestTemperature(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var request_temp byte
-	e, _ := strconv.Atoi(string(msg.Payload()))
+	e, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		e = int(f)
+	}
+
 	e = e + 128
 	request_temp = byte(e)
 	fmt.Printf("set z1 heat request temperature to %d", request_temp-128)
@@ -383,7 +420,11 @@ func HandleSetZ1HeatRequestTemperature(mclient mqtt.Client, msg mqtt.Message) {
 func HandleSetZ1CoolRequestTemperature(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var request_temp byte
-	e, _ := strconv.Atoi(string(msg.Payload()))
+	e, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		e = int(f)
+	}
 	e = e + 128
 	request_temp = byte(e)
 	fmt.Printf("set z1 cool request temperature to %d", request_temp-128)
@@ -397,7 +438,11 @@ func HandleSetZ1CoolRequestTemperature(mclient mqtt.Client, msg mqtt.Message) {
 func HandleSetZ2HeatRequestTemperature(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var request_temp byte
-	e, _ := strconv.Atoi(string(msg.Payload()))
+	e, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		e = int(f)
+	}
 	e = e + 128
 	request_temp = byte(e)
 	fmt.Printf("set z2 heat request temperature to %d", request_temp-128)
@@ -411,7 +456,11 @@ func HandleSetZ2HeatRequestTemperature(mclient mqtt.Client, msg mqtt.Message) {
 func HandleSetZ2CoolRequestTemperature(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var request_temp byte
-	e, _ := strconv.Atoi(string(msg.Payload()))
+	e, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		e = int(f)
+	}
 	e = e + 128
 	request_temp = byte(e)
 	fmt.Printf("set z2 cool request temperature to %d", request_temp-128)
@@ -426,7 +475,11 @@ func HandleSetQuietMode(mclient mqtt.Client, msg mqtt.Message) {
 	var command []byte
 	var quiet_mode byte
 
-	e, _ := strconv.Atoi(string(msg.Payload()))
+	e, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		e = int(f)
+	}
 	e = (e + 1) * 8
 
 	quiet_mode = byte(e)
@@ -443,7 +496,11 @@ func HandleSetHeatpump(mclient mqtt.Client, msg mqtt.Message) {
 	var heatpump_state byte
 
 	e := 1
-	a, _ := strconv.Atoi(string(msg.Payload()))
+	a, er := strconv.Atoi(string(msg.Payload()))
+	if er != nil {
+		f, _ := strconv.ParseFloat(string(msg.Payload()), 64)
+		a = int(f)
+	}
 	if a == 1 {
 		e = 2
 	}
