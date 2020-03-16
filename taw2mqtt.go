@@ -457,7 +457,7 @@ func log_message(a string) {
 }
 
 func logHex(command []byte, length int) {
-	fmt.Printf("% x", command)
+	fmt.Printf("% X", command)
 
 }
 
