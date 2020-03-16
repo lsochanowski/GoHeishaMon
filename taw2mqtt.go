@@ -128,6 +128,9 @@ func main() {
 	MC, MT := MakeMQTTConn()
 
 	for {
+		if MC.IsConnected() != true {
+			MC, MT = MakeMQTTConn()
+		}
 		if len(CommandsToSend) > 0 {
 			fmt.Println("jest wiecej niz jedna komenda tj", len(CommandsToSend))
 			in = 1
@@ -198,7 +201,6 @@ func MakeMQTTConn() (mqtt.Client, mqtt.Token) {
 		fmt.Printf("Fail to connect broker, %v", token.Error())
 	}
 	return client, token
-
 }
 
 func connLostHandler(c mqtt.Client, err error) {
