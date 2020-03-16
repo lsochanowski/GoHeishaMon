@@ -127,6 +127,7 @@ func main() {
 					send_command(value, len(value))
 					delete(CommandsToSend, key)
 					in++
+					time.Sleep(PoolInterval)
 
 				} else {
 					fmt.Println("numer komenty  ", in, " jest za duzy zrobie to w nastepnym cyklu")
@@ -136,9 +137,9 @@ func main() {
 
 			}
 
+		} else {
+			send_command(panasonicQuery, PANASONICQUERYSIZE)
 		}
-		send_command(panasonicQuery, PANASONICQUERYSIZE)
-
 		go func() {
 			tbool := readSerial(MC, MT)
 			c1 <- tbool
