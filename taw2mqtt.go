@@ -119,7 +119,7 @@ func main() {
 
 	for {
 		if len(CommandsToSend) > 0 {
-			fmt.Println("jest wiecej niz jedna komenda tj", len(CommandsToSend), "\n")
+			fmt.Println("jest wiecej niz jedna komenda tj", len(CommandsToSend))
 			in = 1
 			for key, value := range CommandsToSend {
 				if in == 1 {
@@ -129,10 +129,10 @@ func main() {
 					in++
 
 				} else {
-					fmt.Println("numer komenty  ", in, " jest za duzy zrobie to w nastepnym cyklu\n")
+					fmt.Println("numer komenty  ", in, " jest za duzy zrobie to w nastepnym cyklu")
 					break
 				}
-				fmt.Println("koncze range po tablicy z komendami   \n")
+				fmt.Println("koncze range po tablicy z komendami ")
 
 			}
 
@@ -146,9 +146,9 @@ func main() {
 
 		select {
 		case res := <-c1:
-			fmt.Println("read ma status", res, "\n")
+			fmt.Println("read ma status", res)
 		case <-time.After(3 * time.Second):
-			fmt.Println("out of time for read :(\n")
+			fmt.Println("out of time for read :(")
 		}
 
 		time.Sleep(PoolInterval)
@@ -453,7 +453,7 @@ func HandleSetHeatpump(mclient mqtt.Client, msg mqtt.Message) {
 }
 
 func log_message(a string) {
-	fmt.Println(a, "\n")
+	fmt.Println(a)
 }
 
 func logHex(command []byte, length int) {
@@ -782,7 +782,7 @@ func decode_heatpump_data(data []byte, mclient mqtt.Client, token mqtt.Token) {
 			if _, ok := m[v.TopicFunction]; ok {
 				Topic_Value = CallTopicFunction(Input_Byte, m[v.TopicFunction])
 			} else {
-				fmt.Println("NIE MA FUNKCJI", v.TopicFunction, "\n")
+				fmt.Println("NIE MA FUNKCJI", v.TopicFunction)
 			}
 
 		}
