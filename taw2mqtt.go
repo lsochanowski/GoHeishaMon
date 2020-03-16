@@ -453,11 +453,11 @@ func HandleSetHeatpump(mclient mqtt.Client, msg mqtt.Message) {
 }
 
 func log_message(a string) {
-	fmt.Println(a)
+	fmt.Println(a, "\n")
 }
 
 func logHex(command []byte, length int) {
-	fmt.Printf("% X", command)
+	fmt.Printf("% X \n", command)
 
 }
 
@@ -567,12 +567,12 @@ func readSerial(MC mqtt.Client, MT mqtt.Token) bool {
 	}
 
 	//panasonic read is always 203 on valid receive, if not yet there wait for next read
-	log_message("Received 203 bytes data")
+	log_message("Received 203 bytes data\n")
 	if config.Loghex {
 		logHex(data, data_length)
 	}
 	if !isValidReceiveHeader(data) {
-		log_message("Received wrong header!")
+		log_message("Received wrong header!\n")
 		data_length = 0 //for next attempt;
 		return false
 	}
