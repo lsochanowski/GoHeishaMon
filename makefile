@@ -31,6 +31,6 @@
     build-linux:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_UNIX) -v
     build-mips:
-	CGO_ENABLED=0 GOOS=linux GOARCH=mips GOMIPS=softfloat  $(GOBUILD) -o $(BINARY_MISP) -v
+	CGO_ENABLED=0 GOOS=linux GOARCH=mips GOMIPS=softfloat  $(GOBUILD) -o $(BINARY_MIPS) -v
     build-rpi:
 	GOOS=linux GOARCH=arm GOARM=5 $(GOBUILD) -o $(BINARY_ARM) -v
