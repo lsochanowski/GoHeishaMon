@@ -118,22 +118,23 @@ func main() {
 
 	for {
 		if len(CommandsToSend) > 0 {
-			i := 0
+			in := 0
 			for key, value := range CommandsToSend {
-				if i > 1 {
-					break
-				} else {
+				if in == 1 {
 					send_command(value, len(value))
-					delete(CommandsToSend, key)
 					PoolInterval = PoolInterval + time.Second*time.Duration(2)
-					i++
+					readSerial(MC, MT)
+					time.Sleep(PoolInterval)
+					delete(CommandsToSend, key)
+					in++
 				}
 			}
+
 		} else {
 			send_command(panasonicQuery, PANASONICQUERYSIZE)
+			readSerial(MC, MT)
+			time.Sleep(PoolInterval)
 		}
-		readSerial(MC, MT)
-		time.Sleep(PoolInterval)
 
 	}
 
