@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"encoding/csv"
 	"encoding/hex"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -70,7 +71,9 @@ type Config struct {
 }
 
 func ReadConfig() Config {
-	var configfile = "config"
+	cfgfile := flag.String("c", "config", "a config file patch")
+
+	var configfile = *cfgfile
 	_, err := os.Stat(configfile)
 	if err != nil {
 		log.Fatal("Config file is missing: ", configfile)
@@ -474,7 +477,9 @@ func calcChecksum(command []byte, length int) byte {
 }
 
 func ParseTopicList() {
-	lines, err := ReadCsv("Topics.csv")
+	topicfile := flag.String("t", "Topics.csv", "a topic file patch")
+	tf := *topicfile
+	lines, err := ReadCsv(tf)
 	if err != nil {
 		panic(err)
 	}
