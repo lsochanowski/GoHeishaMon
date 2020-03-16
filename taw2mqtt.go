@@ -72,6 +72,7 @@ type Config struct {
 
 func ReadConfig() Config {
 	cfgfile := flag.String("c", "config", "a config file patch")
+	flag.Parse()
 
 	var configfile = *cfgfile
 	_, err := os.Stat(configfile)
@@ -87,7 +88,6 @@ func ReadConfig() Config {
 }
 
 func main() {
-	flag.Parse()
 
 	c1 := make(chan bool, 1)
 	go ClearActData()
@@ -535,6 +535,8 @@ func calcChecksum(command []byte, length int) byte {
 
 func ParseTopicList() {
 	topicfile := flag.String("t", "Topics.csv", "a topic file patch")
+	flag.Parse()
+
 	tf := *topicfile
 	lines, err := ReadCsv(tf)
 	if err != nil {
