@@ -18,8 +18,7 @@
 	$(GOTEST) -v ./...
     clean: 
 	$(GOCLEAN)
-	rm -f $(BINARY_NAME)
-	rm -f $(BINARY_UNIX)
+	rm -f dist/*
     run:
 	$(GOBUILD) -o $(BINARY_NAME) -v ./...
 	./$(BINARY_NAME)
@@ -30,8 +29,8 @@
 	$(GOGET) github.com/rs/xid
 	mkdir dist
     build-linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o dist/$(BINARY_UNIX) -v
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o dist/$(BINARY_UNIX)
     build-mips:
-	CGO_ENABLED=0 GOOS=linux GOARCH=mips GOMIPS=softfloat  $(GOBUILD)  -ldflags "-s -w" -a -o dist/$(BINARY_MIPS) -v
+	CGO_ENABLED=0 GOOS=linux GOARCH=mips GOMIPS=softfloat $(GOBUILD) -ldflags "-s -w" -a -o dist/$(BINARY_MIPS)
     build-rpi:
-	GOOS=linux GOARCH=arm GOARM=5 $(GOBUILD) -o dist/$(BINARY_ARM) -v
+	GOOS=linux GOARCH=arm GOARM=5 $(GOBUILD) -o dist/$(BINARY_ARM)
