@@ -27,11 +27,11 @@ jobs:
       - run: go get github.com/eclipse/paho.mqtt.golang
       - run: go get go.bug.st/serial
       - run: make
-    #  - run: sudo apt-get install -y upx && sudo apt-get clean
-    #  - run: upx -f --brute -o dist/GoHeishaMon_MIPSUPX dist/GoHeishaMon_MIPS
+      - run: sudo apt-get install -y upx && sudo apt-get clean
+      - run: upx -f --brute -o dist/GoHeishaMon_MIPSUPX dist/GoHeishaMon_MIPS
       - run:
           name: "Publish Release on GitHub"
           command: |
             go get github.com/tcnksm/ghr
             VERSION=$(git rev-parse --short HEAD)
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_BUILD_NUM} dist/
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 1.0.${CIRCLE_BUILD_NUM} dist/
