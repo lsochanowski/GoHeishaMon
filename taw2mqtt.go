@@ -84,7 +84,7 @@ func ReadConfig() Config {
 
 func main() {
 	c1 := make(chan bool, 1)
-
+	go ClearActData()
 	CommandsToSend = make(map[xid.ID][]byte)
 	var in int
 	config = ReadConfig()
