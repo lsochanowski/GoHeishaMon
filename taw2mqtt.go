@@ -118,7 +118,7 @@ func main() {
 
 	for {
 		if len(CommandsToSend) > 0 {
-			in := 0
+			in := 1
 			for key, value := range CommandsToSend {
 				if in == 1 {
 					send_command(value, len(value))
