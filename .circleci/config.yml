@@ -27,6 +27,8 @@ jobs:
       - run: go get github.com/eclipse/paho.mqtt.golang
       - run: go get go.bug.st/serial
       - run: make
+      - run: sudo apt-get install -y upx && sudo apt-get clean
+      - run: upx -f --brute -o dist/GoHeishaMon_MIPSUPX dist/GoHeishaMon_MIPS
       - run:
           name: "Publish Release on GitHub"
           command: |
