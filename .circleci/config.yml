@@ -27,7 +27,6 @@ jobs:
       - run: go get github.com/eclipse/paho.mqtt.golang
       - run: go get go.bug.st/serial
       - run: make
-      - run: mkdir  ${CIRCLE_ARTIFACTS}
       - store_artifacts:
           path: GoHeishaMon_ARM
           destination:  ${CIRCLE_ARTIFACTS}/GoHeishaMon_ARM
