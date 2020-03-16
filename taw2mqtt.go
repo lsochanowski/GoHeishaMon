@@ -457,9 +457,8 @@ func log_message(a string) {
 }
 
 func logHex(command []byte, length int) {
-	for i := range command {
-		fmt.Printf("%s ", i)
-	}
+	fmt.Printf("% x", command)
+
 }
 
 func calcChecksum(command []byte, length int) byte {
