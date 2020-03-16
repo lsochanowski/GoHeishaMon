@@ -1,4 +1,4 @@
-
+---- AUTO BUILD  for MIPS don't work....------
 Todo:
 
 - rest of the commands
