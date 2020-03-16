@@ -27,16 +27,16 @@ jobs:
       - run: go get github.com/eclipse/paho.mqtt.golang
       - run: go get go.bug.st/serial
       - run: make
-      - run: mkdir artifacts
+      - run: mkdir  $CIRCLE_ARTIFACTS
       - store_artifacts:
           path: GoHeishaMon_ARM
-          destination: artifacts/GoHeishaMon_ARM
+          destination:  $CIRCLE_ARTIFACTS/GoHeishaMon_ARM
       - store_artifacts:
           path: GoHeishaMon_AMD64
-          destination: artifacts/GoHeishaMon_AMD64
+          destination:  $CIRCLE_ARTIFACTS/GoHeishaMon_AMD64
       - store_artifacts:
           path: GoHeishaMon_MIPS
-          destination: artifacts/GoHeishaMon_MIPS
+          destination:  $CIRCLE_ARTIFACTS/GoHeishaMon_MIPS
       - attach_workspace:
           at: artifacts
       - run:
@@ -44,4 +44,4 @@ jobs:
           command: |
             go get github.com/tcnksm/ghr
             VERSION=$(git rev-parse --short HEAD)
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} artifacts/
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} $CIRCLE_ARTIFACTS/
