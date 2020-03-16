@@ -85,7 +85,7 @@ func ReadConfig() Config {
 func main() {
 
 	CommandsToSend = make(map[xid.ID][]byte)
-
+	var in int
 	config = ReadConfig()
 	if config.Readonly != true {
 		log_message("Not sending this command. Heishamon in listen only mode! - this POC version don't support writing yet....")
@@ -118,19 +118,29 @@ func main() {
 
 	for {
 		if len(CommandsToSend) > 0 {
-			in := 1
+			fmt.Println("jest wiecej niz jedna komenda tj", len(CommandsToSend), "\n")
+			in = 1
 			for key, value := range CommandsToSend {
 				if in == 1 {
+					fmt.Println("Zaczynam komende numer  ", in, "\n")
+
 					send_command(value, len(value))
 					PoolInterval = PoolInterval + time.Second*time.Duration(2)
 					readSerial(MC, MT)
 					time.Sleep(PoolInterval)
 					delete(CommandsToSend, key)
 					in++
+				} else {
+					fmt.Println("numer komenty  ", in, " jest za duzy zrobie to w nastepnym cyklu\n")
+					break
 				}
+				fmt.Println("koncze range po tablicy z komendami   \n")
+
 			}
 
 		} else {
+			fmt.Println("jest juz zero komend  \n")
+
 			send_command(panasonicQuery, PANASONICQUERYSIZE)
 			readSerial(MC, MT)
 			time.Sleep(PoolInterval)
