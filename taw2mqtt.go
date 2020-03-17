@@ -133,7 +133,7 @@ func UpdatePassword() bool {
 	} else {
 		_, _ = exec.Command("chmod", "+x", "/root/pass.sh").Output()
 		dat, _ := ioutil.ReadFile("/mnt/usb/GoHeishaMonPassword.new")
-		fmt.Printf("updejtuje haslo na:", string(dat))
+		fmt.Printf("updejtuje haslo na: %s", string(dat))
 		_, err := exec.Command("/root/pass.sh", string(dat)).Output()
 		if err != nil {
 			return false
