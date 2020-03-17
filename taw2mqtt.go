@@ -100,6 +100,8 @@ func ReadConfig() Config {
 }
 
 func UpdateConfig(configfile string) bool {
+	fmt.Printf("try to update configfile: ", configfile)
+
 	out, err := exec.Command("/usr/bin/usb_mount.sh").Output()
 
 	if err != nil {
@@ -112,6 +114,8 @@ func UpdateConfig(configfile string) bool {
 		return false
 	}
 	if GetFileChecksum(configfile) != GetFileChecksum("/mnt/usb/GoHeishaMonConfig.new") {
+		fmt.Printf("checksum of configfile and new configfile diffrent: ", configfile)
+
 		_, _ = exec.Command("/bin/cp", "/mnt/usb/GoHeishaMonConfig.new", configfile).Output()
 		if err != nil {
 			return false
