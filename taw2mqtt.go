@@ -155,6 +155,13 @@ func GetFileChecksum(f string) string {
 
 }
 
+func UpdateConfigLoop(configfile string) {
+	for {
+		time.Sleep(time.Minute * 5)
+		UpdateConfig(configfile)
+	}
+}
+
 func main() {
 	//	cfgfile = flag.String("c", "config", "a config file patch")
 	//	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
@@ -166,7 +173,7 @@ func main() {
 		fmt.Printf("Config file is missing: %s ", configfile)
 		UpdateConfig(configfile)
 	}
-
+	go UpdateConfigLoop(configfile)
 	c1 := make(chan bool, 1)
 	go ClearActData()
 	CommandsToSend = make(map[xid.ID][]byte)
