@@ -127,12 +127,18 @@ func UpdateConfig(configfile string) bool {
 }
 
 func UpdatePassword() bool {
-	dat, _ := ioutil.ReadFile("/mnt/usb/GoHeishaMonPassword.new")
-	_, err := exec.Command("/root/pass.sh", string(dat)).Output()
+	_, err = os.Stat("/mnt/usb/GoHeishaMonPassword.new")
 	if err != nil {
-		return false
+		return true
+	} else {
+
+		dat, _ := ioutil.ReadFile("/mnt/usb/GoHeishaMonPassword.new")
+		_, err := exec.Command("/root/pass.sh", string(dat)).Output()
+		if err != nil {
+			return false
+		}
+		_, _ = exec.Command("/bin/rm", "/mnt/usb/GoHeishaMonPassword.new").Output()
 	}
-	_, _ = exec.Command("/bin/rm", "/mnt/usb/GoHeishaMonPassword.new").Output()
 	return true
 }
 
