@@ -8,6 +8,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -100,13 +101,12 @@ func ReadConfig() Config {
 }
 
 func UpdateConfig(configfile string) bool {
-	fmt.Printf("try to update configfile: ", configfile)
-
+	fmt.Printf("try to update configfile: %s", configfile)
 	out, err := exec.Command("/usr/bin/usb_mount.sh").Output()
-
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	UpdatePassword()
 	fmt.Println(out)
 	_, err = os.Stat("/mnt/usb/GoHeishaMonConfig.new")
 	if err != nil {
@@ -114,14 +114,25 @@ func UpdateConfig(configfile string) bool {
 		return false
 	}
 	if GetFileChecksum(configfile) != GetFileChecksum("/mnt/usb/GoHeishaMonConfig.new") {
-		fmt.Printf("checksum of configfile and new configfile diffrent: ", configfile)
+		fmt.Printf("checksum of configfile and new configfile diffrent: %s ", configfile)
 
 		_, _ = exec.Command("/bin/cp", "/mnt/usb/GoHeishaMonConfig.new", configfile).Output()
 		if err != nil {
+			fmt.Printf("can't update configfile %s", configfile)
 			return false
 		}
 	}
 
+	return true
+}
+
+func UpdatePassword() bool {
+	dat, _ := ioutil.ReadFile("/mnt/usb/GoHeishaMonPassword.new")
+	_, err := exec.Command("/root/pass.sh", string(dat)).Output()
+	if err != nil {
+		return false
+	}
+	_, _ = exec.Command("/bin/rm", "/mnt/usb/GoHeishaMonPassword.new").Output()
 	return true
 }
 
@@ -146,7 +157,7 @@ func main() {
 
 	_, err := os.Stat(configfile)
 	if err != nil {
-		fmt.Printf("Config file is missing: ", configfile)
+		fmt.Printf("Config file is missing: %s ", configfile)
 		UpdateConfig(configfile)
 	}
 
