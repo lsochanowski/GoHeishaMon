@@ -150,10 +150,10 @@ func GetFileChecksum(f string) string {
 }
 
 func main() {
-	cfgfile = flag.String("c", "config", "a config file patch")
-	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
+	//	cfgfile = flag.String("c", "config", "a config file patch")
+	//	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
 	flag.Parse()
-	var configfile = *cfgfile
+	configfile = "/etc/gh/config"
 
 	_, err := os.Stat(configfile)
 	if err != nil {
@@ -609,7 +609,8 @@ func calcChecksum(command []byte, length int) byte {
 
 func ParseTopicList() {
 
-	tf := *topicfile
+	//tf := *topicfile
+	tf := "/etc/gh/Topics.csv"
 	lines, err := ReadCsv(tf)
 	if err != nil {
 		panic(err)
