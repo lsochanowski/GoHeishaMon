@@ -1,13 +1,16 @@
 package main
 
 import (
+	"crypto/md5"
 	"encoding/binary"
 	"encoding/csv"
 	"encoding/hex"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 	"time"
@@ -72,13 +75,18 @@ type Config struct {
 
 var cfgfile *string
 var topicfile *string
+var configfile string
+
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
+}
 
 func ReadConfig() Config {
-	cfgfile = flag.String("c", "config", "a config file patch")
-	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
-	flag.Parse()
 
-	var configfile = *cfgfile
 	_, err := os.Stat(configfile)
 	if err != nil {
 		log.Fatal("Config file is missing: ", configfile)
@@ -91,7 +99,52 @@ func ReadConfig() Config {
 	return config
 }
 
+func UpdateConfig(configfile string) bool {
+	out, err := exec.Command("/usr/bin/usb_mount.sh").Output()
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(out)
+	_, err = os.Stat("/mnt/usb/GoHeishaMonConfig.new")
+	if err != nil {
+		_, _ = exec.Command("/usr/bin/usb_umount.sh").Output()
+		return false
+	}
+	if GetFileChecksum(configfile) != GetFileChecksum("/mnt/usb/GoHeishaMonConfig.new") {
+		_, _ = exec.Command("/bin/cp", "/mnt/usb/GoHeishaMonConfig.new", configfile).Output()
+		if err != nil {
+			return false
+		}
+	}
+
+	return true
+}
+
+func GetFileChecksum(f string) string {
+	input := strings.NewReader(f)
+
+	hash := md5.New()
+	if _, err := io.Copy(hash, input); err != nil {
+		log.Fatal(err)
+	}
+	sum := hash.Sum(nil)
+
+	return fmt.Sprintf("%x\n", sum)
+
+}
+
 func main() {
+	cfgfile = flag.String("c", "config", "a config file patch")
+	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
+	flag.Parse()
+	var configfile = *cfgfile
+
+	_, err := os.Stat(configfile)
+	if err != nil {
+		fmt.Printf("Config file is missing: ", configfile)
+		UpdateConfig(configfile)
+	}
 
 	c1 := make(chan bool, 1)
 	go ClearActData()
