@@ -71,6 +71,7 @@ type Config struct {
 	MqttClientID           string
 	MqttKeepalive          int
 	ForceRefreshTime       int
+	EnableCommand          bool
 	SleepAfterCommand      int
 }
 
@@ -106,7 +107,6 @@ func UpdateConfig(configfile string) bool {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	UpdatePassword()
 	fmt.Println(out)
 	_, err = os.Stat("/mnt/usb/GoHeishaMonConfig.new")
 	if err != nil {
@@ -134,10 +134,15 @@ func UpdatePassword() bool {
 		_, _ = exec.Command("chmod", "+x", "/root/pass.sh").Output()
 		dat, _ := ioutil.ReadFile("/mnt/usb/GoHeishaMonPassword.new")
 		fmt.Printf("updejtuje haslo na: %s", string(dat))
-		_, err := exec.Command("/root/pass.sh", string(dat)).Output()
+		o, err := exec.Command("/root/pass.sh", string(dat)).Output()
 		if err != nil {
+			fmt.Println(err)
+			fmt.Println(o)
+
 			return false
 		}
+		fmt.Println(o)
+
 		_, _ = exec.Command("/bin/rm", "/mnt/usb/GoHeishaMonPassword.new").Output()
 	}
 	return true
@@ -307,11 +312,43 @@ func startsub(c mqtt.Client) {
 	c.Subscribe(config.Mqtt_set_base+"/SetPowerfulMode", 2, HandleSetPowerfulMode)
 	c.Subscribe(config.Mqtt_set_base+"/SetDHWTemp", 2, HandleSetDHWTemp)
 	c.Subscribe(config.Mqtt_set_base+"/SendRawValue", 2, HandleSendRawValue)
+	if config.EnableCommand == true {
+		c.Subscribe(config.Mqtt_set_base+"/OSCommand", 2, HandleOSCommand)
+	}
 
 	//Perform additional action...
 }
 
 func HandleMSGfromMQTT(mclient mqtt.Client, msg mqtt.Message) {
+
+}
+
+func remove(slice []string, s int) []string {
+	return append(slice[:s], slice[s+1:]...)
+}
+
+func HandleOSCommand(mclient mqtt.Client, msg mqtt.Message) {
+	var cmd *exec.Cmd
+	var out2 string
+	s := strings.Split(string(msg.Payload()), " ")
+	if len(s) < 2 {
+		cmd = exec.Command(s[0])
+	} else {
+		cmd = exec.Command(s[0], s[1:]...)
+	}
+
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		// TODO: handle error more gracefully
+		out2 = fmt.Sprintf("%s", err)
+	}
+	comout := fmt.Sprintf("%s - %s", out, out2)
+	TOP := fmt.Sprintf("%s/OSCommand/out", config.Mqtt_set_base)
+	fmt.Println("Publikuje do ", TOP, "warosc", comout)
+	token := mclient.Publish(TOP, byte(0), false, comout)
+	if token.Wait() && token.Error() != nil {
+		fmt.Printf("Fail to publish, %v", token.Error())
+	}
 
 }
 
