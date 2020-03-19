@@ -92,7 +92,8 @@ func fileExists(filename string) bool {
 }
 
 func HttpServ() {
-	tmpl := template.Must(template.ParseFiles("forms.html"))
+	tmpl := template.Must(template.ParseFiles("/etc/gh/forms.html"))
+	//tmpl := template.Must(template.ParseFiles("forms.html"))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
