@@ -1,0 +1,59 @@
+    <h1>Contact</h1>
+    <form method="POST">
+        <label>Readonly:</label>
+        <input type="checkbox" name="Readonly" value="true" {{if .Readonly}}checked{{end}}><br />
+
+        <label>Loghex:</label>
+        <input type="checkbox" name="Loghex" value="true" {{if .Loghex}}checked{{end}}><br />
+
+        <label>Device:</label>
+        <input type="text" name="Device" value="{{ .Device}}"><br />
+
+        <label>ReadInterval:</label>
+        <input type="number" name="ReadInterval" value="{{ .ReadInterval}}"><br />
+
+        <label>MqttServer:</label>
+        <input type="text" name="MqttServer" value="{{ .MqttServer}}"><br />
+
+        <label>MqttPort:</label>
+        <input type="number" name="MqttPort" value="{{ .MqttPort}}"><br />
+
+        <label>MqttLogin:</label>
+        <input type="text" name="MqttLogin" value="{{ .MqttLogin}}"><br />
+
+        <label>Aquarea2mqttCompatible:</label>
+        <input type="checkbox" name="Aquarea2mqttCompatible" value="true" {{if .Aquarea2mqttCompatible}}checked{{end}}><br />
+
+        <label>Mqtt_topic_base:</label>
+        <input type="text" name="Mqtt_topic_base" value="{{ .Mqtt_topic_base}}"><br />
+
+        <label>Mqtt_set_base:</label>
+        <input type="text" name="Mqtt_set_base" value="{{ .Mqtt_set_base}}"><br />
+
+        <label>Aquarea2mqttPumpID:</label>
+        <input type="text" name="Aquarea2mqttPumpID" value="{{ .Aquarea2mqttPumpID}}"><br />
+
+        <label>MqttPass:</label>
+        <input type="text" name="MqttPass" value="{{ .MqttPass}}"><br />
+
+        <label>MqttClientID:</label>
+        <input type="text" name="MqttClientID" value="{{ .MqttClientID}}"><br />
+
+        <label>MqttKeepalive:</label>
+        <input type="number" name="MqttKeepalive" value="{{ .MqttKeepalive}}"><br />
+
+        <label>ForceRefreshTime:</label>
+        <input type="number" name="ForceRefreshTime" value="{{ .ForceRefreshTime}}"><br />
+
+    
+        <label>EnableCommand:</label>
+        <input type="checkbox" name="EnableCommand" value="true" {{if .EnableCommand}}checked{{end}}><br />
+
+        <label>SleepAfterCommand:</label>
+        <input type="number" name="SleepAfterCommand" value="{{ .SleepAfterCommand}}"><br />
+
+        <input type="hidden" name="Configured" value="true">
+
+     
+        <input type="submit">
+    </form>

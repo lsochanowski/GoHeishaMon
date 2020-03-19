@@ -5,15 +5,18 @@ import (
 	"encoding/binary"
 	"encoding/csv"
 	"encoding/hex"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
 	"strconv"
 	"strings"
+	"text/template"
 	"time"
 
 	"github.com/rs/xid"
@@ -73,6 +76,7 @@ type Config struct {
 	ForceRefreshTime       int
 	EnableCommand          bool
 	SleepAfterCommand      int
+	Configured             bool
 }
 
 var cfgfile *string
@@ -85,6 +89,79 @@ func fileExists(filename string) bool {
 		return false
 	}
 	return !info.IsDir()
+}
+
+func HttpServ() {
+	tmpl := template.Must(template.ParseFiles("forms.html"))
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			err := tmpl.Execute(w, config)
+			fmt.Println("Dorarlo zapytanie inne niz post", err)
+			return
+		}
+
+		config = Config{
+			Readonly:               pb(r.FormValue("Readonly")),
+			Loghex:                 pb(r.FormValue("Loghex")),
+			Device:                 r.FormValue("Device"),
+			ReadInterval:           pi(r.FormValue("ReadInterval")),
+			MqttServer:             r.FormValue("MqttServer"),
+			MqttPort:               r.FormValue("MqttPort"),
+			MqttLogin:              r.FormValue("MqttLogin"),
+			Aquarea2mqttCompatible: pb(r.FormValue("Aquarea2mqttCompatible")),
+			Mqtt_topic_base:        r.FormValue("Mqtt_topic_base"),
+			Mqtt_set_base:          r.FormValue("Mqtt_set_base"),
+			Aquarea2mqttPumpID:     r.FormValue("Aquarea2mqttPumpID"),
+			MqttPass:               r.FormValue("MqttPass"),
+			MqttClientID:           r.FormValue("MqttClientID"),
+			MqttKeepalive:          pi(r.FormValue("MqttKeepalive")),
+			ForceRefreshTime:       pi(r.FormValue("ForceRefreshTime")),
+			EnableCommand:          pb(r.FormValue("EnableCommand")),
+			SleepAfterCommand:      pi(r.FormValue("SleepAfterCommand")),
+			Configured:             pb(r.FormValue("Configured")),
+		}
+
+		f, err := os.Create(configfile)
+		if err != nil {
+			// failed to create/open the file
+			log.Fatal(err)
+		}
+		if err := toml.NewEncoder(f).Encode(config); err != nil {
+			// failed to encode
+			log.Fatal(err)
+		}
+		if err := f.Close(); err != nil {
+			// failed to close the file
+			log.Fatal(err)
+
+		}
+
+		tmpl.Execute(w, config)
+
+	})
+
+	http.HandleFunc("/states", func(w http.ResponseWriter, r *http.Request) {
+		b, err := json.Marshal(actData)
+		if err != nil {
+			// failed to create/open the file
+			fmt.Println(err)
+
+		}
+		w.Header().Set("Content-Type", "application/json;") // normal header
+		fmt.Fprintf(w, string(b))
+		w.WriteHeader(http.StatusOK)
+	})
+
+	http.ListenAndServe(":8080", nil)
+}
+func pb(s string) bool {
+	bro, _ := strconv.ParseBool(s)
+	return bro
+}
+func pi(s string) int {
+	bro, _ := strconv.Atoi(s)
+	return bro
 }
 
 func ReadConfig() Config {
@@ -173,7 +250,7 @@ func main() {
 	//	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
 	flag.Parse()
 	configfile = "/etc/gh/config"
-
+	//configfile = "config"
 	_, err := os.Stat(configfile)
 	if err != nil {
 		fmt.Printf("Config file is missing: %s ", configfile)
@@ -185,75 +262,93 @@ func main() {
 	CommandsToSend = make(map[xid.ID][]byte)
 	var in int
 	config = ReadConfig()
-	if config.Readonly != true {
-		log_message("Not sending this command. Heishamon in listen only mode! - this POC version don't support writing yet....")
-		os.Exit(0)
-	}
-	ports, err := serial.GetPortsList()
-	if err != nil {
-		log.Fatal(err)
-	}
-	if len(ports) == 0 {
-		log.Fatal("No serial ports found!")
-	}
-	for _, port := range ports {
-		fmt.Printf("Found port: %v\n", port)
-	}
-	mode := &serial.Mode{
-		BaudRate: 9600,
-		Parity:   serial.EvenParity,
-		DataBits: 8,
-		StopBits: serial.OneStopBit,
-	}
-	Serial, err = serial.Open(config.Device, mode)
-	if err != nil {
-		fmt.Println(err)
-	}
-	PoolInterval := time.Second * time.Duration(config.ReadInterval)
-	ParseTopicList()
-	MqttKeepalive = time.Second * time.Duration(config.MqttKeepalive)
-	MC, MT := MakeMQTTConn()
-
+	go HttpServ()
 	for {
-		if MC.IsConnected() != true {
-			MC, MT = MakeMQTTConn()
-		}
-		if len(CommandsToSend) > 0 {
-			fmt.Println("jest wiecej niz jedna komenda tj", len(CommandsToSend))
-			in = 1
-			for key, value := range CommandsToSend {
-				if in == 1 {
-
-					send_command(value, len(value))
-					delete(CommandsToSend, key)
-					in++
-					time.Sleep(time.Second * time.Duration(config.SleepAfterCommand))
-
-				} else {
-					fmt.Println("numer komenty  ", in, " jest za duzy zrobie to w nastepnym cyklu")
+		if config.Configured == true {
+			if config.Readonly != true {
+				for {
+					log_message("Not sending this command. Heishamon in listen only mode! - this POC version don't support writing yet....")
+					//os.Exit(0)
 					break
+					time.Sleep(5 * time.Second)
 				}
-				fmt.Println("koncze range po tablicy z komendami ")
+			}
+			ports, err := serial.GetPortsList()
+			if err != nil {
+				fmt.Printf("%s", err)
 
 			}
+			if len(ports) == 0 {
+				fmt.Printf("No serial ports found!")
 
+			}
+			for _, port := range ports {
+				fmt.Printf("Found port: %v\n", port)
+
+			}
+			mode := &serial.Mode{
+				BaudRate: 9600,
+				Parity:   serial.EvenParity,
+				DataBits: 8,
+				StopBits: serial.OneStopBit,
+			}
+			Serial, err = serial.Open(config.Device, mode)
+			if err != nil {
+				fmt.Println(err)
+				time.Sleep(5 * time.Second)
+
+			} else {
+				PoolInterval := time.Second * time.Duration(config.ReadInterval)
+				ParseTopicList()
+				MqttKeepalive = time.Second * time.Duration(config.MqttKeepalive)
+				MC, MT := MakeMQTTConn()
+
+				for {
+					if MC.IsConnected() != true {
+						MC, MT = MakeMQTTConn()
+					}
+					if len(CommandsToSend) > 0 {
+						fmt.Println("jest wiecej niz jedna komenda tj", len(CommandsToSend))
+						in = 1
+						for key, value := range CommandsToSend {
+							if in == 1 {
+
+								send_command(value, len(value))
+								delete(CommandsToSend, key)
+								in++
+								time.Sleep(time.Second * time.Duration(config.SleepAfterCommand))
+
+							} else {
+								fmt.Println("numer komenty  ", in, " jest za duzy zrobie to w nastepnym cyklu")
+								break
+							}
+							fmt.Println("koncze range po tablicy z komendami ")
+
+						}
+
+					} else {
+						send_command(panasonicQuery, PANASONICQUERYSIZE)
+					}
+					go func() {
+						tbool := readSerial(MC, MT)
+						c1 <- tbool
+					}()
+
+					select {
+					case res := <-c1:
+						fmt.Println("read ma status", res)
+					case <-time.After(5 * time.Second):
+						fmt.Println("out of time for read :(")
+					}
+
+					time.Sleep(PoolInterval)
+
+				}
+			}
 		} else {
-			send_command(panasonicQuery, PANASONICQUERYSIZE)
+			fmt.Println("Program was not configured")
+			time.Sleep(5 * time.Second)
 		}
-		go func() {
-			tbool := readSerial(MC, MT)
-			c1 <- tbool
-		}()
-
-		select {
-		case res := <-c1:
-			fmt.Println("read ma status", res)
-		case <-time.After(5 * time.Second):
-			fmt.Println("out of time for read :(")
-		}
-
-		time.Sleep(PoolInterval)
-
 	}
 
 }
