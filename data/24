@@ -1,0 +1,6 @@
+TopicNumber = 24
+TopicName = "Cool_Delta"
+TopicBit = 94
+TopicFunction = "getIntMinus128"
+TopicUnit = "Kelvin"
+TopicA2M = ""

@@ -1,0 +1,6 @@
+TopicNumber = 71
+TopicName = "Sterilization_Max_Time"
+TopicBit = 101
+TopicFunction = "getIntMinus1"
+TopicUnit = "Minutes"
+TopicA2M = ""

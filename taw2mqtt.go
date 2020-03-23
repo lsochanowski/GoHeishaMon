@@ -126,6 +126,23 @@ func UpdateConfig(configfile string) bool {
 	return true
 }
 
+func EncodeTopicsToTOML(topnr int, data TopicData) {
+	f, err := os.Create(fmt.Sprintf("data/%d", topnr))
+	if err != nil {
+		// failed to create/open the file
+		log.Fatal(err)
+	}
+	if err := toml.NewEncoder(f).Encode(data); err != nil {
+		// failed to encode
+		log.Fatal(err)
+	}
+	if err := f.Close(); err != nil {
+		// failed to close the file
+		log.Fatal(err)
+
+	}
+
+}
 func UpdatePassword() bool {
 	_, err = os.Stat("/mnt/usb/GoHeishaMonPassword.new")
 	if err != nil {
@@ -172,8 +189,8 @@ func main() {
 	//	cfgfile = flag.String("c", "config", "a config file patch")
 	//	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
 	flag.Parse()
-	configfile = "/etc/gh/config"
-
+	//configfile = "/etc/gh/config"
+	configfile = "config"
 	_, err := os.Stat(configfile)
 	if err != nil {
 		fmt.Printf("Config file is missing: %s ", configfile)
@@ -210,7 +227,7 @@ func main() {
 		fmt.Println(err)
 	}
 	PoolInterval := time.Second * time.Duration(config.ReadInterval)
-	ParseTopicList()
+	ParseTopicList2()
 	MqttKeepalive = time.Second * time.Duration(config.MqttKeepalive)
 	MC, MT := MakeMQTTConn()
 
@@ -661,7 +678,9 @@ func calcChecksum(command []byte, length int) byte {
 func ParseTopicList() {
 
 	//tf := *topicfile
-	tf := "/etc/gh/Topics.csv"
+	//	tf := "/etc/gh/Topics.csv"
+	tf := "Topics.csv"
+
 	lines, err := ReadCsv(tf)
 	if err != nil {
 		panic(err)
@@ -681,8 +700,24 @@ func ParseTopicList() {
 		}
 		AllTopics[TNUM] = data
 		//a	fmt.Println(data)
-	}
+		//EncodeTopicsToTOML(TNUM, data)
 
+	}
+}
+
+func ParseTopicList2() {
+
+	// Loop through lines & turn into object
+	for key, _ := range AllTopics {
+		var data TopicData
+		if _, err := toml.DecodeFile(configfile, &data); err != nil {
+			log.Fatal(err)
+		}
+		AllTopics[key] = data
+		//a	fmt.Println(data)
+		//EncodeTopicsToTOML(TNUM, data)
+
+	}
 }
 
 func ReadCsv(filename string) ([][]string, error) {

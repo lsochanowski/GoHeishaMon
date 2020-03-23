@@ -1,0 +1,6 @@
+TopicNumber = 39
+TopicName = "Cool_Energy_Consumption"
+TopicBit = 195
+TopicFunction = "getEnergy"
+TopicUnit = "Watt"
+TopicA2M = ""

@@ -1,0 +1,6 @@
+TopicNumber = 15
+TopicName = "Heat_Energy_Production"
+TopicBit = 194
+TopicFunction = "getEnergy"
+TopicUnit = "Watt"
+TopicA2M = ""

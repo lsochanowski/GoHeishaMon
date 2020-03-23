@@ -1,0 +1,6 @@
+TopicNumber = 70
+TopicName = "Sterilization_Temp"
+TopicBit = 100
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

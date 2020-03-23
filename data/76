@@ -1,0 +1,6 @@
+TopicNumber = 76
+TopicName = "Heating_Mode"
+TopicBit = 28
+TopicFunction = "getBit7and8"
+TopicUnit = "HeatCoolModeDesc"
+TopicA2M = ""

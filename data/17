@@ -1,0 +1,6 @@
+TopicNumber = 17
+TopicName = "Powerful_Mode_Time"
+TopicBit = 7
+TopicFunction = "getRight3bits"
+TopicUnit = "Powerfulmode"
+TopicA2M = ""

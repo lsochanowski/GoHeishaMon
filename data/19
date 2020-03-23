@@ -1,0 +1,6 @@
+TopicNumber = 19
+TopicName = "Holiday_Mode_State"
+TopicBit = 5
+TopicFunction = "getBit3and4"
+TopicUnit = "HolidayState"
+TopicA2M = ""

@@ -1,0 +1,6 @@
+TopicNumber = 13
+TopicName = "Main_Schedule_State"
+TopicBit = 5
+TopicFunction = "getBit1and2"
+TopicUnit = "DisabledEnabled"
+TopicA2M = ""

@@ -1,0 +1,6 @@
+TopicNumber = 58
+TopicName = "DHW_Heater_State"
+TopicBit = 9
+TopicFunction = "getBit5and6"
+TopicUnit = "BlockedFree"
+TopicA2M = ""

@@ -1,0 +1,6 @@
+TopicNumber = 63
+TopicName = "Fan2_Motor_Speed"
+TopicBit = 174
+TopicFunction = "getIntMinus1Times10"
+TopicUnit = "RotationsPerMin"
+TopicA2M = ""

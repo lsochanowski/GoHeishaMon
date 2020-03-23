@@ -1,0 +1,6 @@
+TopicNumber = 48
+TopicName = "Pool_Temp"
+TopicBit = 151
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

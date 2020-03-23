@@ -1,0 +1,6 @@
+TopicNumber = 49
+TopicName = "Main_Hex_Outlet_Temp"
+TopicBit = 154
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

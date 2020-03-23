@@ -1,0 +1,6 @@
+TopicNumber = 4
+TopicName = "Operating_Mode_State"
+TopicBit = 6
+TopicFunction = "getOpMode"
+TopicUnit = "OpModeDesc"
+TopicA2M = "WorkingMode"

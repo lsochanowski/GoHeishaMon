@@ -1,0 +1,6 @@
+TopicNumber = 7
+TopicName = "Main_Target_Temp"
+TopicBit = 153
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

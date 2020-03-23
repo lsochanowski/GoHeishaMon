@@ -1,0 +1,6 @@
+TopicNumber = 41
+TopicName = "DHW_Energy_Consumption"
+TopicBit = 197
+TopicFunction = "getEnergy"
+TopicUnit = "Watt"
+TopicA2M = ""

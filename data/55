@@ -1,0 +1,6 @@
+TopicNumber = 55
+TopicName = "Ipm_Temp"
+TopicBit = 162
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

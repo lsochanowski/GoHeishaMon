@@ -1,0 +1,6 @@
+TopicNumber = 10
+TopicName = "DHW_Temp"
+TopicBit = 141
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = "DailyWaterTankActualTemperature"

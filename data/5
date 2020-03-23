@@ -1,0 +1,6 @@
+TopicNumber = 5
+TopicName = "Main_Inlet_Temp"
+TopicBit = 143
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = "WaterInleet"

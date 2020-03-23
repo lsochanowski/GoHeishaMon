@@ -1,0 +1,6 @@
+TopicNumber = 3
+TopicName = "Quiet_Mode_Schedule"
+TopicBit = 7
+TopicFunction = "getBit1and2"
+TopicUnit = "DisabledEnabled"
+TopicA2M = ""

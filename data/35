@@ -1,0 +1,6 @@
+TopicNumber = 35
+TopicName = "Z2_Cool_Request_Temp"
+TopicBit = 41
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

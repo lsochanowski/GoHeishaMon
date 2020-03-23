@@ -1,0 +1,6 @@
+TopicNumber = 65
+TopicName = "Pump_Speed"
+TopicBit = 171
+TopicFunction = "getIntMinus1Times50"
+TopicUnit = "RotationsPerMin"
+TopicA2M = "PumpSpeed"

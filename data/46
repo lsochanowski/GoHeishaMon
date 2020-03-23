@@ -1,0 +1,6 @@
+TopicNumber = 46
+TopicName = "Buffer_Temp"
+TopicBit = 149
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = "BufferTankTemperature"

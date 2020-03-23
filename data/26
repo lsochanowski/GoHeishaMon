@@ -1,0 +1,6 @@
+TopicNumber = 26
+TopicName = "Defrosting_State"
+TopicBit = 111
+TopicFunction = "getBit5and6"
+TopicUnit = "DisabledEnabled"
+TopicA2M = ""

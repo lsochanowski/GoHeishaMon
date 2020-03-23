@@ -1,0 +1,6 @@
+TopicNumber = 79
+TopicName = "Heat_To_Cool_Temp"
+TopicBit = 95
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

@@ -1,0 +1,6 @@
+TopicNumber = 66
+TopicName = "Low_Pressure"
+TopicBit = 164
+TopicFunction = "getIntMinus1"
+TopicUnit = "Pressure"
+TopicA2M = ""

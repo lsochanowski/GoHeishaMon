@@ -1,0 +1,6 @@
+TopicNumber = 25
+TopicName = "DHW_Holiday_Shift_Temp"
+TopicBit = 44
+TopicFunction = "getIntMinus128"
+TopicUnit = "Kelvin"
+TopicA2M = ""

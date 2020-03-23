@@ -1,0 +1,6 @@
+TopicNumber = 68
+TopicName = "Force_Heater_State"
+TopicBit = 5
+TopicFunction = "getBit5and6"
+TopicUnit = "InactiveActive"
+TopicA2M = ""

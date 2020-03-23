@@ -1,0 +1,6 @@
+TopicNumber = 14
+TopicName = "Outside_Temp"
+TopicBit = 142
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = "OutdoorTemperature"

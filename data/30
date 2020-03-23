@@ -1,0 +1,6 @@
+TopicNumber = 30
+TopicName = "Z1_Heat_Curve_Target_Low_Temp"
+TopicBit = 76
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

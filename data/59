@@ -1,0 +1,6 @@
+TopicNumber = 59
+TopicName = "Room_Heater_State"
+TopicBit = 9
+TopicFunction = "getBit7and8"
+TopicUnit = "BlockedFree"
+TopicA2M = ""

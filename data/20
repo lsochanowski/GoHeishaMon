@@ -1,0 +1,6 @@
+TopicNumber = 20
+TopicName = "ThreeWay_Valve_State"
+TopicBit = 111
+TopicFunction = "getBit7and8"
+TopicUnit = "Valve"
+TopicA2M = ""

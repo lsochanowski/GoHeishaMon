@@ -1,0 +1,6 @@
+TopicNumber = 34
+TopicName = "Z2_Heat_Request_Temp"
+TopicBit = 40
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = "Zone2SetpointTemperature"

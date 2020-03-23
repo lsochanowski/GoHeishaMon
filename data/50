@@ -1,0 +1,6 @@
+TopicNumber = 50
+TopicName = "Discharge_Temp"
+TopicBit = 155
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

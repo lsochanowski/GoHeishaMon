@@ -1,0 +1,6 @@
+TopicNumber = 51
+TopicName = "Inside_Pipe_Temp"
+TopicBit = 157
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

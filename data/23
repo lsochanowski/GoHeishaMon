@@ -1,0 +1,6 @@
+TopicNumber = 23
+TopicName = "Heat_Delta"
+TopicBit = 84
+TopicFunction = "getIntMinus128"
+TopicUnit = "Kelvin"
+TopicA2M = ""

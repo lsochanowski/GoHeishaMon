@@ -1,0 +1,6 @@
+TopicNumber = 21
+TopicName = "Outside_Pipe_Temp"
+TopicBit = 158
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

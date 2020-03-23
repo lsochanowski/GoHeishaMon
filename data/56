@@ -1,0 +1,6 @@
+TopicNumber = 56
+TopicName = "Z1_Temp"
+TopicBit = 139
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = "Zone1ActualTemperature"

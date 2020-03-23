@@ -1,0 +1,6 @@
+TopicNumber = 0
+TopicName = "Heatpump_State"
+TopicBit = 4
+TopicFunction = "getBit7and8"
+TopicUnit = "OffOn"
+TopicA2M = "RunningStatus"

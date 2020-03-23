@@ -1,0 +1,6 @@
+TopicNumber = 78
+TopicName = "Heater_On_Outdoor_Temp"
+TopicBit = 85
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

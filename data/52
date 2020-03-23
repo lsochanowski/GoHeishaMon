@@ -1,0 +1,6 @@
+TopicNumber = 52
+TopicName = "Defrost_Temp"
+TopicBit = 159
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

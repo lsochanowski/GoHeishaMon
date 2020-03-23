@@ -1,0 +1,6 @@
+TopicNumber = 42
+TopicName = "Z1_Water_Target_Temp"
+TopicBit = 147
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

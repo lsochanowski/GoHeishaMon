@@ -1,0 +1,6 @@
+TopicNumber = 53
+TopicName = "Eva_Outlet_Temp"
+TopicBit = 160
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

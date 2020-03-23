@@ -1,0 +1,6 @@
+TopicNumber = 47
+TopicName = "Solar_Temp"
+TopicBit = 150
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

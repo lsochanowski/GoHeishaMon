@@ -1,0 +1,6 @@
+TopicNumber = 88
+TopicName = "Z2_Cool_Curve_Outside_High_Temp"
+TopicBit = 92
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

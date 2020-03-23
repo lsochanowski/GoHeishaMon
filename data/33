@@ -1,0 +1,6 @@
+TopicNumber = 33
+TopicName = "Room_Thermostat_Temp"
+TopicBit = 156
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

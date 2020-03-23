@@ -1,0 +1,6 @@
+TopicNumber = 1
+TopicName = "Pump_Flow"
+TopicBit = 0
+TopicFunction = "unknown"
+TopicUnit = "LitersPerMin"
+TopicA2M = "WaterFlow"

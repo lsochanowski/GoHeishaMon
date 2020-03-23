@@ -1,0 +1,6 @@
+TopicNumber = 54
+TopicName = "Bypass_Outlet_Temp"
+TopicBit = 161
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = ""

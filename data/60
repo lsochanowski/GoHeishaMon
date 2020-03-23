@@ -1,0 +1,6 @@
+TopicNumber = 60
+TopicName = "Internal_Heater_State"
+TopicBit = 112
+TopicFunction = "getBit7and8"
+TopicUnit = "InactiveActive"
+TopicA2M = ""

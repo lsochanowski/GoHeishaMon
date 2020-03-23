@@ -1,0 +1,6 @@
+TopicNumber = 27
+TopicName = "Z1_Heat_Request_Temp"
+TopicBit = 38
+TopicFunction = "getIntMinus128"
+TopicUnit = "Celsius"
+TopicA2M = "Zone1SetpointTemperature"

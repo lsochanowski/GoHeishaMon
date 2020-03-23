@@ -1,0 +1,6 @@
+TopicNumber = 2
+TopicName = "Force_DHW_State"
+TopicBit = 4
+TopicFunction = "getBit1and2"
+TopicUnit = "DisabledEnabled"
+TopicA2M = ""
