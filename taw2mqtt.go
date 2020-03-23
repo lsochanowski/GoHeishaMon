@@ -3,7 +3,6 @@ package main
 import (
 	"crypto/md5"
 	"encoding/binary"
-	"encoding/csv"
 	"encoding/hex"
 	"flag"
 	"fmt"
@@ -675,36 +674,6 @@ func calcChecksum(command []byte, length int) byte {
 	return chk
 }
 
-func ParseTopicList() {
-
-	//tf := *topicfile
-	//	tf := "/etc/gh/Topics.csv"
-	tf := "Topics.csv"
-
-	lines, err := ReadCsv(tf)
-	if err != nil {
-		panic(err)
-	}
-
-	// Loop through lines & turn into object
-	for _, line := range lines {
-		TB, _ := strconv.Atoi(line[2])
-		TNUM, _ := strconv.Atoi(line[0])
-		data := TopicData{
-			TopicNumber:   TNUM,
-			TopicName:     line[1],
-			TopicBit:      TB,
-			TopicFunction: line[3],
-			TopicUnit:     line[4],
-			TopicA2M:      line[5],
-		}
-		AllTopics[TNUM] = data
-		//a	fmt.Println(data)
-		//EncodeTopicsToTOML(TNUM, data)
-
-	}
-}
-
 func ParseTopicList2() {
 
 	// Loop through lines & turn into object
@@ -718,24 +687,6 @@ func ParseTopicList2() {
 		//EncodeTopicsToTOML(TNUM, data)
 
 	}
-}
-
-func ReadCsv(filename string) ([][]string, error) {
-
-	// Open CSV file
-	f, err := os.Open(filename)
-	if err != nil {
-		return [][]string{}, err
-	}
-	defer f.Close()
-
-	// Read File into a Variable
-	lines, err := csv.NewReader(f).ReadAll()
-	if err != nil {
-		return [][]string{}, err
-	}
-
-	return lines, nil
 }
 
 func send_command(command []byte, length int) bool {
