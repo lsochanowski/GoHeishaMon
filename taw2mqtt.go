@@ -4,11 +4,14 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"encoding/hex"
+	"encoding/json"
 	"flag"
 	"fmt"
+	"html/template"
 	"io"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
 	"strconv"
@@ -72,6 +75,7 @@ type Config struct {
 	ForceRefreshTime       int
 	EnableCommand          bool
 	SleepAfterCommand      int
+	Configured             bool
 }
 
 var cfgfile *string
@@ -183,7 +187,79 @@ func UpdateConfigLoop(configfile string) {
 		UpdateConfig(configfile)
 	}
 }
+func HttpServ() {
+	tmpl := template.Must(template.ParseFiles("/etc/gh/forms.html"))
+	//tmpl := template.Must(template.ParseFiles("forms.html"))
 
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			err := tmpl.Execute(w, config)
+			fmt.Println("Dorarlo zapytanie inne niz post", err)
+			return
+		}
+
+		config = Config{
+			Readonly:               pb(r.FormValue("Readonly")),
+			Loghex:                 pb(r.FormValue("Loghex")),
+			Device:                 r.FormValue("Device"),
+			ReadInterval:           pi(r.FormValue("ReadInterval")),
+			MqttServer:             r.FormValue("MqttServer"),
+			MqttPort:               r.FormValue("MqttPort"),
+			MqttLogin:              r.FormValue("MqttLogin"),
+			Aquarea2mqttCompatible: pb(r.FormValue("Aquarea2mqttCompatible")),
+			Mqtt_topic_base:        r.FormValue("Mqtt_topic_base"),
+			Mqtt_set_base:          r.FormValue("Mqtt_set_base"),
+			Aquarea2mqttPumpID:     r.FormValue("Aquarea2mqttPumpID"),
+			MqttPass:               r.FormValue("MqttPass"),
+			MqttClientID:           r.FormValue("MqttClientID"),
+			MqttKeepalive:          pi(r.FormValue("MqttKeepalive")),
+			ForceRefreshTime:       pi(r.FormValue("ForceRefreshTime")),
+			EnableCommand:          pb(r.FormValue("EnableCommand")),
+			SleepAfterCommand:      pi(r.FormValue("SleepAfterCommand")),
+			Configured:             pb(r.FormValue("Configured")),
+		}
+
+		f, err := os.Create(configfile)
+		if err != nil {
+			// failed to create/open the file
+			log.Fatal(err)
+		}
+		if err := toml.NewEncoder(f).Encode(config); err != nil {
+			// failed to encode
+			log.Fatal(err)
+		}
+		if err := f.Close(); err != nil {
+			// failed to close the file
+			log.Fatal(err)
+
+		}
+
+		tmpl.Execute(w, config)
+
+	})
+
+	http.HandleFunc("/states", func(w http.ResponseWriter, r *http.Request) {
+		b, err := json.Marshal(actData)
+		if err != nil {
+			// failed to create/open the file
+			fmt.Println(err)
+
+		}
+		w.Header().Set("Content-Type", "application/json;") // normal header
+		fmt.Fprintf(w, string(b))
+		w.WriteHeader(http.StatusOK)
+	})
+
+	http.ListenAndServe(":8080", nil)
+}
+func pb(s string) bool {
+	bro, _ := strconv.ParseBool(s)
+	return bro
+}
+func pi(s string) int {
+	bro, _ := strconv.Atoi(s)
+	return bro
+}
 func main() {
 	//	cfgfile = flag.String("c", "config", "a config file patch")
 	//	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
@@ -201,6 +277,8 @@ func main() {
 	CommandsToSend = make(map[xid.ID][]byte)
 	var in int
 	config = ReadConfig()
+	go HttpServ()
+
 	if config.Readonly != true {
 		log_message("Not sending this command. Heishamon in listen only mode! - this POC version don't support writing yet....")
 		os.Exit(0)
