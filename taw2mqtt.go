@@ -230,6 +230,12 @@ func main() {
 	MqttKeepalive = time.Second * time.Duration(config.MqttKeepalive)
 	MC, MT := MakeMQTTConn()
 
+	TOP := fmt.Sprintf("%s/LWT", config.Mqtt_set_base)
+	token := MC.Publish(TOP, byte(0), false, "Online")
+	if token.Wait() && token.Error() != nil {
+		fmt.Printf("Fail to publish, %v", token.Error())
+	}
+
 	for {
 		if MC.IsConnected() != true {
 			MC, MT = MakeMQTTConn()
@@ -290,7 +296,7 @@ func MakeMQTTConn() (mqtt.Client, mqtt.Token) {
 	opts.SetPassword(config.MqttPass)
 	opts.SetUsername(config.MqttLogin)
 	opts.SetClientID(config.MqttClientID)
-	opts.SetWill(config.Mqtt_set_base+"/LWT", "Online", 2, false)
+	opts.SetWill(config.Mqtt_set_base+"/LWT", "Offline", 1, true)
 	opts.SetKeepAlive(MqttKeepalive)
 	opts.SetOnConnectHandler(startsub)
 	opts.SetConnectionLostHandler(connLostHandler)
