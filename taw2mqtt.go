@@ -188,8 +188,8 @@ func main() {
 	//	cfgfile = flag.String("c", "config", "a config file patch")
 	//	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
 	flag.Parse()
-	//configfile = "/etc/gh/config"
-	configfile = "config"
+	configfile = "/etc/gh/config"
+	//configfile = "config"
 	_, err := os.Stat(configfile)
 	if err != nil {
 		fmt.Printf("Config file is missing: %s ", configfile)
