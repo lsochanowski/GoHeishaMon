@@ -231,7 +231,7 @@ func UpdateGPIOStat() {
 	SetGPIODebug()
 	for {
 		GetGPIOStatus()
-		time.Sleep(time.Nanosecond * 500000000)
+		//time.Sleep(time.Nanosecond * 500000000)
 	}
 }
 
@@ -293,7 +293,7 @@ func ExecuteGPIOCommand() {
 			}
 
 		}
-		time.Sleep(time.Nanosecond * 500000000)
+		//time.Sleep(time.Nanosecond * 500000000)
 		fmt.Println(err)
 
 	}
