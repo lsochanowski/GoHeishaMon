@@ -37,8 +37,9 @@
     build-rpi:
 	GOOS=linux GOARCH=arm GOARM=5 $(GOBUILD) -o dist/$(BINARY_ARM)
     upx:
-    upx -f --brute -o dist/$(BINARY_MIPSUPX) dist/$(BINARY_MIPS)
+	upx -f --brute -o dist/$(BINARY_MIPSUPX) dist/$(BINARY_MIPS)
     install:
-    scp dist/GoHeishaMon_MIPSUPX root@172.17.136.82:/usr/bin/
-    ssh root@172.17.136.82 reboot
+	scp dist/GoHeishaMon_MIPSUPX root@172.17.136.82:/usr/bin/
+	ssh root@172.17.136.82 reboot
+
 
