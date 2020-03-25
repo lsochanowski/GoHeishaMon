@@ -103,8 +103,8 @@ func SetGPIODebug() {
 }
 
 func GetGPIOStatus() {
-	//	readFile, err := os.Open("/sys/kernel/debug/gpio")
-	readFile, err := os.Open("FakeKernel.txt")
+	readFile, err := os.Open("/sys/kernel/debug/gpio")
+	//readFile, err := os.Open("FakeKernel.txt")
 	if err != nil {
 		log.Fatalf("failed to open file: %s", err)
 	}
