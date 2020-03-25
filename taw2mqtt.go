@@ -230,12 +230,6 @@ func main() {
 	MqttKeepalive = time.Second * time.Duration(config.MqttKeepalive)
 	MC, MT := MakeMQTTConn()
 
-	TOP := fmt.Sprintf("%s/LWT", config.Mqtt_set_base)
-	token := MC.Publish(TOP, byte(0), false, "Online")
-	if token.Wait() && token.Error() != nil {
-		fmt.Printf("Fail to publish, %v", token.Error())
-	}
-
 	for {
 		if MC.IsConnected() != true {
 			MC, MT = MakeMQTTConn()
@@ -770,6 +764,10 @@ func readSerial(MC mqtt.Client, MT mqtt.Token) bool {
 	log_msg := fmt.Sprintf("Total reads : %f and total good reads : %f (%.2f %%)", totalreads, goodreads, readpercentage)
 	log_message(log_msg)
 	decode_heatpump_data(data, MC, MT)
+	token := MC.Publish(fmt.Sprintf("%s/LWT", config.Mqtt_set_base), byte(0), false, "Online")
+	if token.Wait() && token.Error() != nil {
+		fmt.Printf("Fail to publish, %v", token.Error())
+	}
 	return true
 
 }
