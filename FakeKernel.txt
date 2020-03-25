@@ -1,0 +1,9 @@
+GPIOs 0-17, ath79:
+ gpio-0   (sysfs               ) in  hi
+ gpio-1   (sysfs               ) in  lo
+ gpio-2   (sysfs               ) in  lo
+ gpio-3   (sysfs               ) in  lo
+ gpio-10  (sysfs               ) in  hi
+ gpio-13  (sysfs               ) in  lo
+ gpio-15  (sysfs               ) in  lo
+ gpio-16  (sysfs               ) in  hi

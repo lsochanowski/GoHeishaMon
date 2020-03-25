@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"crypto/md5"
 	"encoding/binary"
 	"encoding/hex"
@@ -30,7 +31,7 @@ var NUMBER_OF_TOPICS int = 92
 var AllTopics [92]TopicData
 var MqttKeepalive time.Duration
 var CommandsToSend map[xid.ID][]byte
-
+var GPIO map[string]string
 var actData [92]string
 var config Config
 var sending bool
@@ -84,6 +85,47 @@ func fileExists(filename string) bool {
 		return false
 	}
 	return !info.IsDir()
+}
+
+func SetGPIODebug() {
+	err := ioutil.WriteFile("/sys/class/gpio/export", []byte("2"), 0200)
+	err = ioutil.WriteFile("/sys/class/gpio/export", []byte("3"), 0200)
+	err = ioutil.WriteFile("/sys/class/gpio/export", []byte("13"), 0200)
+	err = ioutil.WriteFile("/sys/class/gpio/export", []byte("15"), 0200)
+	err = ioutil.WriteFile("/sys/class/gpio/export", []byte("10"), 0200)
+	err = ioutil.WriteFile("/sys/class/gpio/export", []byte("0"), 0200)
+	err = ioutil.WriteFile("/sys/class/gpio/export", []byte("1"), 0200)
+	err = ioutil.WriteFile("/sys/class/gpio/export", []byte("16"), 0200)
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+}
+
+func GetGPIOStatus() {
+	//	readFile, err := os.Open("/sys/kernel/debug/gpio")
+	readFile, err := os.Open("FakeKernel.txt")
+	if err != nil {
+		log.Fatalf("failed to open file: %s", err)
+	}
+
+	fileScanner := bufio.NewScanner(readFile)
+	fileScanner.Split(bufio.ScanLines)
+	var fileTextLines []string
+
+	for fileScanner.Scan() {
+		fileTextLines = append(fileTextLines, fileScanner.Text())
+	}
+
+	readFile.Close()
+
+	for _, eachline := range fileTextLines {
+		s := strings.Fields(eachline)
+		if len(s) > 3 {
+			GPIO[s[0]] = s[4]
+		}
+
+	}
 }
 
 func ReadConfig() Config {
@@ -184,7 +226,82 @@ func UpdateConfigLoop(configfile string) {
 	}
 }
 
+func UpdateGPIOStat() {
+	GPIO = make(map[string]string)
+	SetGPIODebug()
+	for {
+		GetGPIOStatus()
+		time.Sleep(time.Nanosecond * 500000000)
+	}
+}
+
+func ExecuteGPIOCommand() {
+	for {
+		var err error
+		if len(GPIO) > 1 {
+			fmt.Println(GPIO)
+			if GPIO["gpio-0"] == "lo" && GPIO["gpio-1"] == "lo" && GPIO["gpio-16"] == "hi" {
+				err = ioutil.WriteFile("/sys/class/gpio/gpio2/direction", []byte("high"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio13/direction", []byte("high"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio15/direction", []byte("high"), 644)
+			}
+			if GPIO["gpio-0"] == "hi" || GPIO["gpio-1"] == "hi" || GPIO["gpio-16"] == "lo" {
+				err = ioutil.WriteFile("/sys/class/gpio/gpio2/direction", []byte("high"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio13/direction", []byte("low"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio15/direction", []byte("low"), 644)
+			}
+			if GPIO["gpio-0"] == "hi" && GPIO["gpio-1"] == "hi" {
+				err = ioutil.WriteFile("/sys/class/gpio/gpio2/direction", []byte("low"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio13/direction", []byte("high"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio15/direction", []byte("high"), 644)
+			}
+			if GPIO["gpio-0"] == "hi" && GPIO["gpio-16"] == "lo" {
+				err = ioutil.WriteFile("/sys/class/gpio/gpio2/direction", []byte("low"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio13/direction", []byte("high"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio15/direction", []byte("high"), 644)
+			}
+			if GPIO["gpio-1"] == "hi" && GPIO["gpio-16"] == "lo" {
+				err = ioutil.WriteFile("/sys/class/gpio/gpio2/direction", []byte("low"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio13/direction", []byte("high"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio15/direction", []byte("high"), 644)
+			}
+			if GPIO["gpio-0"] == "hi" && GPIO["gpio-1"] == "hi" && GPIO["gpio-16"] == "lo" {
+				err = ioutil.WriteFile("/sys/class/gpio/gpio2/direction", []byte("low"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio13/direction", []byte("low"), 644)
+				err = ioutil.WriteFile("/sys/class/gpio/gpio15/direction", []byte("high"), 644)
+				cmd := exec.Command("fwupdate", "sw")
+				out, err := cmd.CombinedOutput()
+				fmt.Println(out)
+				cmd = exec.Command("sync")
+				out, err = cmd.CombinedOutput()
+				fmt.Println(out)
+				cmd = exec.Command("reboot")
+				out, err = cmd.CombinedOutput()
+				fmt.Println(out)
+				fmt.Println(err)
+
+			}
+			if GPIO["gpio-10"] == "hi" {
+				err := ioutil.WriteFile("/sys/class/gpio/gpio3/direction", []byte("low"), 644)
+				fmt.Println(err)
+
+			}
+			if GPIO["gpio-10"] == "lo" {
+				err := ioutil.WriteFile("/sys/class/gpio/gpio3/direction", []byte("high"), 644)
+				fmt.Println(err)
+
+			}
+
+		}
+		time.Sleep(time.Nanosecond * 500000000)
+		fmt.Println(err)
+
+	}
+}
+
 func main() {
+	go UpdateGPIOStat()
+	go ExecuteGPIOCommand()
 	//	cfgfile = flag.String("c", "config", "a config file patch")
 	//	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
 	flag.Parse()
