@@ -295,7 +295,7 @@ func UpdateConfigLoop(configfile string) {
 func UpdateGPIOStat() {
 
 	watcher := gpio.NewWatcher()
-	watcher.AddPin(0)
+	//watcher.AddPin(0)
 	watcher.AddPin(1)
 	watcher.AddPin(2)
 	watcher.AddPin(3)
