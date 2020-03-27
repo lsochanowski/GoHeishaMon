@@ -16,10 +16,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rs/xid"
-
 	"github.com/BurntSushi/toml"
+	"github.com/brian-armstrong/gpio"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/rs/xid"
 	"go.bug.st/serial"
 )
 
@@ -293,12 +293,39 @@ func UpdateConfigLoop(configfile string) {
 }
 
 func UpdateGPIOStat() {
-	GPIO = make(map[string]string)
-	SetGPIODebug()
+
+	watcher := gpio.NewWatcher()
+	watcher.AddPin(0)
+	watcher.AddPin(1)
+	watcher.AddPin(2)
+	watcher.AddPin(3)
+	watcher.AddPin(4)
+	watcher.AddPin(5)
+	watcher.AddPin(6)
+	watcher.AddPin(7)
+	watcher.AddPin(8)
+	watcher.AddPin(9)
+	watcher.AddPin(10)
+	watcher.AddPin(11)
+	watcher.AddPin(12)
+	watcher.AddPin(13)
+	watcher.AddPin(14)
+	watcher.AddPin(15)
+	watcher.AddPin(16)
+
+	defer watcher.Close()
+
 	for {
-		GetGPIOStatus()
-		//time.Sleep(time.Nanosecond * 500000000)
+		pin, value := watcher.Watch()
+		fmt.Printf("read %d from gpio %d\n", value, pin)
 	}
+
+	// GPIO = make(map[string]string)
+	// SetGPIODebug()
+	// for {
+	// 	GetGPIOStatus()
+	// 	//time.Sleep(time.Nanosecond * 500000000)
+	// }
 }
 
 func ExecuteGPIOCommand() {
