@@ -315,10 +315,18 @@ func UpdateGPIOStat() {
 
 	defer watcher.Close()
 
-	for {
-		pin, value := watcher.Watch()
-		fmt.Printf("read %d from gpio %d\n", value, pin)
-	}
+	go func() {
+		for {
+			pin, value := watcher.Watch()
+			if value == 1 {
+				v := "hi"
+			} else {
+				v := "lo"
+			}
+			GPIO[fmt.Sprintf("gpio-%d", pin)] = v
+			fmt.Printf("read %d from gpio %d\n", value, pin)
+		}
+	}()
 
 	// GPIO = make(map[string]string)
 	// SetGPIODebug()
