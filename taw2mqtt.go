@@ -316,6 +316,7 @@ func UpdateGPIOStat() {
 	defer watcher.Close()
 
 	go func() {
+		var v string
 		for {
 			pin, value := watcher.Watch()
 			if value == 1 {
