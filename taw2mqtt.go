@@ -1069,6 +1069,10 @@ func getOpMode(input byte) string {
 		return "5"
 	case 105:
 		return "6"
+	case 90:
+		return "7"
+	case 106:
+		return "8"
 	default:
 		return "-1"
 	}
