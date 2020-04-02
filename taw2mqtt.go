@@ -228,7 +228,7 @@ func UpdateConfig(configfile string) bool {
 			return false
 		}
 	}
-
+	_, _ = exec.Command("/usr/bin/usb_umount.sh").Output()
 	return true
 }
 
