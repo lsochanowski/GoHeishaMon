@@ -2,9 +2,12 @@ This project is to modify Panasonic CZ-TAW1 Firware to send data from heat pump 
 
 This Project Contain
 - Main software (called GoHeishaMon) responsible for parsing data from heat pump - it's golang implementation of project https://github.com/Egyras/HeishaMon 
-every mqtt topics are compatible with this project 
+every mqtt topics are compatible with this project https://github.com/Egyras/HeishaMon/blob/master/MQTT-Topics.md
 and there is two  aditional topics to run command's in system runing the software but it need's another manual 
+
 goheisha can be used without the TAW  on every platform supported by golang (RPI,windows,linux for example) after connecting it to Heatpump over rs232-ttl interface 
+if you need help with this project you can try Slack of Heishamon project there is some people there who manage this one :)
+
 
 - OpenWRT Image with preinstalled GoHeishaMon (and removed a2wmain due to copyright issues) 
 
