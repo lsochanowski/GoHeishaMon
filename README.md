@@ -37,6 +37,9 @@ Process of update starts ,and it will take app 3,5min. In the meantime CZ-TAW1 r
 In addition  this software enable SSH and web acces on CZ-TAW1 with user: root and password: GoHeishaMonpass ( you should change it!)
 
 
+![Screenshot from Homeassistant](PompaCieplaScreen.PNG)
+
+
 
 
 ---- AUTO BUILD  for MIPS don't work....------
