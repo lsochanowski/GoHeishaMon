@@ -28,7 +28,7 @@ copy to usb drive three files :
 - openwrt-ar71xx-generic-cus531-16M-kernel.bin
 - GoHeishaMonConfig.new
 
-GoHeishaMonConfig.new need to be edited according to your needs.
+GoHeishaMonConfig.new need to be edited according to your needs by modyfying config.example and changing it's name  to GoHeishaMonConfig.new
 
 After inserting drive with this files in runing CZ-TAW1 you need to push 3 buttons at once for more tnah 10 seconds until middle LED start changing the colors: green-blue-red. You may also notice the LED blinking on your drive ( if drive have it).
 
