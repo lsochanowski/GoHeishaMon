@@ -26,6 +26,7 @@ after inserting drive with this files in runing taw you need to push 3 buttons a
 in addition  this software enable SSH on TAW1 with password GoHeishaMonpass ( you should change it!)
 
 
+![ScreenShoot](PompaCieplaScreen.PNG)
 
 
 ---- AUTO BUILD  for MIPS don't work....------
