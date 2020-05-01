@@ -12,6 +12,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -401,12 +402,18 @@ func ExecuteGPIOCommand() {
 }
 
 func main() {
-	go UpdateGPIOStat()
+
 	//	cfgfile = flag.String("c", "config", "a config file patch")
 	//	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
 	flag.Parse()
-	configfile = "/etc/gh/config"
-	//configfile = "config"
+	if runtime.GOOS != "windows" {
+		go UpdateGPIOStat()
+		configfile = "/etc/gh/config"
+
+	} else {
+		configfile = "config"
+
+	}
 	_, err := os.Stat(configfile)
 	if err != nil {
 		fmt.Printf("Config file is missing: %s ", configfile)
