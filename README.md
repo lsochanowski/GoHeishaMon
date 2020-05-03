@@ -1,20 +1,19 @@
-This project is to modify Panasonic CZ-TAW1 Firware to send data from heat pump to mqtt  instead of aquarea cloud (there is some POC work proving there is a posiblity to send data concurently to Aquarea Cloud and Mqtt Host using only modified TAW but it's not yet implemented in this project )
+This project is to modify Panasonic CZ-TAW1 Firmware to send data from heat pump to MQTT instead of Aquarea Cloud (there is some POC work proving there is a posiblity to send data concurently to Aquarea Cloud and MQTT host using only modified CZ-TAW1 ,but it's not yet implemented in this project )
 
 ## This Project Contains:
 
 - Main software (called GoHeishaMon) responsible for parsing data from heat pump - it's golang implementation of project https://github.com/Egyras/HeishaMon 
-every mqtt topics are compatible with this project https://github.com/Egyras/HeishaMon/blob/master/MQTT-Topics.md
-and there is two  aditional topics to run command's in system runing the software but it need's another manual.
+All MQTT topics are compatible with HeishaMon project: https://github.com/Egyras/HeishaMon/blob/master/MQTT-Topics.md
+and there are two aditional topics to run command's in system runing the software but it need's another manual.
 
-GoHeishaMon can be used without the CZ-TAW1 module on every platform supported by golang (RaspberyPI,Windows,Linux, OpenWrt routers for example) after connecting it to Heatpump over rs232-ttl interface.
+GoHeishaMon can be used without the CZ-TAW1 module on every platform supported by golang (RaspberyPi, Windows, Linux, OpenWrt routers for example) after connecting it to Heatpump over rs232-ttl interface.
 If you need help with this project you can try Slack of Heishamon project there is some people who manage this one :)
-
 
 - OpenWRT Image with preinstalled GoHeishaMon (and removed A2Wmain due to copyright issues) 
 
-CZ-TAW1 flash memory is divided for two parts called "sides". During update A2Wmain software programing other side then actually it boots ,and change the side just before reboot. In this way, normally in CZ-TAW1 there are two versions of firmware: actual and previous.
-Updating firmware with GoHeishaMon we use one side , and we can very easly change the side to A2Wmain (and Smart Cloud) by pressing all three buttons on CZ-TAW1 when GoHeishaMon works ( middle LED will change the color to RED and shortly after this it reboots to orginal SmartCloud.
-Unfortunatly from orginal software changing the side without having acces to ssh console is possible only when updating other side was take place succesfully.
+CZ-TAW1 flash memory is divided for two parts called "sides". During Smart Cloud update A2Wmain software programing other side then actually it boots ,and change the side just before reboot. In this way, normally in CZ-TAW1 there are two versions of firmware: actual and previous.
+Updating firmware with GoHeishaMon we use one side , and we can very easly change the side to Smsrt Cloud (A2Wmain software) by pressing all three buttons on CZ-TAW1 when GoHeishaMon works ( middle LED will change the color to RED and shortly after this it reboots to orginal SmartCloud.
+Unfortunatly from Smart Cloud software changing the side without having acces to ssh console is possible only when updating other side was take place succesfully.
 
 Summary: 
 
@@ -27,14 +26,14 @@ copy to usb drive files :
 - openwrt-ar71xx-generic-cus531-16M-rootfs-squashfs.bin
 - openwrt-ar71xx-generic-cus531-16M-kernel.bin
 - GoHeishaMonConfig.new ( It is config.example file edited according to your needs and changed it's name)
-- dropbear_2014.63-2_ar71xx.ipk downloaded from https://archive.openwrt.org/barrier_breaker/14.07/ar71xx/generic/packages/base/dropbear_2014.63-2_ar71xx.ipk (to have ssh acces)
+- dropbear_2014.63-2_ar71xx.ipk downloaded from https://archive.openwrt.org/barrier_breaker/14.07/ar71xx/generic/packages/base/dropbear_2014.63-2_ar71xx.ipk (to have SSH acces)
 
 
 After inserting drive with this files in runing CZ-TAW1 you need to push 3 buttons at once for more tnah 10 seconds until middle LED start changing the colors: green-blue-red. You may also notice the LED blinking on your drive ( if drive have it).
 
 Process of update starts ,and it will take app 3min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color , so the GoHeishaMon just starts up. Wait with removing drive from module minimum 20s from this moment ,since GoHeishaMOn needs to copy config file.
 
-In addition  this software enable SSH and web acces on CZ-TAW1 with user: root and password: GoHeishaMonpass ( you should change it!)
+In addition  this software enable SSH and web acces (LuCI) on CZ-TAW1 with user: root and password: GoHeishaMonpass ( you should change it!)
 
 
 ![Screenshot from Homeassistant](PompaCieplaScreen.PNG)
