@@ -23,16 +23,16 @@ It is possible to go back to orginal software (A2Wmain with SmartCluod) very qui
 Even the GoHeishaMon is on other side you can't just change the site in orginal software to GoHeishaMon without acces to console. You have to install GoHeishaMon again. 
 
 For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one) 
-copy to usb drive three files :
+copy to usb drive files :
 - openwrt-ar71xx-generic-cus531-16M-rootfs-squashfs.bin
 - openwrt-ar71xx-generic-cus531-16M-kernel.bin
-- GoHeishaMonConfig.new
+- GoHeishaMonConfig.new ( It is config.example file edited according to your needs and changed it's name)
+- dropbear_2014.63-2_ar71xx.ipk downloaded from https://archive.openwrt.org/barrier_breaker/14.07/ar71xx/generic/packages/base/dropbear_2014.63-2_ar71xx.ipk (to have ssh acces)
 
-GoHeishaMonConfig.new need to be edited according to your needs by modyfying config.example and changing it's name  to GoHeishaMonConfig.new
 
 After inserting drive with this files in runing CZ-TAW1 you need to push 3 buttons at once for more tnah 10 seconds until middle LED start changing the colors: green-blue-red. You may also notice the LED blinking on your drive ( if drive have it).
 
-Process of update starts ,and it will take app 3,5min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color , so the GoHeishaMon is running.
+Process of update starts ,and it will take app 3min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color , so the GoHeishaMon just starts up. Wait with removing drive from module minimum 20s from this moment ,since GoHeishaMOn needs to copy config file.
 
 In addition  this software enable SSH and web acces on CZ-TAW1 with user: root and password: GoHeishaMonpass ( you should change it!)
 
