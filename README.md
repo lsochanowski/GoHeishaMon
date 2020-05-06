@@ -21,7 +21,7 @@ It is possible to go back to orginal software (A2Wmain with SmartCluod) very qui
 
 Even the GoHeishaMon is on other side you can't just change the site in orginal software to GoHeishaMon without acces to console. You have to install GoHeishaMon again. 
 
-For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one) 
+For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one) https://github.com/lsochanowski/GoHeishaMon/releases/tag/OSRelease
 copy to usb drive files :
 - openwrt-ar71xx-generic-cus531-16M-rootfs-squashfs.bin
 - openwrt-ar71xx-generic-cus531-16M-kernel.bin
