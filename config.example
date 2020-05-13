@@ -1,5 +1,5 @@
 Readonly=true
-Device="COM1"
+Device="/dev/ttyUSB0"
 Loghex=true
 ReadInterval=1
 Aquarea2mqttCompatible=true
