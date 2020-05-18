@@ -29,6 +29,8 @@ jobs:
       - run: make
       - run: sudo apt-get install -y upx squashfs-tools && sudo apt-get clean
       - run: make upx
+      - run: make compilesquash
+      - run: cp OS/Kernel/openwrt-ar71xx-generic-cus531-16M-kernel.bin dist/
       - run:
           name: "Publish Release on GitHub"
           command: |
