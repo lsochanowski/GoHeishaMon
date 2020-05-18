@@ -1,4 +1,5 @@
--!!!!!!! Latest release of rootfs image is not fully tested right now use only images from this link readme (OS Release) !!!!!!!-
+-!!!!!!! Latest release of rootfs image is not fully tested right now use only images from readme link bellow
+ (OS Release) !!!!!!!-
 
 This project is to modify Panasonic CZ-TAW1 Firmware to send data from heat pump to MQTT instead of Aquarea Cloud (there is some POC work proving there is a posiblity to send data concurently to Aquarea Cloud and MQTT host using only modified CZ-TAW1 ,but it's not yet implemented in this project )
 
