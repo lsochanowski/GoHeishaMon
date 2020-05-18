@@ -43,6 +43,5 @@
 	ssh root@172.17.136.82 reboot
     compilesquash:
 	cp dist/$(BINARY_MIPSUPX) OS/RootFS/usr/bin/$(BINARY_MIPSUPX)
-	chown root:root OS/RootFS/usr/bin/$(BINARY_MIPSUPX)
 	mksquashfs OS/RootFS dist/openwrt-ar71xx-generic-cus531-16M-rootfs-squashfs.bin -comp xz -noappend -always-use-fragments
 
