@@ -42,7 +42,7 @@
 	scp dist/GoHeishaMon_MIPSUPX root@172.17.136.82:/usr/bin/
 	ssh root@172.17.136.82 reboot
     compilesquash:
-#	cp dist/$(BINARY_MIPSUPX) /home/max239/NowaAquarea/squashfs-root/usr/bin/$(BINARY_MIPSUPX)
-#	chown root:root /home/max239/NowaAquarea/squashfs-root/usr/bin/$(BINARY_MIPSUPX)
+	cp dist/$(BINARY_MIPSUPX) /home/max239/NowaAquarea/squashfs-root/usr/bin/$(BINARY_MIPSUPX)
+	chown root:root /home/max239/NowaAquarea/squashfs-root/usr/bin/$(BINARY_MIPSUPX)
 	mksquashfs /home/max239/NowaAquarea/squashfs-root dist/openwrt-ar71xx-generic-cus531-16M-rootfs-squashfs.bin -comp xz -noappend -always-use-fragments
 

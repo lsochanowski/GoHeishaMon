@@ -1,0 +1,9 @@
+Package: luci
+Version: svn-r9964-1
+Depends: libc, uhttpd, uhttpd-mod-ubus, luci-mod-admin-full, luci-theme-bootstrap, luci-app-firewall, luci-proto-core, luci-proto-ppp, libiwinfo-lua
+Source: qca/feeds/luci/contrib/package/luci
+Section: luci
+Maintainer: LuCI Development Team <luci@lists.subsignal.org>
+Architecture: ar71xx
+Installed-Size: 106
+Description:  Standard OpenWrt set including full admin with ppp support and the default OpenWrt theme

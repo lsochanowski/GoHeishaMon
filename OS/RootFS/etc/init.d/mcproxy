@@ -1,0 +1,69 @@
+#!/bin/sh /etc/rc.common
+# Copyright (c) 2014 The Linux Foundation. All rights reserved.
+# Copyright (C) 2010-2014 OpenWrt.org
+
+START=99
+STOP=10
+
+SERVICE_DAEMONIZE=1
+SERVICE_WRITE_PID=1
+CONF_FILE="/etc/mcproxy.conf"
+
+mcproxy_pinstance() {
+	local instname upstream downstreams
+	config_get instname $1 name
+	config_get upstream $1 upstream
+	config_get downstreams $1 downstreams
+	config_get protocol config protocol "IGMPv3"
+
+	#section name as instance name
+	[ -n "$instname" ] || {
+		instname=$1
+	}
+
+	#default WAN
+	[ -n "$upstream" ] || {
+		upstream=$(uci_get_state network wan ifname wan)
+	}
+
+	#default LAN
+        [ -n "$downstreams" ] || {
+		downstreams=$(uci_get_state network lan ifname lan)
+        }
+
+	echo "pinstance $instname: \"$upstream\" ==> \"$downstreams\";" >>$CONF_FILE
+
+	#protocol string beginning with 'IGMP' (ipv4)
+	if [ "${protocol#IGMP}" != "$protocol" ]; then
+		#ignore UPNP group from the downstream side
+		echo "" >>$CONF_FILE
+		echo "table upnp{" >>$CONF_FILE
+		echo "  (239.255.255.250|*)" >>$CONF_FILE
+		echo "};" >>$CONF_FILE
+
+		echo "" >>$CONF_FILE
+		for downif in $downstreams; do
+			echo "pinstance $instname downstream \"$downif\" in blacklist table upnp;" >>$CONF_FILE
+		done
+	fi
+}
+
+start() {
+	local protocol
+	config_load mcproxy
+
+	config_get protocol config protocol "IGMPv3"
+	echo "protocol $protocol;" >$CONF_FILE
+
+	config_foreach mcproxy_pinstance pinstance
+	#workaround for CR689700
+	#mcrpoxy will exit with signal ABRT when network interfaces are not prepared.
+	#The root cause is GCC4.6 didn't handle throw/catch mechanism well.
+	rm -f /tmp/mcproxy.*.core
+	service_start /usr/sbin/mcproxy -f $CONF_FILE
+}
+
+stop() {
+	service_stop /usr/sbin/mcproxy
+	rm -f /tmp/mcproxy.*.core
+}

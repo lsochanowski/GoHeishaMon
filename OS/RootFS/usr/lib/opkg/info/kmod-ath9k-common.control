@@ -1,0 +1,9 @@
+Package: kmod-ath9k-common
+Version: 3.14+20150324-1
+Depends: kernel (=3.14-1-8c76dc86e34453a9e87f197574b4112f), kmod-ath
+Source: qca/feeds/wlan-open/mac80211
+Section: kernel
+Maintainer: Qualcomm Atheros
+Architecture: ar71xx
+Installed-Size: 146137
+Description:  QCA 802.11n wireless devices (common code for ath9k and ath9k_htc)

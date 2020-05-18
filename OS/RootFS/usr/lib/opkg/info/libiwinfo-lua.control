@@ -1,0 +1,10 @@
+Package: libiwinfo-lua
+Version: 47
+Depends: libc, libiwinfo, liblua
+Source: package/network/utils/iwinfo
+Section: lang
+Maintainer: Jo-Philipp Wich <xm@subsignal.org>
+Architecture: ar71xx
+Installed-Size: 6493
+Description:  This is the Lua binding for the iwinfo library. It provides access to all enabled
+ backends.

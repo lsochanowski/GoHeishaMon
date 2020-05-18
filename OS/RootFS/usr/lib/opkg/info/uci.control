@@ -1,0 +1,10 @@
+Package: uci
+Version: 2014-02-18.1-1
+Depends: libc, libuci
+Source: package/system/uci
+License: LGPLv2.1 GPLv2
+Section: base
+Maintainer: Felix Fietkau <nbd@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 6362
+Description:  Utility for the Unified Configuration Interface (UCI)

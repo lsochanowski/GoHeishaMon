@@ -1,0 +1,6 @@
+/usr/lib/lua/luci/model/cbi/admin_network/proto_ppp.lua
+/usr/lib/lua/luci/model/cbi/admin_network/proto_pppoe.lua
+/usr/lib/lua/luci/model/cbi/admin_network/proto_pptp.lua
+/usr/lib/lua/luci/model/cbi/admin_network/proto_l2tp.lua
+/usr/lib/lua/luci/model/cbi/admin_network/proto_pppoa.lua
+/usr/lib/lua/luci/model/network/proto_ppp.lua

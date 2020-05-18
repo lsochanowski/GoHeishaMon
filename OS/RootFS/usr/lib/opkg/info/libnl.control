@@ -1,0 +1,8 @@
+Package: libnl
+Version: 3.2.21-1
+Depends: libc, libpthread
+Source: package/libs/libnl
+Section: libs
+Architecture: ar71xx
+Installed-Size: 145931
+Description:  This package contains a library for applications dealing with netlink sockets

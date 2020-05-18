@@ -1,0 +1,25 @@
+#!/bin/sh /etc/rc.common
+
+START=9
+
+boot() {
+    local ret
+
+    fwupdate uci-load
+    ret=$?
+    case "$ret" in
+        0)
+        rm -rf /etc/uci-defaults/*
+        echo "fwupdate. uci-load successful" > /dev/console
+        ;;
+        4)
+        echo "fwupdate. no saved uci config. do nothing" > /dev/console
+        ;;
+        *)
+        echo "fwupdate. uci-load failed. ret=$ret" > /dev/console
+        exit 1
+        ;;
+    esac
+
+    rm -f /etc/rc.d/S09fw
+}

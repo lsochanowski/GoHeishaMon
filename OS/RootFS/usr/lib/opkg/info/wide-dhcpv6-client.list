@@ -1,0 +1,7 @@
+/etc/hotplug.d/iface/40-dhcp6c
+/usr/sbin/dhcp6c
+/etc/hotplug.d/dhcp6c/20-radvd
+/usr/bin/dhcp6c-state
+/etc/init.d/dhcp6c
+/etc/config/dhcp6c
+/etc/hotplug.d/dhcp6c/10-dnsmasq

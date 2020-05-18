@@ -1,0 +1,10 @@
+Package: libstdcpp
+Version: 4.8-linaro-1
+Source: package/libs/toolchain
+Section: libs
+Status: unknown hold not-installed
+Essential: yes
+Maintainer: Felix Fietkau <nbd@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 257308
+Description:  GNU Standard C++ Library v3

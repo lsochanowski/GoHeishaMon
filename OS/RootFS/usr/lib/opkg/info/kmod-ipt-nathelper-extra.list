@@ -1,0 +1,16 @@
+/lib/modules/3.14.0/nf_conntrack_broadcast.ko
+/lib/modules/3.14.0/nf_conntrack_tftp.ko
+/lib/modules/3.14.0/nf_nat_sip.ko
+/lib/modules/3.14.0/nf_conntrack_amanda.ko
+/lib/modules/3.14.0/nf_conntrack_snmp.ko
+/lib/modules/3.14.0/nf_nat_h323.ko
+/lib/modules/3.14.0/nf_nat_proto_gre.ko
+/lib/modules/3.14.0/nf_nat_pptp.ko
+/etc/modules.d/ipt-nathelper-extra
+/lib/modules/3.14.0/nf_conntrack_sip.ko
+/lib/modules/3.14.0/nf_nat_tftp.ko
+/lib/modules/3.14.0/nf_nat_snmp_basic.ko
+/lib/modules/3.14.0/nf_conntrack_h323.ko
+/lib/modules/3.14.0/nf_conntrack_proto_gre.ko
+/lib/modules/3.14.0/nf_nat_amanda.ko
+/lib/modules/3.14.0/nf_conntrack_pptp.ko

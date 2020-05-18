@@ -1,0 +1,5 @@
+/etc/modules.d/ipt-nathelper
+/lib/modules/3.14.0/nf_nat_irc.ko
+/lib/modules/3.14.0/nf_nat_ftp.ko
+/lib/modules/3.14.0/nf_conntrack_irc.ko
+/lib/modules/3.14.0/nf_conntrack_ftp.ko

@@ -1,0 +1,8 @@
+Package: a2wmain
+Version: 02.03.01
+Depends: libc, libpthread, libopenssl
+Source: package/utils/a2wmain
+Section: utils
+Architecture: ar71xx
+Installed-Size: 82274
+Description:  This package contains test A2W MAIN  

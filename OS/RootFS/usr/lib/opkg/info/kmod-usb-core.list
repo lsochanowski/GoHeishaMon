@@ -1,0 +1,4 @@
+/etc/modules.d/20-usb-core
+/lib/modules/3.14.0/usb-common.ko
+/lib/modules/3.14.0/usbcore.ko
+/etc/modules-boot.d/20-usb-core

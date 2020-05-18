@@ -1,0 +1,5 @@
+/usr/lib/lua/bit.lua
+/usr/lib/lua/nixio/util.lua
+/usr/lib/lua/nixio.so
+/usr/lib/lua/nixio/fs.lua
+/lib/upgrade/luci-add-conffiles.sh

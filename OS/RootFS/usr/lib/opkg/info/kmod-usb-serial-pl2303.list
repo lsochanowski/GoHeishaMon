@@ -1,0 +1,2 @@
+/etc/modules.d/usb-serial-pl2303
+/lib/modules/3.14.0/pl2303.ko

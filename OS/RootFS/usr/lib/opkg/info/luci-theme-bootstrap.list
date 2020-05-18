@@ -1,0 +1,7 @@
+/www/luci-static/bootstrap/favicon.ico
+/www/luci-static/bootstrap/html5.js
+/etc/uci-defaults/luci-theme-bootstrap
+/www/luci-static/bootstrap/mobile.css
+/usr/lib/lua/luci/view/themes/bootstrap/header.htm
+/usr/lib/lua/luci/view/themes/bootstrap/footer.htm
+/www/luci-static/bootstrap/cascade.css

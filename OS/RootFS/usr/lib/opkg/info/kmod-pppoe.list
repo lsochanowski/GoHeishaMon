@@ -1,0 +1,2 @@
+/etc/modules.d/pppoe
+/lib/modules/3.14.0/pppoe.ko

@@ -1,0 +1,8 @@
+Package: mtd-utils
+Version: 1.5.0-2
+Depends: libc
+Source: qca/feeds/oldpackages/utils/mtd-utils
+Section: utils
+Architecture: ar71xx
+Installed-Size: 104
+Description:  Utilities for manipulating memory technology devices.

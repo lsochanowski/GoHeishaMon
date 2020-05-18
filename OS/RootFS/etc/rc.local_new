@@ -1,0 +1,131 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+#!/bin/ash
+
+conn_err="*Not connected*"
+
+sleep 10
+
+wifi_link=`iw dev wlan0 link`
+
+case $wifi_link in
+	$conn_err)
+		echo "WPS connect start"
+		;;
+	*)
+		if [ -z "$wifi_link" ] ; then
+			echo "WPS connect start"
+		else
+			echo "wifi connected"
+			exit 0
+		fi
+		;;
+esac
+
+uci set network.wlan=interface
+uci set network.wlan.proto=dhcp
+
+uci set wireless.radio0.channel=auto
+uci set wireless.radio0.disabled=0
+uci set wireless.radio0.country=DE
+
+uci set wireless.@wifi-iface[0].network=wlan
+uci set wireless.@wifi-iface[0].mode=sta
+uci set wireless.@wifi-iface[0].encryption=psk2
+uci set wireless.@wifi-iface[0].key=12345678
+
+/etc/init.d/network restart
+sleep 10
+
+echo "wps_connect.sh"
+
+prev_ssid=`iw dev wlan0 link | grep SSID | cut -d " " -f 2`
+
+wpa_cli wps_pbc
+
+wait_time=0
+
+while [ $wait_time -lt 120 ]
+do
+        sleep 1
+
+        wifi_sts=`iw dev wlan0 link`
+
+        case $wifi_sts in
+                $conn_err)
+                        ;;
+                *)
+                        break;
+                        ;;
+        esac
+
+        wait_time=$(( $wait_time + 1 ))
+	echo $wait_time
+done
+
+ssid=`echo "$wifi_sts" | grep SSID | cut -d " " -f 2`
+
+case $wifi_sts in
+        $conn_err)
+                conn_result=2
+		echo "error: Connect failed"
+		exit 1
+                ;;
+        *)
+                if [ "$ssid" = "$prev_ssid" ] ; then
+                        conn_result=1
+                else
+                        conn_result=0
+                fi
+                ;;
+esac
+
+sleep 10
+
+echo "uci_wps_setting.sh"
+cnf_file="/var/run/wpa_supplicant-wlan0.conf"
+
+ssid=`iw dev wlan0 link | grep SSID | cut -d " " -f 2`
+
+ssid_setting=`cat $cnf_file | grep $ssid -n | cut -d ":" -f 1`
+
+ssid_cnt=`echo "$ssid_setting" | wc -l`
+
+if [ $ssid_cnt -ge 2 ] ; then
+        target=`echo "$ssid_setting" | tr '\n' ' ' | cut -d " " -f 2`
+else
+        target=`echo "$ssid_setting"`
+fi
+
+network_setting=`cat $cnf_file | grep network -n | cut -d ":" -f 1 | tr '\n' ' ' | cut -d " " -f 2`
+
+if [ $target -gt $network_setting ] ; then
+        upd_setting_start=$network_setting
+else
+	echo "error: /var/run/wpa_supplicant-wlan0.conf"
+        exit 2
+fi
+
+close_setting=`cat $cnf_file | grep } -n | cut -d ":" -f 1 | tr '\n' ' ' | cut -d " " -f 2`
+
+if [ $target -lt $close_setting ] ; then
+        upd_setting_end=$close_setting
+else
+	echo "error: /var/run/wpa_supplicant-wlan0.conf"
+        exit 2
+fi
+
+key=`cat $cnf_file | sed -n "${upd_setting_start},${upd_setting_end}p" | grep psk | cut -d '"' -f 2`
+
+uci set wireless.@wifi-iface[0].ssid=$ssid
+uci set wireless.@wifi-iface[0].key=$key
+
+uci commit network
+uci commit wireless
+
+wifi up
+
+echo "wps setting complete"
+
+#exit 0

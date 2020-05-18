@@ -1,0 +1,9 @@
+Package: luci-sgi-cgi
+Version: svn-r9964-1
+Depends: libc
+Source: qca/feeds/luci/contrib/package/luci
+Section: luci
+Maintainer: LuCI Development Team <luci@lists.subsignal.org>
+Architecture: ar71xx
+Installed-Size: 1455
+Description:  CGI Gateway behind existing Webserver

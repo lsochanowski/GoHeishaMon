@@ -1,0 +1,8 @@
+Package: kmod-gpio-led
+Version: 3.14-1
+Depends: kernel (=3.14-1-8c76dc86e34453a9e87f197574b4112f)
+Source: package/kernel/gpio-led
+Section: kernel
+Architecture: ar71xx
+Installed-Size: 2113
+Description:  Kernel module to generate GPIO LED

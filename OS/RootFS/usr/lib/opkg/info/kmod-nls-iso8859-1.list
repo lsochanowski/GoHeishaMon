@@ -1,0 +1,2 @@
+/etc/modules.d/25-nls-iso8859-1
+/lib/modules/3.14.0/nls_iso8859-1.ko

@@ -1,0 +1,9 @@
+Package: luci-lib-nixio
+Version: svn-r9964-1
+Depends: libc, luci-lib-core
+Source: qca/feeds/luci/contrib/package/luci
+Section: luci
+Maintainer: LuCI Development Team <luci@lists.subsignal.org>
+Architecture: ar71xx
+Installed-Size: 29624
+Description:  NIXIO POSIX library

@@ -1,0 +1,8 @@
+Package: fwupdate
+Version: 1
+Depends: libc
+Source: package/fwupdate
+Section: utils
+Architecture: ar71xx
+Installed-Size: 5160
+Description:  simple program to read/write config mtd

@@ -1,0 +1,8 @@
+Package: uboot-envtools
+Version: 2013.10-3
+Depends: libc
+Source: package/boot/uboot-envtools
+Section: utils
+Architecture: ar71xx
+Installed-Size: 9940
+Description:  This package includes tools to read and modify U-Boot bootloader environment.

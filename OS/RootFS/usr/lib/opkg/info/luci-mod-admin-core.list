@@ -1,0 +1,12 @@
+/etc/init.d/luci_fixtime
+/usr/lib/lua/luci/view/header.htm
+/usr/lib/lua/luci/view/footer.htm
+/usr/lib/lua/luci/view/error404.htm
+/usr/lib/lua/luci/tools/webadmin.lua
+/usr/lib/lua/luci/controller/admin/servicectl.lua
+/usr/lib/lua/luci/tools/status.lua
+/usr/lib/lua/luci/view/sysauth.htm
+/etc/init.d/luci_dhcp_migrate
+/usr/lib/lua/luci/view/error500.htm
+/www/index.html
+/usr/lib/lua/luci/view/indexer.htm

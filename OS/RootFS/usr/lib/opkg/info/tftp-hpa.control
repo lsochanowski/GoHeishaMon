@@ -1,0 +1,8 @@
+Package: tftp-hpa
+Version: 0.48-3
+Depends: libc, libreadline
+Source: qca/feeds/oldpackages/net/tftp-hpa
+Section: net
+Architecture: ar71xx
+Installed-Size: 9139
+Description:  An enhanced version of the BSD TFTP client

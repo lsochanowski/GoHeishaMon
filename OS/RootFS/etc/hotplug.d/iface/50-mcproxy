@@ -1,0 +1,11 @@
+#!/bin/sh
+# Copyright (c) 2014 The Linux Foundation. All rights reserved.
+
+. /lib/functions.sh
+
+/etc/init.d/mcproxy enabled && [ "$ACTION" = "ifup" ] && {
+	if [ ${INTERFACE} = 'wan' -o ${INTERFACE} = 'lan' ]; then
+		/etc/init.d/mcproxy restart
+	fi
+}
+

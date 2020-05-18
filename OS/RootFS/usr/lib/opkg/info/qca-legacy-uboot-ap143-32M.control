@@ -1,0 +1,8 @@
+Package: qca-legacy-uboot-ap143-32M
+Version: g94e247e-dirty-1
+Depends: libc
+Source: package/boot/qca-legacy-uboot
+Section: boot
+Architecture: ar71xx
+Installed-Size: 105
+Description:  U-boot for ap143-32M

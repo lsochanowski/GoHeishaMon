@@ -1,0 +1,9 @@
+Package: wpa-supplicant-p2p
+Version: 2015-01-20-1
+Depends: libc, libnl
+Source: package/network/services/hostapd
+Section: net
+Maintainer: Felix Fietkau <nbd@openwrt.org>
+Architecture: ar71xx
+Installed-Size: 352765
+Description:  WPA Supplicant (with Wi-Fi P2P support)

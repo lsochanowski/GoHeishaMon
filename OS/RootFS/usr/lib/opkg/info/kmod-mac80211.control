@@ -1,0 +1,9 @@
+Package: kmod-mac80211
+Version: 3.14+20150324-1
+Depends: kernel (=3.14-1-8c76dc86e34453a9e87f197574b4112f), kmod-crypto-arc4, kmod-crypto-aes, kmod-cfg80211, hostapd-common
+Source: qca/feeds/wlan-open/mac80211
+Section: kernel
+Maintainer: Qualcomm Atheros
+Architecture: ar71xx
+Installed-Size: 227348
+Description:  Generic IEEE 802.11 Networking Stack (mac80211)

@@ -1,0 +1,9 @@
+Package: miniupnpd
+Version: 1.8.20130426-1
+Depends: libc, iptables, libip4tc, libip6tc, libnfnetlink
+Source: qca/feeds/oldpackages/net/miniupnpd
+Section: net
+Maintainer: Daniel Dickinson <openwrt@cshore.neomailbox.net>
+Architecture: ar71xx
+Installed-Size: 36594
+Description:  Lightweight UPnP daemon

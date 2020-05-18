@@ -1,0 +1,3 @@
+/etc/rc.d/S09fw
+/usr/sbin/fwupdate
+/usr/sbin/fwtool

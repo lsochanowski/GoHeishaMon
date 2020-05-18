@@ -1,0 +1,10 @@
+Package: kmod-crypto-arc4
+Version: 3.14-1
+Depends: kernel (=3.14-1-8c76dc86e34453a9e87f197574b4112f), kmod-crypto-core
+Source: package/kernel/linux
+License: GPLv2
+Section: kernel
+Status: unknown hold not-installed
+Architecture: ar71xx
+Installed-Size: 104
+Description:  ARC4 (RC4) cipher CryptoAPI module

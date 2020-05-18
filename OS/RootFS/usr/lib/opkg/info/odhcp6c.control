@@ -1,0 +1,9 @@
+Package: odhcp6c
+Version: 2014-03-31-47fac6f603c236d7b149e0ec593269322572b352
+Depends: libc, kmod-ipv6
+Source: package/network/ipv6/odhcp6c
+Section: net
+Maintainer: Steven Barth <steven@midlink.org>
+Architecture: ar71xx
+Installed-Size: 18508
+Description:  Embedded DHCPv6-client for OpenWrt

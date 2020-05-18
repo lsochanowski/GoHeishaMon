@@ -1,0 +1,468 @@
+#!/bin/sh
+
+# mtd partition size(KB). (rootfs1+rootfs2+apl=12992KB)
+MTD_SZ_ROOTFS1=6464
+MTD_SZ_ROOTFS2=6464
+MTD_SZ_APL=64
+MTD_SZ_CONFIG=64
+MTD_SZ_KERNEL1=1472
+MTD_SZ_KERNEL2=1472
+
+# kernel bootm address
+KERNEL1_BOOTM=0x9fD10000
+KERNEL2_BOOTM=0x9fE80000
+
+# rootfs mtd for getting current boot side
+ROOTFS1_DATA_MTD=mtd3
+ROOTFS2_DATA_MTD=mtd4
+
+# uci config dir
+UCI_CONF_DIR=/etc/config
+
+# temporary file name
+TMP_KERNEL_FILE=tmp_fwupd_kernel
+TMP_ROOTFS_FILE=tmp_fwupd_rootfs
+TMP_UCITAR_FILE=tmp_fwupd_uci.tar.gz
+TMP_UCITAR_FILE2=tmp_fwupd_uci2.tar.gz
+
+# variables
+VAR_CURBOOT=0
+
+# ver
+THIS_VERSION="v1.0"
+
+# for debug
+FOR_DEBUG=1
+
+# for test
+FOR_TEST1=0
+FOR_TEST2=0
+FOR_TEST3=0
+FOR_TEST4=0
+
+get_current_boot() {
+    local rootfs1_eval="$(grep '"rootfs_data"' /proc/mtd | grep $ROOTFS1_DATA_MTD)"
+    local rootfs2_eval="$(grep '"rootfs_data"' /proc/mtd | grep $ROOTFS2_DATA_MTD)"
+
+    VAR_CURBOOT=0
+    if [ -n "$rootfs1_eval" ]; then
+        VAR_CURBOOT=1
+    elif [ -n "$rootfs2_eval" ]; then
+        VAR_CURBOOT=2
+    else
+        echo "get_current_boot: unexpected, not found current mtd"
+        exit 1
+    fi
+}
+
+switch_var_curboot() {
+    local cur_bootside=$1
+
+    if [ "$cur_bootside" -eq 1 ]; then 
+        VAR_CURBOOT=2
+    else
+        VAR_CURBOOT=1
+    fi
+
+    echo "switch internal current=$cur_bootside to $VAR_CURBOOT"
+}
+
+switch_to_current_boot() {
+    get_current_boot
+    switch_var_curboot "$VAR_CURBOOT"
+    switch_boot_side "$VAR_CURBOOT"
+}
+
+check_fw_env() {
+    if [ ! -f /etc/fw_env.config ] ; then
+        echo '/dev/mtd1 0x0 0x10000 0x10000' > /etc/fw_env.config
+    fi
+}
+
+switch_boot_side() {
+    local cur_bootside=$1
+    local bootm_str
+    local bootargs_str
+    check_fw_env
+
+    case "$cur_bootside" in
+        1)
+        echo "set to side 2"
+        bootm_str="bootm ${KERNEL2_BOOTM}"
+        bootargs_str="board=CUS531 console=ttyS0,115200 mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),${MTD_SZ_ROOTFS1}k(rootfs1),${MTD_SZ_ROOTFS2}k(rootfs),${MTD_SZ_APL}k(apl),${MTD_SZ_CONFIG}k(config),${MTD_SZ_KERNEL1}k(kernel1),${MTD_SZ_KERNEL2}k(kernel2),64k(art) rootfstype=squashfs,jffs2 noinitrd"
+        fw_setenv bootcmd $bootm_str
+        fw_setenv bootargs $bootargs_str
+        ;;
+        2)
+        echo "set to side 1"
+        bootm_str="bootm ${KERNEL1_BOOTM}"
+        bootargs_str="board=CUS531 console=ttyS0,115200 mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),${MTD_SZ_ROOTFS1}k(rootfs),${MTD_SZ_ROOTFS2}k(rootfs2),${MTD_SZ_APL}k(apl),${MTD_SZ_CONFIG}k(config),${MTD_SZ_KERNEL1}k(kernel1),${MTD_SZ_KERNEL2}k(kernel2),64k(art) rootfstype=squashfs,jffs2 noinitrd"
+        fw_setenv bootcmd $bootm_str
+        fw_setenv bootargs $bootargs_str
+        ;;
+        *)
+        echo "switch_boot_side: unexpected. curboot=$VAR_CURBOOT"
+        exit 1
+        ;;
+    esac
+}
+
+write_fw_to_mtd() {
+    local cur_bootside=$1
+    local fwkernel=$2
+    local fwrootfs=$3
+    local kernel_mtd
+    local rootfs_mtd
+    local kernel_sz
+    local rootfs_sz
+    local kernel_mtd_sz
+    local sumsrc
+    local sumdst
+    local ret
+
+    if [ ! -f $fwkernel ] ; then
+        echo "file not found $fwkernel"
+        exit 1
+    fi
+
+    if [ ! -f $fwrootfs ] ; then
+        echo "file not found $fwrootfs"
+        exit 1
+    fi
+
+    kernel_sz=$(wc -c $fwkernel | sed -e 's/^  *//g' | cut -d " " -f 1)
+    rootfs_sz=$(wc -c $fwrootfs | sed -e 's/^  *//g' | cut -d " " -f 1)
+
+    case "$cur_bootside" in
+        1)
+        kernel_mtd="$(grep '"kernel2"' /proc/mtd | cut -d":" -f 1)"
+        rootfs_mtd="$(grep '"rootfs2"' /proc/mtd | cut -d":" -f 1)"
+        kernel_mtd_sz=$(expr $MTD_SZ_KERNEL2 \* 1024)
+        rootfs_mtd_sz=$(expr $MTD_SZ_ROOTFS2 \* 1024)
+        ;;
+        2)
+        kernel_mtd="$(grep '"kernel1"' /proc/mtd | cut -d":" -f 1)"
+        rootfs_mtd="$(grep '"rootfs1"' /proc/mtd | cut -d":" -f 1)"
+        kernel_mtd_sz=$(expr $MTD_SZ_KERNEL1 \* 1024)
+        rootfs_mtd_sz=$(expr $MTD_SZ_ROOTFS1 \* 1024)
+        ;;
+        *)
+        echo "write_fw_to_mtd: unexpected. curboot=$VAR_CURBOOT"
+        exit 1
+        ;;
+    esac
+
+    echo "write fw. kernel=$fwkernel to $kernel_mtd, rootfs=$fwrootfs to $rootfs_mtd. curside=$VAR_CURBOOT"
+
+    # size check
+    # kernel_mtd_sz=$(wc -c /dev/$kernel_mtd | sed -e 's/^  *//g' | cut -d " " -f 1)
+    if [ $kernel_sz -gt $kernel_mtd_sz ]; then
+        echo "kernel size exceeds mtd. your kernel sz=$kernel_sz, mtd sz=$kernel_mtd_sz"
+        exit 3
+    fi
+
+    # rootfs_mtd_sz=$(wc -c /dev/$rootfs_mtd | sed -e 's/^  *//g' | cut -d " " -f 1)
+    if [ $rootfs_sz -gt $rootfs_mtd_sz ]; then
+        echo "rootfs size exceeds mtd. your rootfs sz=$rootfs_sz, mtd sz=$rootfs_mtd_sz"
+        exit 3
+    fi
+
+    # write kernel
+    echo "write kernel=$fwkernel to $kernel_mtd"
+    flash_erase /dev/$kernel_mtd 0 0
+    ret=$?
+    [ $ret == 0 ] || {
+        echo "flash_erase failed ret=$ret"
+        exit 1
+    }
+    dd if=$fwkernel of=/dev/$kernel_mtd
+    ret=$?
+    [ $ret == 0 ] || {
+        echo "dd failed ret=$ret"
+        exit 1
+    }
+    sync
+
+    [ $FOR_TEST1 == 1 ] && {
+        echo "test1. erase kernel mtd"
+        flash_erase /dev/$kernel_mtd 0 1
+    }
+
+    # verify kernel
+    echo "verify kernel img. fetch out /tmp/$TMP_KERNEL_FILE size=$kernel_sz"
+    fwtool fwread /dev/$kernel_mtd /tmp/$TMP_KERNEL_FILE $kernel_sz
+    ret=$?
+    [ $ret == 0 ] || {
+        echo "fwread failed ret=$ret"
+        exit 1
+    }
+
+    sumsrc=$(md5sum $fwkernel | cut -d" " -f 1)
+    sumdst=$(md5sum /tmp/$TMP_KERNEL_FILE | cut -d" " -f 1)
+    if [ $sumsrc != $sumdst ] ; then
+        echo "sumsrc=$sumsrc"
+        echo "sumdst=$sumdst"
+        echo "kernel img check sum NG"
+        rm -f /tmp/$TMP_KERNEL_FILE
+        exit 2
+    fi
+    echo "kernel img check sum OK"
+    rm -f /tmp/$TMP_KERNEL_FILE
+
+    # write rootfs
+    echo "write rootfs=$fwrootfs to $rootfs_mtd"
+    flash_erase /dev/$rootfs_mtd 0 0
+    ret=$?
+    [ $ret == 0 ] || {
+        echo "flash_erase failed ret=$ret"
+        exit 1
+    }
+    dd if=$fwrootfs of=/dev/$rootfs_mtd
+    ret=$?
+    [ $ret == 0 ] || {
+        echo "dd failed ret=$ret"
+        exit 1
+    }
+    sync
+
+    [ $FOR_TEST2 == 1 ] && {
+        echo "test2. erase rootfs mtd"
+        flash_erase /dev/$rootfs_mtd 0 1
+    }
+
+    # verify rootfs
+    echo "verify rootfs img. fetch out /tmp/$TMP_ROOTFS_FILE size=$rootfs_sz"
+    fwtool fwread /dev/$rootfs_mtd /tmp/$TMP_ROOTFS_FILE $rootfs_sz
+    ret=$?
+    [ $ret == 0 ] || {
+        echo "fwread failed ret=$ret"
+        exit 1
+    }
+
+    sumsrc=$(md5sum $fwrootfs | cut -d" " -f 1)
+    sumdst=$(md5sum /tmp/$TMP_ROOTFS_FILE | cut -d" " -f 1)
+    if [ $sumsrc != $sumdst ] ; then
+        echo "sumsrc=$sumsrc"
+        echo "sumdst=$sumdst"
+        echo "rootfs img check sum NG"
+        rm -f /tmp/$TMP_ROOTFS_FILE
+        exit 2
+    fi
+    echo "rootfs img check sum OK"
+    rm -f /tmp/$TMP_ROOTFS_FILE
+}
+
+uci_load() {
+    local config_mtd
+    local ret
+
+    # read uci archive from mtd
+    config_mtd="$(grep '"config"' /proc/mtd | cut -d":" -f 1)"
+    echo "load uci from $config_mtd"
+
+    fwtool read /dev/$config_mtd /tmp/$TMP_UCITAR_FILE
+    ret=$?
+    [ $ret == 0 ] || {
+        [ $ret == 4 ] || {
+            echo "fwtool read failed ret=$ret"
+            exit 1
+        }
+        echo "uci file not found"
+        rm -f /tmp/$TMP_UCITAR_FILE
+        exit 4
+    }
+    check_fw_env
+
+    # extract uci
+    rm -rf $UCI_CONF_DIR/*
+    tar zxf /tmp/$TMP_UCITAR_FILE -C $UCI_CONF_DIR
+    uci commit
+
+    # clean up
+    rm -f /tmp/$TMP_UCITAR_FILE
+    flash_erase /dev/$config_mtd 0 0
+    ret=$?
+    [ $ret == 0 ] || {
+        echo "flash_erase failed ret=$ret"
+        exit 1
+    }
+
+    echo "load uci config OK"
+}
+
+uci_save() {
+    local config_mtd
+    local sumsrc
+    local sumdst
+    local config_sz
+    local config_mtd_sz
+    local ret
+
+    # write uci archive
+    config_mtd="$(grep '"config"' /proc/mtd | cut -d":" -f 1)"
+    cd $UCI_CONF_DIR
+    tar zcf /tmp/$TMP_UCITAR_FILE ./*
+    ret=$?
+    [ $ret == 0 ] || {
+        echo "tar failed ret=$ret"
+        exit 1
+    }
+
+    [ $FOR_TEST4 == 1 ] && {
+        echo "test4. create tar file"
+        head -c 65533 /dev/urandom > /tmp/$TMP_UCITAR_FILE
+    }
+
+    # size check
+    config_mtd_sz=$(expr $MTD_SZ_CONFIG \* 1024)
+    config_sz=$(wc -c /tmp/$TMP_UCITAR_FILE | sed -e 's/^  *//g' | cut -d " " -f 1)
+    # add size space 4byte
+    config_sz=$(expr $config_sz + 4)
+
+    echo "write uci.tar(sz=$config_sz) to $config_mtd(sz=$config_mtd_sz)"
+
+    if [ $config_sz -gt $config_mtd_sz ]; then
+        echo "uci size exceeds mtd. uci.tar sz=$config_sz, mtd sz=$config_mtd_sz"
+        rm -f /tmp/$TMP_UCITAR_FILE
+        exit 3
+    fi
+
+    # write
+    flash_erase /dev/$config_mtd 0 0
+    ret=$?
+    [ $ret == 0 ] || {
+        echo "flash_erase failed ret=$ret"
+        exit 1
+    }
+    fwtool write /tmp/$TMP_UCITAR_FILE /dev/$config_mtd
+    ret=$?
+    [ $ret == 0 ] || {
+        echo "fwtool write failed ret=$ret"
+        exit 1
+    }
+    sync
+
+    [ $FOR_TEST3 == 1 ] && {
+        echo "test3. erase config mtd"
+        flash_erase /dev/$config_mtd 0 1
+    }
+
+    # verify
+    echo "verify uci config. fetch out /tmp/$TMP_UCITAR_FILE2"
+    fwtool read /dev/$config_mtd /tmp/$TMP_UCITAR_FILE2
+    ret=$?
+    [ $ret == 0 ] || {
+        [ $ret == 4 ] || {
+            echo "fwtool read failed ret=$ret"
+            exit 1
+        }
+        echo "fwtool read. invalid size. fall through"
+    }
+
+    sumsrc=$(md5sum /tmp/$TMP_UCITAR_FILE  | cut -d" " -f 1)
+    sumdst=$(md5sum /tmp/$TMP_UCITAR_FILE2 | cut -d" " -f 1)
+    if [ $sumsrc != $sumdst ] ; then
+        echo "sumsrc=$sumsrc"
+        echo "sumdst=$sumdst"
+        echo "uci config check sum NG"
+        rm -f /tmp/$TMP_UCITAR_FILE
+        rm -f /tmp/$TMP_UCITAR_FILE2
+        exit 2
+    fi
+
+    echo "uci config check sum OK"
+
+    rm -f /tmp/$TMP_UCITAR_FILE
+    rm -f /tmp/$TMP_UCITAR_FILE2
+}
+
+fw_write() {
+    local fwkernel=$1
+    local fwrootfs=$2
+
+    get_current_boot
+    write_fw_to_mtd "$VAR_CURBOOT" "$fwkernel" "$fwrootfs"
+    uci_save
+    switch_boot_side "$VAR_CURBOOT"
+
+    echo "fw-write successful"
+}
+
+fw_write_only() {
+    local fwkernel=$1
+    local fwrootfs=$2
+
+    get_current_boot
+    write_fw_to_mtd "$VAR_CURBOOT" "$fwkernel" "$fwrootfs"
+    switch_boot_side "$VAR_CURBOOT"
+}
+
+usage() {
+    echo "fwupdate $THIS_VERSION"
+    echo "usage:"
+    echo "  fwupdate fw-write <kernel img> <rootfs img>"
+    echo "  fwupdate uci-load"
+    echo "mtd size setting(KB)(t:$(expr $MTD_SZ_ROOTFS1 + $MTD_SZ_ROOTFS2 + $MTD_SZ_APL + $MTD_SZ_CONFIG + $MTD_SZ_KERNEL1 + $MTD_SZ_KERNEL2)):"
+    echo "  rootfs1=$MTD_SZ_ROOTFS1"
+    echo "  rootfs2=$MTD_SZ_ROOTFS2"
+    echo "  apl    =$MTD_SZ_APL"
+    echo "  config =$MTD_SZ_CONFIG"
+    echo "  kernel1=$MTD_SZ_KERNEL1"
+    echo "  kernel2=$MTD_SZ_KERNEL2"
+    echo "bootm setting:"
+    echo "  kernel1=$KERNEL1_BOOTM"
+    echo "  kernel2=$KERNEL2_BOOTM"
+    echo "current side:"
+    get_current_boot
+    echo "  $VAR_CURBOOT"
+    exit 1
+}
+
+case "$1" in
+    fw-write)
+        fw_write "$2" "$3"
+    ;;
+    fw-write2)
+        if [ "$FOR_DEBUG" -ne 0 ]; then 
+            fw_write_only "$2" "$3"
+        else
+            usage
+        fi
+    ;;
+    uci-load)
+        uci_load
+    ;;
+    uci-save)
+        if [ "$FOR_DEBUG" -ne 0 ]; then 
+            uci_save
+        else
+            usage
+        fi
+    ;;
+    cur)
+        if [ "$FOR_DEBUG" -ne 0 ]; then 
+            get_current_boot
+            echo "$VAR_CURBOOT"
+        else
+            usage
+        fi
+    ;;
+    sw)
+        if [ "$FOR_DEBUG" -ne 0 ]; then 
+            get_current_boot
+            switch_boot_side "$VAR_CURBOOT"
+        else
+            usage
+        fi
+    ;;
+    sw-cur)
+        if [ "$FOR_DEBUG" -ne 0 ]; then 
+            switch_to_current_boot
+        else
+            usage
+        fi
+    ;;
+    *)
+        usage
+    ;;
+esac

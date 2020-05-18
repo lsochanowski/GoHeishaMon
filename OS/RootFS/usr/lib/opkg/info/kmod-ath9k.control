@@ -1,0 +1,10 @@
+Package: kmod-ath9k
+Version: 3.14+20150324-1
+Depends: kernel (=3.14-1-8c76dc86e34453a9e87f197574b4112f), kmod-ath9k-common
+Source: qca/feeds/wlan-open/mac80211
+Section: kernel
+Maintainer: Qualcomm Atheros
+Architecture: ar71xx
+Installed-Size: 60048
+Description:  This module adds support for wireless adapters based on
+ QCA IEEE 802.11n AR5008, AR9001,AR9002, AR9003, AR9004 family of chipsets.

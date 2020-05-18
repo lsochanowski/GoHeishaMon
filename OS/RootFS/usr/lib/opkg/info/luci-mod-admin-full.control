@@ -1,0 +1,9 @@
+Package: luci-mod-admin-full
+Version: svn-r9964-1
+Depends: libc, luci-mod-admin-core, luci-lib-ipkg
+Source: qca/feeds/luci/contrib/package/luci
+Section: luci
+Maintainer: LuCI Development Team <luci@lists.subsignal.org>
+Architecture: ar71xx
+Installed-Size: 67654
+Description:  LuCI Administration - full-featured for full control

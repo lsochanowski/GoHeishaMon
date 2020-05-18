@@ -1,0 +1,19 @@
+Package: kmod-ipt-nathelper-extra
+Version: 3.14-1
+Depends: kernel (=3.14-1-8c76dc86e34453a9e87f197574b4112f), kmod-ipt-core, kmod-ipt-nat, kmod-lib-textsearch
+Source: package/kernel/linux
+License: GPLv2
+Section: kernel
+Status: unknown hold not-installed
+Architecture: ar71xx
+Installed-Size: 49961
+Description:  Extra Netfilter (IPv4) Conntrack and NAT helpers
+ Includes:
+ - amanda
+ - h323
+ - mms
+ - pptp
+ - proto_gre
+ - sip
+ - snmp_basic
+ - broadcast

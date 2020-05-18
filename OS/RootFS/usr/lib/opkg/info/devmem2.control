@@ -1,0 +1,8 @@
+Package: devmem2
+Version: 1
+Depends: libc
+Source: qca/feeds/oldpackages/utils/devmem2
+Section: utils
+Architecture: ar71xx
+Installed-Size: 2122
+Description:  Simple program to read/write from/to any location in memory.

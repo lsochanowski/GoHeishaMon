@@ -1,0 +1,8 @@
+Package: ip
+Version: 3.11.0-1
+Depends: libc, libnl-tiny
+Source: package/network/utils/iproute2
+Section: net
+Architecture: ar71xx
+Installed-Size: 56104
+Description:  Routing control utility (Minimal)

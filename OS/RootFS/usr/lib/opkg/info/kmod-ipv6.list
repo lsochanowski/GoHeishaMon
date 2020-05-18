@@ -1,0 +1,2 @@
+/etc/modules.d/20-ipv6
+/lib/modules/3.14.0/ipv6.ko

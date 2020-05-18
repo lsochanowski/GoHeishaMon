@@ -1,0 +1,11 @@
+/sbin/logread
+/sbin/logd
+/lib/libvalidate.so
+/usr/sbin/modprobe
+/usr/sbin/lsmod
+/sbin/validate_data
+/usr/sbin/rmmod
+/usr/sbin/modinfo
+/etc/init.d/log
+/sbin/kmodloader
+/usr/sbin/insmod
