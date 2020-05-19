@@ -531,12 +531,12 @@ Status: install user installed
 Architecture: ar71xx
 Installed-Time: 1583824574
 
-Package: a2wmain
-Version: 02.03.01
-Depends: libc, libpthread, libopenssl
+Package: dropbear
+Version: 2014.63-2
+Depends: libc
 Status: install user installed
 Architecture: ar71xx
-Installed-Time: 1583824573
+Installed-Time: 1583179715
 
 Package: libnl
 Version: 3.2.21-1
