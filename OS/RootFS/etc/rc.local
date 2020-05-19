@@ -6,6 +6,8 @@ echo 300 > /proc/sys/kernel/panic
 echo 0 > /proc/sys/kernel/panic_on_oops
 
 echo "START A2WMAIN APL=====" > /dev/ttyS0
-/usr/bin/GoHeishaMon_MIPSUPX > /dev/ttyS0
+
+/usr/bin/GoHeishaMon_MIPSUPX > /dev/null 2>&1
+#/usr/bin/GoHeishaMon_MIPSUPX > /dev/ttyS0
 #/usr/bin/a2wmain > /dev/ttyS0
 #exit 0
