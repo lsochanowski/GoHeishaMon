@@ -536,6 +536,8 @@ Version: 2014.63-2
 Depends: libc
 Status: install user installed
 Architecture: ar71xx
+Conffiles:
+  /etc/config/dropbear 4ff9c827d4f95ca5082a5520c03e1419
 Installed-Time: 1583179715
 
 Package: libnl
