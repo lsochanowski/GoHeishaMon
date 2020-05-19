@@ -6,5 +6,7 @@ set dropbear.@dropbear[0].PasswordAuth=on
 set dropbear.@dropbear[0].Port=22
 
 commit dropbear
+/etc/init.d/dropbear start
+
 EOF
 exit 0
