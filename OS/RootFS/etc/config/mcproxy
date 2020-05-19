@@ -1,0 +1,7 @@
+config mcproxy config
+	option protocol IGMPv3
+
+config pinstance
+	option name "mcproxy1"
+	option upstream ""
+	option downstreams ""

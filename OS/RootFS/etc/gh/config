@@ -1,0 +1,16 @@
+Readonly=true
+Device="/dev/ttyUSB0"
+Loghex=true
+ReadInterval=1
+Aquarea2mqttCompatible=true
+Aquarea2mqttPumpID=""
+Mqtt_topic_base="panasonic_heat_pump/sdc"
+Mqtt_set_base="panasonic_heat_pump"
+ForceRefreshTime=60
+MqttServer="127.0.0.1"
+MqttPort="234"
+MqttLogin="a"
+MqttPass="b"
+SleepAfterCommand=3
+MqttClientID=""
+MqttKeepalive=60
