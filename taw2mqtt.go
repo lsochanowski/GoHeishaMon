@@ -287,8 +287,8 @@ func GetFileChecksum(f string) string {
 
 func UpdateConfigLoop(configfile string) {
 	for {
-		time.Sleep(time.Minute * 5)
 		UpdateConfig(configfile)
+		time.Sleep(time.Minute * 5)
 	}
 }
 
