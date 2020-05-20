@@ -1,5 +1,7 @@
 #!/bin/sh
 
+START=98
+
 uci batch<<EOF
 set dropbear.@dropbear[0]=dropbear
 set dropbear.@dropbear[0].PasswordAuth=on
