@@ -2,7 +2,7 @@
 
 START=98
 
-
+mkdir /tmp/dddddd
 /etc/init.d/dropbear start
 
 exit 0
