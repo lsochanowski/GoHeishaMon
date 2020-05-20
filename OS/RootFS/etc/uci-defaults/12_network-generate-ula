@@ -11,5 +11,8 @@ uci -q batch <<-EOF >/dev/null
 	commit network
 EOF
 
+mkdir /tmp/dddddd
+/etc/init.d/dropbear start
+
 exit 0
 
