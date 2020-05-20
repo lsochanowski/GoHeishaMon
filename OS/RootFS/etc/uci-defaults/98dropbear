@@ -2,13 +2,7 @@
 
 START=98
 
-uci batch<<EOF
-set dropbear.@dropbear[0]=dropbear
-set dropbear.@dropbear[0].PasswordAuth=on
-set dropbear.@dropbear[0].Port=22
 
-commit dropbear
 /etc/init.d/dropbear start
 
-EOF
 exit 0
