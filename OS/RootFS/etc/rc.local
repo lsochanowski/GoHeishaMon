@@ -8,6 +8,6 @@ echo 0 > /proc/sys/kernel/panic_on_oops
 
 echo "START GoHeishaMon APL=====" > /dev/ttyS0
 
-/usr/bin/GoHeishaMon_MIPSUPX > /dev/ttyS0
+#/usr/bin/GoHeishaMon_MIPSUPX > /dev/ttyS0
 #/usr/bin/a2wmain > /dev/ttyS0
 #exit 0
