@@ -1,8 +1,0 @@
-#!/bin/sh
-
-START=98
-
-/etc/init.d/dropbear start
-/etc/init.d/dropbear enable
-
-exit 0
