@@ -1,12 +1,12 @@
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 /etc/init.d/dropbear start
-/root/ssh.sh
+#/root/ssh.sh
 echo "START WATCHDOG   =====" > /dev/ttyS0
 echo 300 > /proc/sys/kernel/panic
 echo 0 > /proc/sys/kernel/panic_on_oops
 
-echo "START A2WMAIN APL=====" > /dev/ttyS0
+echo "START GoHeishaMon APL=====" > /dev/ttyS0
 
 /usr/bin/GoHeishaMon_MIPSUPX > /dev/ttyS0
 #/usr/bin/a2wmain > /dev/ttyS0
