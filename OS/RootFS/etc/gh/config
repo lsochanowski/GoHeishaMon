@@ -1,4 +1,4 @@
-Readonly=false
+Readonly=true
 Device="/dev/ttyUSB0"
 Loghex=true
 ReadInterval=1
