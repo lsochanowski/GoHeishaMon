@@ -1,0 +1,10 @@
+#!/bin/sh
+
+uci batch<<EOF
+set dropbear.@dropbear[0]=dropbear
+set dropbear.@dropbear[0].PasswordAuth=on
+set dropbear.@dropbear[0].Port=22
+
+commit dropbear
+EOF
+exit 0
