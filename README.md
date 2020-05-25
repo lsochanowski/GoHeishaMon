@@ -24,7 +24,7 @@ It is possible to go back to orginal software (A2Wmain with SmartCluod) very qui
 
 Even the GoHeishaMon is on other side you can't just change the site in orginal software to GoHeishaMon without acces to console. You have to install GoHeishaMon again. 
 
-### Installation
+## Installation
 
 For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one) https://github.com/lsochanowski/GoHeishaMon/releases/tag/1.0.135
 copy to usb drive files :
@@ -37,12 +37,12 @@ After inserting drive with this files in runing CZ-TAW1 you need to push 3 butto
 
 Process of update starts ,and it will take app 3 min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color , so the GoHeishaMon just starts up. Wait with removing drive from module minimum 20s from this moment ,since GoHeishaMOn needs to copy config file.
 
-## SSH and web (over LuCI) access
+### SSH and web (over LuCI) access
 
 For advanced ussers there is possibility to have SSH and web acces (LuCI) on CZ-TAW1 with user: root and password: GoHeishaMonpass ( you should change it!)
 - In config file you should have option "EnableCommand=true"
 - GoHeishaMon should be connected to MQTT server
-- Public in MQTT topic "panasonic_heat_pump/OSCommand" one by one : "umount /overlay" , "jffs2reset -y" and finally "reboot". This will perform a so called firstboot , so all configuration ( also including WiFi connection) will be set to default , so please connect GoHeishaMon via Ethernet cable after that. WiFi config after that you can do via ssh or LuCI ,identical to standard OpenWRT routers.
+- Public in MQTT topic "panasonic_heat_pump/OSCommand" (or eqvivalent with is set as Mqtt_set_base) one by one values: "umount /overlay" , "jffs2reset -y" and finally "reboot". This will perform a so called firstboot. You can se the output console in topic"panasonic_heat_pump/OSCommand/out". All configuration ( also including WiFi connection) will be set to default , so please connect GoHeishaMon via Ethernet cable after that. WiFi config after that you can do via ssh or LuCI ,identical to standard OpenWRT routers.
 
 
 
