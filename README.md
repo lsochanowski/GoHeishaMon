@@ -39,13 +39,15 @@ Process of update starts ,and it will take app 3 min. In the meantime CZ-TAW1 re
 
 ### SSH and web (over LuCI) access
 
-For advanced ussers there is possibility to have SSH and web acces (LuCI) on CZ-TAW1 with user: root and password: GoHeishaMonpass ( you should change it!)
+For advanced ussers there is possibility to have SSH and web acces (LuCI) on CZ-TAW1:
 - In config file you should have option "EnableCommand=true"
 - GoHeishaMon should be connected to MQTT server
-- Public in MQTT topic "panasonic_heat_pump/OSCommand" (or eqvivalent with is set as Mqtt_set_base) one by one values: "umount /overlay" , "jffs2reset -y" and finally "reboot". This will perform a so called firstboot. You can se the output console in topic"panasonic_heat_pump/OSCommand/out". All configuration ( also including WiFi connection) will be set to default , so please connect GoHeishaMon via Ethernet cable after that. WiFi config after that you can do via ssh or LuCI ,identical to standard OpenWRT routers.
+- Public in MQTT topic "panasonic_heat_pump/OSCommand" (or eqvivalent with is set as Mqtt_set_base) one by one values: "umount /overlay" , "jffs2reset -y" and finally "reboot". This will perform a so called firstboot. You can see the output console in topic"panasonic_heat_pump/OSCommand/out". All configuration ( also including WiFi connection) will be set to default , so please connect GoHeishaMon via Ethernet cable after that. WiFi config after that you can do via ssh or LuCI ,identical to standard OpenWRT routers.
+
+After reboot you should be able to connect to ssh and via web with user: root and password: GoHeishaMonpass ( you should change it!)
 
 
-
+Screenshot from Homeassistant:
 ![Screenshot from Homeassistant](PompaCieplaScreen.PNG)
 
 
