@@ -1,9 +1,9 @@
--!!!!!!! Latest release of rootfs image is not fully tested right now use only images from readme link bellow
- (OS Release) !!!!!!!-
+# -!!!!!!! Latest checked release is 1.0.135 !!!!! Others are tests ,and some of them can brick CZ-TAW1.!!!!!!!-
+
 
 This project is to modify Panasonic CZ-TAW1 Firmware to send data from heat pump to MQTT instead of Aquarea Cloud (there is some POC work proving there is a posiblity to send data concurently to Aquarea Cloud and MQTT host using only modified CZ-TAW1 ,but it's not yet implemented in this project )
 
-## This Project Contains:
+### This Project Contains:
 
 - Main software (called GoHeishaMon) responsible for parsing data from heat pump - it's golang implementation of project https://github.com/Egyras/HeishaMon 
 All MQTT topics are compatible with HeishaMon project: https://github.com/Egyras/HeishaMon/blob/master/MQTT-Topics.md
@@ -24,19 +24,26 @@ It is possible to go back to orginal software (A2Wmain with SmartCluod) very qui
 
 Even the GoHeishaMon is on other side you can't just change the site in orginal software to GoHeishaMon without acces to console. You have to install GoHeishaMon again. 
 
-For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one) https://github.com/lsochanowski/GoHeishaMon/releases/tag/OSRelease
+### Installation
+
+For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one) https://github.com/lsochanowski/GoHeishaMon/releases/tag/1.0.135
 copy to usb drive files :
 - openwrt-ar71xx-generic-cus531-16M-rootfs-squashfs.bin
 - openwrt-ar71xx-generic-cus531-16M-kernel.bin
 - GoHeishaMonConfig.new ( It is config.example file edited according to your needs and changed it's name)
-- dropbear_2014.63-2_ar71xx.ipk downloaded from https://archive.openwrt.org/barrier_breaker/14.07/ar71xx/generic/packages/base/dropbear_2014.63-2_ar71xx.ipk (to have SSH acces)
 
 
 After inserting drive with this files in runing CZ-TAW1 you need to push 3 buttons at once for more tnah 10 seconds until middle LED start changing the colors: green-blue-red. You may also notice the LED blinking on your drive ( if drive have it).
 
-Process of update starts ,and it will take app 3min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color , so the GoHeishaMon just starts up. Wait with removing drive from module minimum 20s from this moment ,since GoHeishaMOn needs to copy config file.
+Process of update starts ,and it will take app 3 min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color , so the GoHeishaMon just starts up. Wait with removing drive from module minimum 20s from this moment ,since GoHeishaMOn needs to copy config file.
 
-In addition  this software enable SSH and web acces (LuCI) on CZ-TAW1 with user: root and password: GoHeishaMonpass ( you should change it!)
+## SSH and web (over LuCI) access
+
+For advanced ussers there is possibility to have SSH and web acces (LuCI) on CZ-TAW1 with user: root and password: GoHeishaMonpass ( you should change it!)
+- In config file you should have option "EnableCommand=true"
+- GoHeishaMon should be connected to MQTT server
+- Public in MQTT topic "panasonic_heat_pump/OSCommand" one by one : "umount /overlay" , "jffs2reset -y" and finally "reboot". This will perform a so called firstboot , so all configuration ( also including WiFi connection) will be set to default , so please connect GoHeishaMon via Ethernet cable after that. WiFi config after that you can do via ssh or LuCI ,identical to standard OpenWRT routers.
+
 
 
 ![Screenshot from Homeassistant](PompaCieplaScreen.PNG)
