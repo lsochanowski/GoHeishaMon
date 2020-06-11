@@ -1,9 +1,11 @@
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 
-echo "START WATCHDOG   =====" > /dev/ttyS0
-echo 300 > /proc/sys/kernel/panic
-echo 0 > /proc/sys/kernel/panic_on_oops
+#echo "START WATCHDOG   =====" > /dev/ttyS0
+#echo 300 > /proc/sys/kernel/panic
+#echo 0 > /proc/sys/kernel/panic_on_oops
+
+(/usr/bin/check_buttons.sh > /dev/null 2>&1) &
 
 echo "START GoHeishaMon APL=====" > /dev/ttyS0
 
