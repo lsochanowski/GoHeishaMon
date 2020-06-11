@@ -5,6 +5,7 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"encoding/hex"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -287,9 +288,39 @@ func GetFileChecksum(f string) string {
 
 func UpdateConfigLoop(configfile string) {
 	for {
-		UpdateConfig(configfile)
 		time.Sleep(time.Minute * 5)
+		UpdateConfig(configfile)
 	}
+}
+
+func PublishTopicsToAutoDiscover(mclient mqtt.Client, token mqtt.Token) {
+	for _, v := range AllTopics {
+
+		ttype := "sensor"
+		var m AutoDiscoverStruct
+		m.UnitOfM = v.TopicUnit
+		m.StateTopic = fmt.Sprintf("%s/%s", config.Mqtt_topic_base, v.TopicName)
+		m.Name = fmt.Sprintf("TEST-%s", v.TopicName)
+		Topic_Value, err := json.Marshal(m)
+		fmt.Println(err)
+		TOP := fmt.Sprintf("%s/%s/%s/config", config.Mqtt_topic_base, ttype, strings.ReplaceAll(m.Name, " ", "_"))
+		fmt.Println("Publikuje do ", TOP, "warosc", string(Topic_Value))
+		token = mclient.Publish(TOP, byte(0), false, Topic_Value)
+		if token.Wait() && token.Error() != nil {
+			fmt.Printf("Fail to publish, %v", token.Error())
+		}
+
+	}
+
+}
+
+type AutoDiscoverStruct struct {
+	DeviceClass   string `json:"device_class,omitempty"`
+	Name          string `json:"name,omitempty"`
+	StateTopic    string `json:"state_topic,omitempty"`
+	UnitOfM       string `json:"unit_of_measurement,omitempty"`
+	ValueTemplate string `json:"value_template,omitempty"`
+	CommandTopic  string `json:"command_topic,omitempty"`
 }
 
 func UpdateGPIOStat() {
@@ -425,10 +456,10 @@ func main() {
 	CommandsToSend = make(map[xid.ID][]byte)
 	var in int
 	config = ReadConfig()
-	if config.Readonly != true {
-		log_message("Not sending this command. Heishamon in listen only mode! - this POC version don't support writing yet....")
-		os.Exit(0)
-	}
+	// if config.Readonly != true {
+	// 	log_message("Not sending this command. Heishamon in listen only mode! - this POC version don't support writing yet....")
+	// 	os.Exit(0)
+	// }
 	ports, err := serial.GetPortsList()
 	if err != nil {
 		log.Fatal(err)
@@ -453,7 +484,7 @@ func main() {
 	ParseTopicList3()
 	MqttKeepalive = time.Second * time.Duration(config.MqttKeepalive)
 	MC, MT := MakeMQTTConn()
-
+	PublishTopicsToAutoDiscover(MC, MT)
 	for {
 		if MC.IsConnected() != true {
 			MC, MT = MakeMQTTConn()
@@ -584,7 +615,7 @@ func HandleOSCommand(mclient mqtt.Client, msg mqtt.Message) {
 	}
 	comout := fmt.Sprintf("%s - %s", out, out2)
 	TOP := fmt.Sprintf("%s/OSCommand/out", config.Mqtt_set_base)
-	fmt.Println("Publikuje do ", TOP, "warosc", comout)
+	fmt.Println("Publikuje do ", TOP, "warosc", string(comout))
 	token := mclient.Publish(TOP, byte(0), false, comout)
 	if token.Wait() && token.Error() != nil {
 		fmt.Printf("Fail to publish, %v", token.Error())
@@ -884,7 +915,7 @@ func log_message(a string) {
 }
 
 func logHex(command []byte, length int) {
-	fmt.Printf("% X \n", command)
+	fmt.Printf("% X \n", string(command))
 
 }
 
@@ -1202,14 +1233,14 @@ func decode_heatpump_data(data []byte, mclient mqtt.Client, token mqtt.Token) {
 				TOP := "aquarea/state/" + fmt.Sprintf("%s/%s", config.Aquarea2mqttPumpID, v.TopicA2M)
 				value = strings.TrimSpace(Topic_Value)
 				value = strings.ToUpper(Topic_Value)
-				fmt.Println("Publikuje do ", TOP, "warosc", value)
+				fmt.Println("Publikuje do ", TOP, "warosc", string(value))
 				token = mclient.Publish(TOP, byte(0), false, value)
 				if token.Wait() && token.Error() != nil {
 					fmt.Printf("Fail to publish, %v", token.Error())
 				}
 			}
 			TOP := fmt.Sprintf("%s/%s", config.Mqtt_topic_base, v.TopicName)
-			fmt.Println("Publikuje do ", TOP, "warosc", Topic_Value)
+			fmt.Println("Publikuje do ", TOP, "warosc", string(Topic_Value))
 			token = mclient.Publish(TOP, byte(0), false, Topic_Value)
 			if token.Wait() && token.Error() != nil {
 				fmt.Printf("Fail to publish, %v", token.Error())
