@@ -23,21 +23,21 @@ ButtonWPS=`awk '/gpio-1 /{print $5}' /sys/kernel/debug/gpio`
 ButtonCheck=`awk '/gpio-16 /{print $5}' /sys/kernel/debug/gpio`
 CNCNTLink=`awk '/gpio-10 /{print $5}' /sys/kernel/debug/gpio`
 
-#bia³e
+#bwhite
 if [ "$ButtonReset" = 'lo' ] && [ "$ButtonWPS" = 'lo' ] && [ "$ButtonCheck" = 'hi' ] ; then
 echo high > /sys/class/gpio/gpio2/direction
 echo high > /sys/class/gpio/gpio13/direction
 echo high > /sys/class/gpio/gpio15/direction
 fi
 
-#niebieskie
+#blue
 if [ "$ButtonReset" = 'hi' ] || [ "$ButtonWPS" = 'hi' ] || [ "$ButtonCheck" = 'lo' ] ; then
 echo high > /sys/class/gpio/gpio2/direction
 echo low > /sys/class/gpio/gpio13/direction
 echo low > /sys/class/gpio/gpio15/direction
 fi
 
-#zolte
+#yellow
 if [ "$ButtonReset" = 'hi' ] && [ "$ButtonWPS" = 'hi' ] ; then
 echo low > /sys/class/gpio/gpio2/direction
 echo high > /sys/class/gpio/gpio13/direction
@@ -70,6 +70,8 @@ fi
 if [ "$CNCNTLink" = 'lo' ] ; then
 echo high > /sys/class/gpio/gpio3/direction
 fi
+
+sleep 1
 
 done
 
