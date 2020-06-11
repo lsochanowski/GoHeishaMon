@@ -438,7 +438,7 @@ func main() {
 	//	topicfile = flag.String("t", "Topics.csv", "a topic file patch")
 	flag.Parse()
 	if runtime.GOOS != "windows" {
-		go UpdateGPIOStat()
+		//	go UpdateGPIOStat()
 		configfile = "/etc/gh/config"
 
 	} else {
