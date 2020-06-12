@@ -231,6 +231,8 @@ func UpdateConfig(configfile string) bool {
 		}
 	}
 	_, _ = exec.Command("/usr/bin/usb_umount.sh").Output()
+	_, _ = exec.Command("reboot").Output()
+
 	return true
 }
 
