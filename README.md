@@ -1,15 +1,15 @@
-# -!!!!!!! Latest checked release is 1.0.135 !!!!! Others are tests ,and some of them can brick CZ-TAW1.!!!!!!!-
+# -!!!!!!! Latest checked release is 1.0.150 !!!!! Others are tests ,and some of them can brick CZ-TAW1.!!!!!!!-
 
 
-This project is to modify Panasonic CZ-TAW1 Firmware to send data from heat pump to MQTT instead of Aquarea Cloud (there is some POC work proving there is a posiblity to send data concurently to Aquarea Cloud and MQTT host using only modified CZ-TAW1 ,but it's not yet implemented in this project )
+This project is to modify Panasonic CZ-TAW1 Firmware to send data from heat pump to MQTT instead to Aquarea Cloud (there is some POC work proving there is a posiblity to send data concurently to Aquarea Cloud and MQTT host using only modified CZ-TAW1 ,but it's not yet implemented in this project )
 
 ### This Project Contains:
 
-- Main software (called GoHeishaMon) responsible for parsing data from heat pump - it's golang implementation of project https://github.com/Egyras/HeishaMon 
+- Main software (called GoHeishaMon) responsible for parsing data from Heat Pump - it's golang implementation of project https://github.com/Egyras/HeishaMon 
 All MQTT topics are compatible with HeishaMon project: https://github.com/Egyras/HeishaMon/blob/master/MQTT-Topics.md
 and there are two aditional topics to run command's in system runing the software but it need's another manual.
 
-GoHeishaMon can be used without the CZ-TAW1 module on every platform supported by golang (RaspberyPi, Windows, Linux, OpenWrt routers for example) after connecting it to Heatpump over rs232-ttl interface.
+GoHeishaMon can be used without the CZ-TAW1 module on every platform supported by golang (RaspberyPi, Windows, Linux, OpenWrt routers for example) after connecting it to Heat Pump over rs232-ttl interface.
 If you need help with this project you can try Slack of Heishamon project there is some people who manage this one :)
 
 - OpenWRT Image with preinstalled GoHeishaMon (and removed A2Wmain due to copyright issues) 
@@ -26,7 +26,7 @@ Even the GoHeishaMon is on other side you can't just change the site in orginal 
 
 ## Installation
 
-For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one) https://github.com/lsochanowski/GoHeishaMon/releases/tag/1.0.135
+For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one, becouse of big drop of voltage on USB port please use USB flash memory stick.) https://github.com/lsochanowski/GoHeishaMon/releases/tag/1.0.150
 copy to usb drive files :
 - openwrt-ar71xx-generic-cus531-16M-rootfs-squashfs.bin
 - openwrt-ar71xx-generic-cus531-16M-kernel.bin
@@ -35,14 +35,14 @@ copy to usb drive files :
 
 After inserting drive with this files in runing CZ-TAW1 you need to push 3 buttons at once for more tnah 10 seconds until middle LED start changing the colors: green-blue-red. You may also notice the LED blinking on your drive ( if drive have it).
 
-Process of update starts ,and it will take app 3 min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color , so the GoHeishaMon just starts up. Wait with removing drive from module minimum 20s from this moment ,since GoHeishaMOn needs to copy config file.
+Process of update starts ,and it will take app 3 min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color . Wait with removing drive from module until the white LED turn off again ( that is a sign , that GoHeishaMon copied config file from drive and reboot CZ-TAW1. You need o remove the drive before the white LED turn on again , becouse the config file will be copied again and reboot if the drive with a config file will be still present.
 
 ### SSH and web (over LuCI) access
 
-For advanced ussers there is possibility to have SSH and web acces (LuCI) on CZ-TAW1:
+For advanced users there is possibility to have SSH and web acces (LuCI) on CZ-TAW1:
 - In config file you should have option "EnableCommand=true"
 - GoHeishaMon should be connected to MQTT server
-- Public in MQTT topic "panasonic_heat_pump/OSCommand" (or eqvivalent with is set as Mqtt_set_base) one by one values: "umount /overlay" , "jffs2reset -y" and finally "reboot". This will perform a so called firstboot. You can see the output console in topic"panasonic_heat_pump/OSCommand/out". All configuration ( also including WiFi connection) will be set to default , so please connect GoHeishaMon via Ethernet cable after that. WiFi config after that you can do via ssh or LuCI ,identical to standard OpenWRT routers.
+- Public in MQTT topic "panasonic_heat_pump/OSCommand" (or eqvivalent with is set as Mqtt_set_base) one by one values: "umount /overlay" , "jffs2reset -y" and finally "reboot". This will perform a so called firstboot. You can see the output console in topic"panasonic_heat_pump/OSCommand/out". All configuration ( also including WiFi connection , GoHeishaMon config) will be set to default , so please connect GoHeishaMon via Ethernet cable after that, and use a drive ( or ssh connection and edit file /etc/gh/config) to set GoHeishaMon configuration.  WiFi configuration you can do via ssh or LuCI ,identical to standard OpenWRT routers ( It is alsp posibility ,that CZ-TAW1 will be also a reapeter , or dummy AP ).
 
 After reboot you should be able to connect to ssh and via web with user: root and password: GoHeishaMonpass ( you should change it!)
 
@@ -52,11 +52,14 @@ Screenshot from Homeassistant:
 
 
 
+Changes:
+-
+1.1.150 comparing to 1.1.135 : 
+- moved buttons handling from GoHeishaMon to separate script ( in this way , if GoHeishaMon will crash it is still possible to go back to orginal via 3 buttons)
 
----- AUTO BUILD  for MIPS don't work....------
+
 Todo:
 
-- rest of the commands
 - queue command from a2wmain 
 - flag to point to config file
 - manuals 
