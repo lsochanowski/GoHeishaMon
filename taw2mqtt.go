@@ -229,6 +229,8 @@ func UpdateConfig(configfile string) bool {
 			fmt.Printf("can't update configfile %s", configfile)
 			return false
 		}
+		_, _ = exec.Command("sync").Output()
+
 		_, _ = exec.Command("/usr/bin/usb_umount.sh").Output()
 		_, _ = exec.Command("reboot").Output()
 		return true
