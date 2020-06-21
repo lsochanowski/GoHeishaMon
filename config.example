@@ -15,3 +15,4 @@ SleepAfterCommand=1
 MqttClientID="GoHeishaMon-pub"
 MqttKeepalive=60
 EnableCommand=true
+HAAutoDiscover=true
