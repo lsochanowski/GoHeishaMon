@@ -1,4 +1,4 @@
-# -!!!!!!! Latest checked release is 1.0.150 !!!!! Others are tests ,and some of them can brick CZ-TAW1.!!!!!!!-
+# -!!!!!!! Latest checked release is 1.0.159 !!!!! Others are tests ,and some of them can brick CZ-TAW1.!!!!!!!-
 
 
 This project is to modify Panasonic CZ-TAW1 Firmware to send data from heat pump to MQTT instead to Aquarea Cloud (there is some POC work proving there is a posiblity to send data concurently to Aquarea Cloud and MQTT host using only modified CZ-TAW1 ,but it's not yet implemented in this project )
@@ -26,18 +26,18 @@ Even the GoHeishaMon is on other side you can't just change the site in orginal 
 
 ## Installation
 
-For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one, becouse of big drop of voltage on USB port please use USB flash memory stick.) https://github.com/lsochanowski/GoHeishaMon/releases/tag/1.0.150
+For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one, becouse of big drop of voltage on USB port please use USB flash memory stick.) https://github.com/lsochanowski/GoHeishaMon/releases/tag/1.0.159
 copy to usb drive files :
 - openwrt-ar71xx-generic-cus531-16M-rootfs-squashfs.bin
 - openwrt-ar71xx-generic-cus531-16M-kernel.bin
-- GoHeishaMonConfig.new ( It is config.example file edited according to your needs and changed it's name)
+- GoHeishaMonConfig.new ( It is config.example file edited according to your needs and changed it's name. Please pay attantion on file extantion ,since in Windows .txt is often added)
 
 
 After inserting drive with this files in runing CZ-TAW1 you need to push 3 buttons at once for more tnah 10 seconds until middle LED start changing the colors: green-blue-red. You may also notice the LED blinking on your drive ( if drive have it).
 
-Process of update starts ,and it will take app 3 min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color . Wait with removing drive from module until the white LED turn off again ( that is a sign , that GoHeishaMon copied config file from drive and reboot CZ-TAW1. You need o remove the drive before the white LED turn on again , becouse the config file will be copied again and reboot if the drive with a config file will be still present.
+Process of update starts ,and it will take app 3 min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color . Wait with removing drive from module until the white LED turn off again ( that is a sign , that GoHeishaMon copied config file from drive and reboot CZ-TAW1. You need to remove the drive before the white LED turn on again , becouse the config file will be copied again and reboot if the drive with a config file will be still present.
 
-### SSH and web (over LuCI) access
+### SSH and web (over LuCI) access (on by default in 1.1.159 - to be veryfied)
 
 For advanced users there is possibility to have SSH and web acces (LuCI) on CZ-TAW1:
 - In config file you should have option "EnableCommand=true"
@@ -54,6 +54,11 @@ Screenshot from Homeassistant:
 
 Changes:
 -
+1.1.159 comparing to1.1.150 :
+- removed a2wmain watch
+- start ssh and www from script
+- Home Assistant MQTT Discovery https://www.home-assistant.io/docs/mqtt/discovery/
+
 1.1.150 comparing to 1.1.135 : 
 - moved buttons handling from GoHeishaMon to separate script ( in this way , if GoHeishaMon will crash it is still possible to go back to orginal via 3 buttons)
 
