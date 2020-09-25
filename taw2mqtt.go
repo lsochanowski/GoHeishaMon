@@ -627,17 +627,20 @@ func connLostHandler(c mqtt.Client, err error) {
 	//Perform additional action...
 }
 
+func MakeSwitchTopic(name string, state string) {
+	var t AutoDiscoverStruct
+	t.Name = fmt.Sprintf("TEST-%s", name)
+	t.StateTopic = config.Mqtt_topic_base + "/" + state
+	t.CommandTopic = config.Mqtt_set_base + "/" + name
+	t.UID = fmt.Sprintf("Aquarea-%s-%s", config.MqttLogin, t.Name)
+	SwitchTopics[name] = t
+
+}
 func startsub(c mqtt.Client) {
 	var t AutoDiscoverStruct
-
 	c.Subscribe("aquarea/+/+/set", 2, HandleMSGfromMQTT)
 	c.Subscribe(config.Mqtt_set_base+"/SetHeatpump", 2, HandleSetHeatpump)
-	t.Name = "TEST-SetHeatpump"
-	t.CommandTopic = config.Mqtt_set_base + "/SetHeatpump"
-	t.StateTopic = config.Mqtt_topic_base + "/Heatpump_State"
-	t.UID = fmt.Sprintf("Aquarea-%s-%s", config.MqttLogin, t.Name)
-	SwitchTopics["SetHeatpump"] = t
-	t = AutoDiscoverStruct{}
+	MakeSwitchTopic("SetHeatpump", "Heatpump_State")
 	c.Subscribe(config.Mqtt_set_base+"/SetQuietMode", 2, HandleSetQuietMode)
 	c.Subscribe(config.Mqtt_set_base+"/SetZ1HeatRequestTemperature", 2, HandleSetZ1HeatRequestTemperature)
 	c.Subscribe(config.Mqtt_set_base+"/SetZ1CoolRequestTemperature", 2, HandleSetZ1CoolRequestTemperature)
@@ -645,33 +648,13 @@ func startsub(c mqtt.Client) {
 	c.Subscribe(config.Mqtt_set_base+"/SetZ2CoolRequestTemperature", 2, HandleSetZ2CoolRequestTemperature)
 	c.Subscribe(config.Mqtt_set_base+"/SetOperationMode", 2, HandleSetOperationMode)
 	c.Subscribe(config.Mqtt_set_base+"/SetForceDHW", 2, HandleSetForceDHW)
-	t.Name = "TEST-SetForceDHW"
-	t.CommandTopic = config.Mqtt_set_base + "/SetForceDHW"
-	t.StateTopic = config.Mqtt_topic_base + "/Force_DHW_State"
-	t.UID = fmt.Sprintf("Aquarea-%s-%s", config.MqttLogin, t.Name)
-	SwitchTopics["SetForceDHW"] = t
-	t = AutoDiscoverStruct{}
+	MakeSwitchTopic("SetForceDHW", "Force_DHW_State")
 	c.Subscribe(config.Mqtt_set_base+"/SetForceDefrost", 2, HandleSetForceDefrost)
-	t.Name = "TEST-SetForceDefrost"
-	t.CommandTopic = config.Mqtt_set_base + "/SetForceDefrost"
-	t.StateTopic = config.Mqtt_topic_base + "/Defrosting_State"
-	t.UID = fmt.Sprintf("Aquarea-%s-%s", config.MqttLogin, t.Name)
-	SwitchTopics["SetForceDefrost"] = t
-	t = AutoDiscoverStruct{}
+	MakeSwitchTopic("SetForceDefrost", "Defrosting_State")
 	c.Subscribe(config.Mqtt_set_base+"/SetForceSterilization", 2, HandleSetForceSterilization)
-	t.Name = "TEST-SetForceSterilization"
-	t.CommandTopic = config.Mqtt_set_base + "/SetForceSterilization"
-	t.StateTopic = config.Mqtt_topic_base + "/Sterilization_State"
-	t.UID = fmt.Sprintf("Aquarea-%s-%s", config.MqttLogin, t.Name)
-	SwitchTopics["SetForceSterilization"] = t
-	t = AutoDiscoverStruct{}
+	MakeSwitchTopic("SetForceSterilization", "Sterilization_State")
 	c.Subscribe(config.Mqtt_set_base+"/SetHolidayMode", 2, HandleSetHolidayMode)
-	t.Name = "TEST-SetHolidayMode"
-	t.CommandTopic = config.Mqtt_set_base + "/SetHolidayMode"
-	t.StateTopic = config.Mqtt_topic_base + "/Holiday_Mode_State"
-	t.UID = fmt.Sprintf("Aquarea-%s-%s", config.MqttLogin, t.Name)
-	SwitchTopics["SetHolidayMode"] = t
-	t = AutoDiscoverStruct{}
+	MakeSwitchTopic("SetHolidayMode", "Holiday_Mode_State")
 	c.Subscribe(config.Mqtt_set_base+"/SetPowerfulMode", 2, HandleSetPowerfulMode)
 
 	t.Name = "TEST-SetPowerfulMode-30min"
