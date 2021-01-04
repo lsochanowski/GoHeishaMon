@@ -28,8 +28,8 @@ var panasonicQuery []byte = []byte{0x71, 0x6c, 0x01, 0x10, 0x00, 0x00, 0x00, 0x0
 var PANASONICQUERYSIZE int = 110
 
 //should be the same number
-var NUMBER_OF_TOPICS int = 92
-var AllTopics [92]TopicData
+var NUMBER_OF_TOPICS int = 95
+var AllTopics [95]TopicData
 var MqttKeepalive time.Duration
 var CommandsToSend map[xid.ID][]byte
 var GPIO map[string]string
@@ -2073,9 +2073,32 @@ func ParseTopicList3() {
 	AllTopics[91].TopicName = "DHW_Heater_Operations_Hours"
 	AllTopics[91].TopicBit = 0
 	AllTopics[91].TopicDisplayUnit = "h"
-
 	AllTopics[91].TopicFunction = "unknown"
 	AllTopics[91].TopicUnit = "Hours"
 	AllTopics[91].TopicA2M = ""
+
+	AllTopics[92].TopicNumber = 92
+	AllTopics[92].TopicName = "Heat_Pump_Model"
+	AllTopics[92].TopicBit = 132
+	AllTopics[92].TopicDisplayUnit = "Model"
+	AllTopics[92].TopicFunction = "unknown"
+	AllTopics[92].TopicUnit = "Model"
+	AllTopics[92].TopicA2M = ""
+
+	AllTopics[93].TopicNumber = 93
+	AllTopics[93].TopicName = "Pump_Duty"
+	AllTopics[93].TopicBit = 172
+	AllTopics[93].TopicDisplayUnit = "Duty"
+	AllTopics[93].TopicFunction = "getIntMinus1"
+	AllTopics[93].TopicUnit = "Duty"
+	AllTopics[93].TopicA2M = ""
+
+	AllTopics[94].TopicNumber = 94
+	AllTopics[94].TopicName = "Zones_State"
+	AllTopics[94].TopicBit = 6
+	AllTopics[94].TopicDisplayUnit = "ZonesState"
+	AllTopics[94].TopicFunction = "getBit1and2"
+	AllTopics[94].TopicUnit = "ZonesState"
+	AllTopics[94].TopicA2M = ""
 
 }
