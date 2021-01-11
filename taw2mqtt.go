@@ -33,7 +33,7 @@ var AllTopics [95]TopicData
 var MqttKeepalive time.Duration
 var CommandsToSend map[xid.ID][]byte
 var GPIO map[string]string
-var actData [92]string
+var actData [95]string
 var config Config
 var sending bool
 var Serial serial.Port
