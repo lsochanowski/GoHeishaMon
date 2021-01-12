@@ -54,7 +54,6 @@ Screenshot from Homeassistant:
 
 Changes:
 
--
 1.1.166 - add new topics
 
 1.1.159 comparing to1.1.150 :
