@@ -6,7 +6,7 @@ jobs:
   build:
     docker:
       # specify the version
-      - image: cimg/go
+      - image: cimg/go:latest
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
