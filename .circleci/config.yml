@@ -27,11 +27,11 @@ jobs:
       - run: go get github.com/eclipse/paho.mqtt.golang
       - run: go get go.bug.st/serial
       - run: make
-#      - run: sudo apt update
-#      - run: sudo apt install -y upx squashfs-tools && sudo apt-get clean
-#      - run: make upx
-#      - run: make compilesquash
-#      - run: cp OS/Kernel/openwrt-ar71xx-generic-cus531-16M-kernel.bin dist/
+      - run: sudo apt update
+      - run: sudo apt install -y upx squashfs-tools && sudo apt-get clean
+      - run: make upx
+      - run: make compilesquash
+      - run: cp OS/Kernel/openwrt-ar71xx-generic-cus531-16M-kernel.bin dist/
       - run:
           name: "Publish Release on GitHub"
           command: |
@@ -39,14 +39,4 @@ jobs:
             go install github.com/tcnksm/ghr
             VERSION=$(git rev-parse --short HEAD)
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 1.0.${CIRCLE_BUILD_NUM} dist/
-  publish-github-release:
-    docker:
-      - image: cibuilds/github:0.10
-    steps:
-      - attach_workspace:
-          at: ./artifacts
-      - run:
-          name: "Publish Release on GitHub"
-          command: |
-            VERSION=$(my-binary --version)
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./artifacts/
+ 
