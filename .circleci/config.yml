@@ -19,8 +19,6 @@ jobs:
     ####   /go/src/bitbucket.org/circleci/go-tool
   #  working_directory: /go/src/github.com/lsochanowski/GoHeishaMon
     steps:
-      - attach_workspace:
-          at: ./artifacts
       - checkout
 
       # specify any bash command here prefixed with `run: `
