@@ -19,6 +19,8 @@ jobs:
     ####   /go/src/bitbucket.org/circleci/go-tool
   #  working_directory: /go/src/github.com/lsochanowski/GoHeishaMon
     steps:
+      - attach_workspace:
+          at: ./artifacts
       - checkout
 
       # specify any bash command here prefixed with `run: `
@@ -32,9 +34,20 @@ jobs:
       - run: make upx
       - run: make compilesquash
       - run: cp OS/Kernel/openwrt-ar71xx-generic-cus531-16M-kernel.bin dist/
+#      - run:
+#          name: "Publish Release on GitHub"
+#          command: |
+#            go get github.com/tcnksm/ghr
+#            VERSION=$(git rev-parse --short HEAD)
+#            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 1.0.${CIRCLE_BUILD_NUM} dist/
+  publish-github-release:
+    docker:
+      - image: cibuilds/github:0.10
+    steps:
+      - attach_workspace:
+          at: ./artifacts
       - run:
           name: "Publish Release on GitHub"
           command: |
-            go get github.com/tcnksm/ghr
-            VERSION=$(git rev-parse --short HEAD)
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 1.0.${CIRCLE_BUILD_NUM} dist/
+            VERSION=$(my-binary --version)
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./artifacts/
