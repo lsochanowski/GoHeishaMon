@@ -32,12 +32,12 @@ jobs:
       - run: make upx
       - run: make compilesquash
       - run: cp OS/Kernel/openwrt-ar71xx-generic-cus531-16M-kernel.bin dist/
-#      - run:
-#          name: "Publish Release on GitHub"
-#          command: |
-#            go get github.com/tcnksm/ghr
-#            VERSION=$(git rev-parse --short HEAD)
-#            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 1.0.${CIRCLE_BUILD_NUM} dist/
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            go install github.com/tcnksm/ghr
+            VERSION=$(git rev-parse --short HEAD)
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 1.0.${CIRCLE_BUILD_NUM} dist/
   publish-github-release:
     docker:
       - image: cibuilds/github:0.10
