@@ -27,14 +27,15 @@ jobs:
       - run: go get github.com/eclipse/paho.mqtt.golang
       - run: go get go.bug.st/serial
       - run: make
-      - run: sudo apt update
-      - run: sudo apt install -y upx squashfs-tools && sudo apt-get clean
-      - run: make upx
-      - run: make compilesquash
-      - run: cp OS/Kernel/openwrt-ar71xx-generic-cus531-16M-kernel.bin dist/
+#      - run: sudo apt update
+#      - run: sudo apt install -y upx squashfs-tools && sudo apt-get clean
+#      - run: make upx
+#      - run: make compilesquash
+#      - run: cp OS/Kernel/openwrt-ar71xx-generic-cus531-16M-kernel.bin dist/
       - run:
           name: "Publish Release on GitHub"
           command: |
+            go get github.com/tcnksm/ghr
             go install github.com/tcnksm/ghr
             VERSION=$(git rev-parse --short HEAD)
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 1.0.${CIRCLE_BUILD_NUM} dist/
