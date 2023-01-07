@@ -5,5 +5,5 @@ Source: qca/feeds/luci/contrib/package/luci
 Section: luci
 Maintainer: LuCI Development Team <luci@lists.subsignal.org>
 Architecture: ar71xx
-Installed-Size: 54900
+Installed-Size: 54970
 Description:  Firewall and Portforwarding application

@@ -4,5 +4,5 @@ Depends: libc
 Source: package/fwupdate
 Section: utils
 Architecture: ar71xx
-Installed-Size: 5160
+Installed-Size: 5156
 Description:  simple program to read/write config mtd

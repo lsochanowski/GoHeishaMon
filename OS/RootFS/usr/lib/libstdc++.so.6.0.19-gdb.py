@@ -19,8 +19,8 @@ import gdb
 import os
 import os.path
 
-pythondir = '/home/a2w-linux/build/qsdk/staging_dir/toolchain-mips_34kc_gcc-4.8-linaro_uClibc-0.9.33.2/share/gcc-4.8.3/python'
-libdir = '/home/a2w-linux/build/qsdk/staging_dir/toolchain-mips_34kc_gcc-4.8-linaro_uClibc-0.9.33.2/mips-openwrt-linux-uclibc/lib'
+pythondir = '/home/a2w-linux/build/qsdk_proto/staging_dir/toolchain-mips_34kc_gcc-4.8-linaro_uClibc-0.9.33.2/share/gcc-4.8.3/python'
+libdir = '/home/a2w-linux/build/qsdk_proto/staging_dir/toolchain-mips_34kc_gcc-4.8-linaro_uClibc-0.9.33.2/mips-openwrt-linux-uclibc/lib'
 
 # This file might be loaded when there is no current objfile.  This
 # can happen if the user loads it manually.  In this case we don't

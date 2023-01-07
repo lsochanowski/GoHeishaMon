@@ -5,6 +5,6 @@ Source: qca/feeds/wlan-open/mac80211
 Section: kernel
 Maintainer: Qualcomm Atheros
 Architecture: ar71xx
-Installed-Size: 60048
+Installed-Size: 60126
 Description:  This module adds support for wireless adapters based on
  QCA IEEE 802.11n AR5008, AR9001,AR9002, AR9003, AR9004 family of chipsets.

@@ -5,5 +5,5 @@ Source: qca/feeds/wlan-open/mac80211
 Section: kernel
 Maintainer: Qualcomm Atheros
 Architecture: ar71xx
-Installed-Size: 120413
+Installed-Size: 120878
 Description:  cfg80211 is the Linux wireless LAN (802.11) configuration API.

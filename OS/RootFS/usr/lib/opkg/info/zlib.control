@@ -6,5 +6,5 @@ License: ZLIB
 LicenseFiles: README
 Section: libs
 Architecture: ar71xx
-Installed-Size: 37003
+Installed-Size: 37005
 Description:  Library implementing the deflate compression method

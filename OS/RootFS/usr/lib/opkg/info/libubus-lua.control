@@ -6,5 +6,5 @@ License: LGPLv2.1
 Section: libs
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 5423
+Installed-Size: 5434
 Description:  Lua binding for the OpenWrt RPC client

@@ -5,6 +5,6 @@ Source: package/network/utils/wireless-tools
 Section: net
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 19982
+Installed-Size: 19986
 Description:  This package contains a collection of tools for configuring wireless
  adapters implementing the "Linux Wireless Extensions".

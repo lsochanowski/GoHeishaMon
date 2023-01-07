@@ -57,19 +57,19 @@ enabled() {
         
         echo "PS Watch=====" > /dev/ttyS0
 
-#flag=1
-#while [ $flag -eq 1 ];
-#do
-#	RUNNING=`ps | grep /a2wmain | grep -v "grep /a2wmain"`
-#
-#	if [ "${RUNNING}" = ""]; then
-#	   echo "PROCESS DOWN RESTART" > /dev/ttyS0
-#          reboot
-#	    
-#	fi
-#	
-#	
-#done
+flag=1
+while [ $flag -eq 1 ];
+do
+	RUNNING=`ps | grep /a2wmain | grep -v "grep /a2wmain"`
+
+	if [ "${RUNNING}" = ""]; then
+	   echo "PROCESS DOWN RESTART" > /dev/ttyS0
+           reboot
+	    
+	fi
+	
+	
+done
 
 
 

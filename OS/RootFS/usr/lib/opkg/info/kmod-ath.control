@@ -5,5 +5,5 @@ Source: qca/feeds/wlan-open/mac80211
 Section: kernel
 Maintainer: Qualcomm Atheros
 Architecture: ar71xx
-Installed-Size: 11809
+Installed-Size: 11803
 Description:  This module contains some common parts needed by QCA Wireless drivers.

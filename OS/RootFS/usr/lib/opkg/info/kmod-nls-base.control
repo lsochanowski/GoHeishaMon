@@ -6,5 +6,5 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 3083
+Installed-Size: 3081
 Description:  Kernel module for NLS (Native Language Support)

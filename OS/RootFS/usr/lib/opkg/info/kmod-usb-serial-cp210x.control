@@ -6,5 +6,5 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 3832
+Installed-Size: 3833
 Description:  Kernel support for Silicon Labs cp210x USB-to-Serial converters

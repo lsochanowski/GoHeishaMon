@@ -4,5 +4,5 @@ Depends: libc
 Source: package/libs/uclibc++
 Section: libs
 Architecture: ar71xx
-Installed-Size: 67434
+Installed-Size: 67428
 Description:  C++ library for embedded systems

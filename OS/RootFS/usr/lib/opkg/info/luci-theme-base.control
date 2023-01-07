@@ -5,5 +5,5 @@ Source: qca/feeds/luci/contrib/package/luci
 Section: luci
 Maintainer: LuCI Development Team <luci@lists.subsignal.org>
 Architecture: ar71xx
-Installed-Size: 23505
+Installed-Size: 24113
 Description:  Common base for all themes

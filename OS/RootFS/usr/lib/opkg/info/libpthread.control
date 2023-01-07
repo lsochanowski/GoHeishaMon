@@ -7,5 +7,5 @@ Status: unknown hold not-installed
 Essential: yes
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 31188
+Installed-Size: 31231
 Description:  POSIX thread library

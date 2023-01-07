@@ -32,7 +32,7 @@ VAR_CURBOOT=0
 THIS_VERSION="v1.0"
 
 # for debug
-FOR_DEBUG=1
+FOR_DEBUG=0
 
 # for test
 FOR_TEST1=0

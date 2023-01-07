@@ -5,5 +5,5 @@ Source: package/network/ipv6/odhcp6c
 Section: net
 Maintainer: Steven Barth <steven@midlink.org>
 Architecture: ar71xx
-Installed-Size: 18508
+Installed-Size: 18507
 Description:  Embedded DHCPv6-client for OpenWrt

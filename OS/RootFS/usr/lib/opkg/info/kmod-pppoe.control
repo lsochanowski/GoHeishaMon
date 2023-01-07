@@ -6,5 +6,5 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 6242
+Installed-Size: 6254
 Description:  Kernel module for PPPoE (PPP over Ethernet) support

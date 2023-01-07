@@ -1,4 +1,3 @@
 /usr/sbin/uhttpd
-/etc/init.d/uhttpd
 /etc/config/uhttpd
 /lib/upgrade/keep.d/uhttpd

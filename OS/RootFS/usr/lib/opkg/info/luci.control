@@ -5,5 +5,5 @@ Source: qca/feeds/luci/contrib/package/luci
 Section: luci
 Maintainer: LuCI Development Team <luci@lists.subsignal.org>
 Architecture: ar71xx
-Installed-Size: 106
+Installed-Size: 105
 Description:  Standard OpenWrt set including full admin with ppp support and the default OpenWrt theme

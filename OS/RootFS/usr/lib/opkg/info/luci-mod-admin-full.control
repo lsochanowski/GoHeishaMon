@@ -5,5 +5,5 @@ Source: qca/feeds/luci/contrib/package/luci
 Section: luci
 Maintainer: LuCI Development Team <luci@lists.subsignal.org>
 Architecture: ar71xx
-Installed-Size: 67654
+Installed-Size: 67419
 Description:  LuCI Administration - full-featured for full control

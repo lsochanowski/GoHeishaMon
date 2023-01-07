@@ -17,6 +17,7 @@ zone1_temp="$8"
 zone2_temp="$9"
 tank_temp="$10"
 outdoor="$11"
+multi_od_connection="$12"
 
 echo "$no" >> $write_file
 echo "$heat_cons">> $write_file
@@ -29,5 +30,6 @@ echo "$zone1_temp">> $write_file
 echo "$zone2_temp">> $write_file
 echo "$tank_temp">> $write_file
 echo "$outdoor">> $write_file
+echo "$multi_od_connection">> $write_file
 
 exit 0

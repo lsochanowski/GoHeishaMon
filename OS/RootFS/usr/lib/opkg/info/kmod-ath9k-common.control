@@ -5,5 +5,5 @@ Source: qca/feeds/wlan-open/mac80211
 Section: kernel
 Maintainer: Qualcomm Atheros
 Architecture: ar71xx
-Installed-Size: 146137
+Installed-Size: 146135
 Description:  QCA 802.11n wireless devices (common code for ath9k and ath9k_htc)

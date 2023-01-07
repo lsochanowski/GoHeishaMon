@@ -5,5 +5,5 @@ Source: package/network/services/hostapd
 Section: net
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 352765
+Installed-Size: 352595
 Description:  WPA Supplicant (with Wi-Fi P2P support)

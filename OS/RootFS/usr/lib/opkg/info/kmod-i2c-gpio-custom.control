@@ -4,5 +4,5 @@ Depends: kernel (=3.14-1-8c76dc86e34453a9e87f197574b4112f), kmod-i2c-core, kmod-
 Source: package/kernel/i2c-gpio-custom
 Section: kernel
 Architecture: ar71xx
-Installed-Size: 1630
+Installed-Size: 1631
 Description:  Kernel module for register a custom i2c-gpio platform device.

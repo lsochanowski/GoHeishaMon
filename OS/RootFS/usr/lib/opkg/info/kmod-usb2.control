@@ -6,5 +6,5 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 24163
+Installed-Size: 24240
 Description:  Kernel support for USB2 (EHCI) controllers

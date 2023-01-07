@@ -6,5 +6,5 @@ License: ISC BSD-3c
 Section: libs
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 3329
+Installed-Size: 3330
 Description:  blobmsg <-> json conversion library

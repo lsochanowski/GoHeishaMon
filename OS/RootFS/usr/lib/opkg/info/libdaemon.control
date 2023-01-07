@@ -4,7 +4,7 @@ Depends: libc
 Source: qca/feeds/oldpackages/libs/libdaemon
 Section: libs
 Architecture: ar71xx
-Installed-Size: 7582
+Installed-Size: 7570
 Description:  libdaemon is a lightweight C library that eases the writing of UNIX daemons.
  It consists of the following parts:
  - A wrapper around fork() which does the correct daemonization procedure of a process

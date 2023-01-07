@@ -4,5 +4,5 @@ Depends: libc
 Source: package/boot/qca-legacy-uboot
 Section: boot
 Architecture: ar71xx
-Installed-Size: 105
+Installed-Size: 104
 Description:  U-boot for cus531-16M

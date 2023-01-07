@@ -5,5 +5,5 @@ Source: package/network/services/hostapd
 Section: net
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 25338
+Installed-Size: 25342
 Description:  WPA Supplicant command line interface

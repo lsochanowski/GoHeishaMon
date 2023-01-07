@@ -4,5 +4,5 @@ Depends: libc
 Source: qca/feeds/oldpackages/utils/mtd-utils
 Section: utils
 Architecture: ar71xx
-Installed-Size: 104
+Installed-Size: 105
 Description:  Utilities for manipulating memory technology devices.

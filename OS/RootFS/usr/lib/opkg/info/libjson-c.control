@@ -7,5 +7,5 @@ LicenseFiles: COPYING
 Section: libs
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 12582
+Installed-Size: 12574
 Description:  This package contains a library for javascript object notation backends.

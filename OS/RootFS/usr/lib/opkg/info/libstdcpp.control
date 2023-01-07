@@ -6,5 +6,5 @@ Status: unknown hold not-installed
 Essential: yes
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 257308
+Installed-Size: 257690
 Description:  GNU Standard C++ Library v3

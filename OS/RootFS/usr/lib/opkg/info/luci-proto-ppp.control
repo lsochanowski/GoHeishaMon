@@ -5,5 +5,5 @@ Source: qca/feeds/luci/contrib/package/luci
 Section: luci
 Maintainer: LuCI Development Team <luci@lists.subsignal.org>
 Architecture: ar71xx
-Installed-Size: 2997
+Installed-Size: 2976
 Description:  Support for PPP/PPPoE/PPPoA/PPtP

@@ -6,5 +6,5 @@ License: GPLv2
 Section: base
 Maintainer: John Crispin <blogic@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 14482
+Installed-Size: 14500
 Description:  OpenWrt filesystem tools

@@ -6,7 +6,7 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 31014
+Installed-Size: 30818
 Description:  Netfilter core kernel modules
  Includes:
  - comment

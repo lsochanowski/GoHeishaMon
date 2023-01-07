@@ -6,5 +6,5 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 1557
+Installed-Size: 1559
 Description:  Kernel module for EEPROM 93CX6 support

@@ -4,5 +4,5 @@ Depends: kernel (=3.14-1-8c76dc86e34453a9e87f197574b4112f)
 Source: package/kernel/gpio-button-hotplug
 Section: kernel
 Architecture: ar71xx
-Installed-Size: 4494
+Installed-Size: 4512
 Description:  Simple GPIO Button Hotplug driver

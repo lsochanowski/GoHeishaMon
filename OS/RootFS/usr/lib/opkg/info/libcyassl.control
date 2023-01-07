@@ -4,6 +4,6 @@ Depends: libc
 Source: package/libs/cyassl
 Section: libs
 Architecture: ar71xx
-Installed-Size: 67810
+Installed-Size: 67819
 Description:  CyaSSL is an SSL library optimized for small footprint, both on disk and for
  memory use.

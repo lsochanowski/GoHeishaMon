@@ -6,5 +6,5 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 20106
+Installed-Size: 20107
 Description:  Kernel modules for PPP support

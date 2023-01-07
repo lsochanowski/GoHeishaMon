@@ -4,6 +4,6 @@ Depends: libc
 Source: qca/feeds/oldpackages/utils/sysstat
 Section: utils
 Architecture: ar71xx
-Installed-Size: 139830
+Installed-Size: 142997
 Description:  The sysstat utilities are a collection of performance monitoring tools for
  Linux. These include sar, sadf, mpstat, iostat, pidstat and sa tools.

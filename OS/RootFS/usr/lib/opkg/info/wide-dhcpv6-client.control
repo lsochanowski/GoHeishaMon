@@ -5,7 +5,7 @@ Source: qca/feeds/oldpackages/ipv6/wide-dhcpv6
 Section: net
 Maintainer: Andrew Byrne <openwrt@andy.id.au>
 Architecture: ar71xx
-Installed-Size: 52844
+Installed-Size: 52847
 Description:  WIDE-DHCPv6 is an open-source implementation of Dynamic Host Configuration Protocol
  for IPv6 (DHCPv6) originally developed by the KAME project. The implementation
  mainly conforms to the following standards: RFC3315,3319,3633,3646,4075,4272,etc.

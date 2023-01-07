@@ -4,5 +4,5 @@ Depends: libc
 Source: package/network/utils/iptables
 Section: libs
 Architecture: ar71xx
-Installed-Size: 9746
+Installed-Size: 9751
 Description:  IPv4 firewall - shared libiptc library

@@ -8,4 +8,6 @@
 /etc/sysctl.conf
 /etc/rc.local
 /etc/sysupgrade.conf
+/etc/config/udhcpd.leases
+/etc/config/udhcpd.conf
 /etc/config/system

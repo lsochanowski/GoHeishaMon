@@ -5,6 +5,6 @@ Source: package/system/mtd
 License: GPLv2 GPLv2+
 Section: utils
 Architecture: ar71xx
-Installed-Size: 13441
+Installed-Size: 13437
 Description:  This package contains an utility useful to upgrade from other firmware or 
  older OpenWrt releases.

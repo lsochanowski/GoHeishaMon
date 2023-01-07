@@ -6,5 +6,5 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 4758
+Installed-Size: 4994
 Description:  Kernel support for Prolific PL2303 USB-to-Serial converters

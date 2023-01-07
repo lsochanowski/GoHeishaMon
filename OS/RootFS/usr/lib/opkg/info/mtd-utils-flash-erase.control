@@ -4,5 +4,5 @@ Depends: libc, mtd-utils
 Source: qca/feeds/oldpackages/utils/mtd-utils
 Section: utils
 Architecture: ar71xx
-Installed-Size: 10927
+Installed-Size: 10925
 Description:  flash_erase package from mtd-utils

@@ -1,8 +1,8 @@
 /usr/bin/uci_commit_wireless.sh
 /etc/openwrt_version
 /lib/upgrade/openmesh.sh
-/etc/resolv.conf
 /lib/ar71xx.sh
+/etc/resolv.conf
 /lib/upgrade/dir825.sh
 /etc/init.d/done
 /var
@@ -34,6 +34,7 @@
 /etc/uci-defaults/04_led_migration
 /etc/hotplug.d/net/10-ar922x-led-fix
 /etc/config/system
+/usr/bin/eth_test.sh
 /usr/bin/wlan_down.sh
 /usr/bin/check_operation.sh
 /usr/bin/network_init.sh
@@ -56,6 +57,7 @@
 /lib/preinit/10_indicate_failsafe
 /init
 /usr/bin/wps_conf_check.sh
+/etc/config/udhcpd.conf
 /usr/bin/check_operationnum.sh
 /etc/uci-defaults/03_network-vlan-migration
 /etc/rc.local_new
@@ -73,6 +75,7 @@
 /sbin/hotplug-call
 /usr/bin/dlupd.sh
 /usr/bin/wifi_link_check.sh
+/etc/config/udhcpd.leases
 /etc/uci-defaults/03_network-switchX-migration
 /usr/bin/wifi_startup.sh
 /usr/bin/wlan_up.sh
@@ -103,8 +106,8 @@
 /usr/bin/read_operation.sh
 /lib/upgrade/allnet.sh
 /bin/login.sh
-/usr/bin/wifi_connect_check.sh
 /usr/bin/delfile.sh
+/usr/bin/wifi_connect_check.sh
 /etc/hotplug.d/net/00-sysctl
 /etc/hosts
 /lib/upgrade/ioe.sh
@@ -124,8 +127,8 @@
 /lib/preinit/99_10_failsafe_login
 /etc/init.d/sysfixtime
 /etc/TZ
-/etc/init.d/umount
 /lib/functions/service.sh
+/etc/init.d/umount
 /usr/bin/read_timestamp.sh
 /usr/bin/ip_setting_check.sh
 /usr/bin/uci_wps_setting.sh
@@ -134,8 +137,8 @@
 /usr/bin/write_timeronoff.sh
 /etc/passwd
 /lib/preinit/02_default_set_state
-/ssl/newkey.pem
 /usr/bin/check_powercalnum.sh
+/ssl/newkey.pem
 /ssl/newcert.pem
 /usr/bin/eth_static_connect.sh
 /etc/mtab

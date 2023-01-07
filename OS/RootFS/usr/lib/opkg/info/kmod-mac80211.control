@@ -5,5 +5,5 @@ Source: qca/feeds/wlan-open/mac80211
 Section: kernel
 Maintainer: Qualcomm Atheros
 Architecture: ar71xx
-Installed-Size: 227348
+Installed-Size: 227365
 Description:  Generic IEEE 802.11 Networking Stack (mac80211)

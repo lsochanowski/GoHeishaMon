@@ -4,5 +4,5 @@ Depends: libc
 Source: package/network/utils/iptables
 Section: libs
 Architecture: ar71xx
-Installed-Size: 15872
+Installed-Size: 15881
 Description:  IPv4/IPv6 firewall - shared xtables library

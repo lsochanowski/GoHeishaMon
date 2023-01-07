@@ -4,6 +4,6 @@ Depends: libc
 Source: qca/feeds/oldpackages/net/ethtool
 Section: net
 Architecture: ar71xx
-Installed-Size: 77413
+Installed-Size: 77415
 Description:  ethtool is a small utility for examining and tuning your ethernet-based
  network interface

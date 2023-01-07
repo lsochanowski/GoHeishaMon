@@ -5,5 +5,5 @@ Source: qca/feeds/oldpackages/net/miniupnpd
 Section: net
 Maintainer: Daniel Dickinson <openwrt@cshore.neomailbox.net>
 Architecture: ar71xx
-Installed-Size: 36594
+Installed-Size: 36597
 Description:  Lightweight UPnP daemon

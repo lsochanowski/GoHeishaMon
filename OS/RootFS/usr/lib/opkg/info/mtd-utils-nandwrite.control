@@ -4,5 +4,5 @@ Depends: libc, mtd-utils
 Source: qca/feeds/oldpackages/utils/mtd-utils
 Section: utils
 Architecture: ar71xx
-Installed-Size: 12098
+Installed-Size: 12099
 Description:  nandwrite package from mtd-utils

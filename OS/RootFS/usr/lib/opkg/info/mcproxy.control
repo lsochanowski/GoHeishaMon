@@ -4,5 +4,5 @@ Depends: libc, libpthread, libstdcpp
 Source: qca/feeds/oldpackages/net/mcproxy
 Section: net
 Architecture: ar71xx
-Installed-Size: 136257
+Installed-Size: 136265
 Description:  mcproxy is a free & open source implementation of the IGMP/MLD proxy function (see  RFC 4605) for Linux systems.

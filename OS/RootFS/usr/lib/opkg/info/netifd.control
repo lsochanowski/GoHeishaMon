@@ -6,5 +6,5 @@ License: GPLv2
 Section: base
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 49565
+Installed-Size: 49712
 Description:  OpenWrt Network Interface Configuration Daemon

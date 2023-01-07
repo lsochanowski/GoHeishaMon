@@ -5,5 +5,5 @@ Source: package/network/utils/iw
 Section: net
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 39590
+Installed-Size: 39588
 Description:  cfg80211 interface configuration utility

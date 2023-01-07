@@ -4,7 +4,7 @@ Depends: libc
 Source: package/libs/polarssl
 Section: libs
 Architecture: ar71xx
-Installed-Size: 120766
+Installed-Size: 120762
 Description:  The aim of the PolarSSL project is to provide a quality, open-source
  cryptographic library written in C and targeted at embedded systems.
  This package contains the PolarSSL library.

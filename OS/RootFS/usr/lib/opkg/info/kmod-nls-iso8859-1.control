@@ -6,5 +6,5 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 1693
+Installed-Size: 1701
 Description:  Kernel module for NLS ISO 8859-1 (Latin 1)

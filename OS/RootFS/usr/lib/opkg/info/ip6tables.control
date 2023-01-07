@@ -4,5 +4,5 @@ Depends: libc, kmod-ip6tables, iptables
 Source: package/network/utils/iptables
 Section: net
 Architecture: ar71xx
-Installed-Size: 213
+Installed-Size: 209
 Description:  IPv6 firewall administration tool

@@ -6,5 +6,5 @@ License: LGPLv2.1
 Section: libs
 Maintainer: Felix Fietkau <nbd@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 7727
+Installed-Size: 7729
 Description:  OpenWrt RPC client library

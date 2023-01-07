@@ -5,6 +5,6 @@ Source: package/network/utils/iwinfo
 Section: lang
 Maintainer: Jo-Philipp Wich <xm@subsignal.org>
 Architecture: ar71xx
-Installed-Size: 6493
+Installed-Size: 6489
 Description:  This is the Lua binding for the iwinfo library. It provides access to all enabled
  backends.

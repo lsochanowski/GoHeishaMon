@@ -5,5 +5,5 @@ Source: package/network/utils/xtables-addons
 Section: kernel
 Maintainer: Jo-Philipp Wich <jow@openwrt.org>
 Architecture: ar71xx
-Installed-Size: 7341
+Installed-Size: 7342
 Description:  RTSP Conntrack and NAT netfilter module

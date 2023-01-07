@@ -6,5 +6,5 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 1548
+Installed-Size: 1544
 Description:  Kernel helper module for PPPoE and PPTP support

@@ -6,7 +6,7 @@ License: GPLv2
 Section: kernel
 Status: unknown hold not-installed
 Architecture: ar71xx
-Installed-Size: 9992
+Installed-Size: 9987
 Description:  Netfilter (IPv4) extra kernel modules for connection tracking
  Includes:
  - connbytes
