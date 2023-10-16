@@ -1,75 +1,174 @@
-# -!!!!!!! Latest checked release is 1.0.166 !!!!! Others are tests ,and some of them can brick CZ-TAW1.!!!!!!!-
+# CZ-TAW1/CZ-TAW1B
 
+This project is to modify Panasonic CZ-TAW1 Firmware to send data from heat pump to MQTT instead to
+Aquarea Cloud (there is some POC work proving there is a posiblity to send data concurently to
+Aquarea Cloud and MQTT host using only modified CZ-TAW1 ,but it's not yet implemented in this
+project )
 
-This project is to modify Panasonic CZ-TAW1 Firmware to send data from heat pump to MQTT instead to Aquarea Cloud (there is some POC work proving there is a posiblity to send data concurently to Aquarea Cloud and MQTT host using only modified CZ-TAW1 ,but it's not yet implemented in this project )
+## This Project Contains
 
-### This Project Contains:
+- Main software (called GoHeishaMon) responsible for parsing data from Heat Pump - it's golang
+  implementation of project https://github.com/Egyras/HeishaMon All MQTT topics are compatible with
+  HeishaMon project: https://github.com/Egyras/HeishaMon/blob/master/MQTT-Topics.md and there are
+  two aditional topics to run command's in system runing the software but it need's another manual.
 
-- Main software (called GoHeishaMon) responsible for parsing data from Heat Pump - it's golang implementation of project https://github.com/Egyras/HeishaMon 
-All MQTT topics are compatible with HeishaMon project: https://github.com/Egyras/HeishaMon/blob/master/MQTT-Topics.md
-and there are two aditional topics to run command's in system runing the software but it need's another manual.
+GoHeishaMon can be used without the CZ-TAW1 module on every platform supported by golang
+(RaspberyPi, Windows, Linux, OpenWrt routers for example) after connecting it to Heat Pump over
+rs232-ttl interface. If you need help with this project you can try Slack of Heishamon project there
+is some people who manage this one :)
 
-GoHeishaMon can be used without the CZ-TAW1 module on every platform supported by golang (RaspberyPi, Windows, Linux, OpenWrt routers for example) after connecting it to Heat Pump over rs232-ttl interface.
-If you need help with this project you can try Slack of Heishamon project there is some people who manage this one :)
+- OpenWRT Image with preinstalled GoHeishaMon (and removed A2Wmain due to copyright issues)
 
-- OpenWRT Image with preinstalled GoHeishaMon (and removed A2Wmain due to copyright issues) 
+CZ-TAW1 flash memory is divided for two parts called "sides". During Smart Cloud update A2Wmain
+software programing other side then actually it boots ,and change the side just before reboot. In
+this way, normally in CZ-TAW1 there are two versions of firmware: actual and previous. Updating
+firmware with GoHeishaMon we use one side , and we can very easly change the side to Smart Cloud
+(A2Wmain software) by pressing all three buttons on CZ-TAW1 when GoHeishaMon works ( middle LED will
+change the color to RED and shortly after this it reboots to orginal SmartCloud). Unfortunatly from
+Smart Cloud software changing the side without having acces to ssh console is possible only when
+updating other side was take place succesfully.
 
-CZ-TAW1 flash memory is divided for two parts called "sides". During Smart Cloud update A2Wmain software programing other side then actually it boots ,and change the side just before reboot. In this way, normally in CZ-TAW1 there are two versions of firmware: actual and previous.
-Updating firmware with GoHeishaMon we use one side , and we can very easly change the side to Smart Cloud (A2Wmain software) by pressing all three buttons on CZ-TAW1 when GoHeishaMon works ( middle LED will change the color to RED and shortly after this it reboots to orginal SmartCloud).
-Unfortunatly from Smart Cloud software changing the side without having acces to ssh console is possible only when updating other side was take place succesfully.
+Summary:
 
-Summary: 
+It is possible to go back to orginal software (A2Wmain with SmartCloud) very quick , without
+preparing pendrive ,becouse this solution don't remove firmware with A2Wmain (is still on other
+"Side" in the flash).
 
-It is possible to go back to orginal software (A2Wmain with SmartCloud) very quick , without preparing pendrive ,becouse this solution don't remove firmware with A2Wmain (is still on other "Side" in the flash).
+Even the GoHeishaMon is on other side you can't just change the site in orginal software to
+GoHeishaMon without acces to console. You have to install GoHeishaMon again.
 
-Even the GoHeishaMon is on other side you can't just change the site in orginal software to GoHeishaMon without acces to console. You have to install GoHeishaMon again. 
+## WiFi configuration
 
-## Installation
+WiFi should be configured in original firmware.
 
-For installing GoHeishaMon on CZ-TAW1 you need a clean USB drive FAT32 formatted  (there is a problem with some pendrive vendors if it didin't work try another one, becouse of big drop of voltage on USB port please use USB flash memory stick.) https://github.com/lsochanowski/GoHeishaMon/releases/tag/1.0.166
-copy to usb drive files :
-- openwrt-ar71xx-generic-cus531-16M-rootfs-squashfs.bin
-- openwrt-ar71xx-generic-cus531-16M-kernel.bin
-- GoHeishaMonConfig.new ( It is config.example file edited according to your needs and changed it's name. Please pay attantion on file extension ,since in Windows .txt is often added)
+### Setting up WiFi Without WPS on CZ-TAW1
 
+In the paper instructions that come with the CZ-TAW1, there's no mention of setting up WiFi without
+WPS. However, in the PDF instructions found on the CD-ROM included with the device and various
+online manuals, you'll find a procedure for configuring WiFi settings without using WPS.
 
-After inserting drive with this files in runing CZ-TAW1 you need to push 3 buttons at once for more tnah 10 seconds until middle LED start changing the colors: green-blue-red. You may also notice the LED blinking on your drive ( if drive have it).
+1. **Using the HTML Utility**: The CD-ROM contains a small HTML utility that simplifies the process
+   of configuring WiFi settings. This utility allows you to enter your WiFi SSID and password, which
+   it then saves in a `settings.txt` file for you.
 
-Process of update starts ,and it will take app 3 min. In the meantime CZ-TAW1 reboots , and after a while you will notice middle LED lights white color . Wait with removing drive from module untill the white LED turn off again ( that is a sign , that GoHeishaMon copied config file from drive and reboot CZ-TAW1. You need to remove the drive before the white LED turn on again , becouse the config file will be copied again and reboot if the drive with a config file will be still present.
+2. **USB Drive Preparation**: To proceed, insert a USB drive into your computer. We recommend using
+   an 8GB FAT32-formatted USB drive (although your mileage may vary with other configurations).
 
-### SSH and web (over LuCI) access (on by default since 1.1.159 - to be veryfied)
+3. **Create `settings.txt`**: In the utility, you'll specify your WiFi settings. The `settings.txt`
+   file should have the following content (without the quotes, and there should be a newline after
+   each key):
 
-For advanced users there is possibility to have SSH and web acces (LuCI) on CZ-TAW1:
-- In config file you should have option "EnableCommand=true"
-- GoHeishaMon should be connected to MQTT server
-- Public in MQTT topic "panasonic_heat_pump/OSCommand" (or eqvivalent with is set as Mqtt_set_base) one by one values: "umount /overlay" , "jffs2reset -y" and finally "reboot". This will perform a so called firstboot. You can see the output console in topic"panasonic_heat_pump/OSCommand/out". All configuration ( also including WiFi connection , GoHeishaMon config) will be set to default , so please connect GoHeishaMon via Ethernet cable after that, and use a drive ( or ssh connection and edit file /etc/gh/config) to set GoHeishaMon configuration.  WiFi configuration you can do via ssh or LuCI ,identical to standard OpenWRT routers ( It is alsp posibility ,that CZ-TAW1 will be also a reapeter , or dummy AP ).
+   ```plaintext
+   SSID=YourSSIDHere
+   KEY=APasswordBetterThanThis
+   ```
 
-After reboot you should be able to connect to ssh and via web with user: root and password: GoHeishaMonpass ( you should change it!)
+4. **Transfer `settings.txt`**: Save the `settings.txt` file to the root directory of your USB
+   drive.
 
+5. **WiFi Configuration**: With the `settings.txt` file on the USB drive, insert it into the
+   CZ-TAW1.
 
-Screenshot from Homeassistant:
-![Screenshot from Homeassistant](PompaCieplaScreen.PNG)
+6. **Configure WiFi**: To configure the WiFi settings, press and hold the WPS button on the CZ-TAW1
+   for 10 seconds. The device will read the `settings.txt` file and set up the WiFi accordingly.
 
+7. **Final Steps**: Once the WiFi configuration is complete, you can remove the USB drive and
+   install the transmitter wherever you prefer.
 
+These steps allow you to set up your WiFi on the CZ-TAW1 without the need for WPS.
 
-Changes:
+## Install instructions
 
-1.1.166 - add new topics
+New hardware should use 1.0.191 to avoid problems with PL23a3 drivers.
+[Original link](https://github.com/lsochanowski/GoHeishaMon/issues/26#issuecomment-1374770882)
 
-1.1.159 comparing to1.1.150 :
-- removed a2wmain watch
-- start ssh and www from script
-- Home Assistant MQTT Discovery https://www.home-assistant.io/docs/mqtt/discovery/
+To install the software, follow these steps:
 
-1.1.150 comparing to 1.1.135 : 
-- moved buttons handling from GoHeishaMon to separate script ( in this way , if GoHeishaMon will crash it is still possible to go back to orginal via 3 buttons)
+1. Format a USB drive to FAT32 and copy the following files to it:
 
+   - `openwrt-ar71xx-generic-cus531-16M-kernel.bin`
+   - `openwrt-ar71xx-generic-cus531-16M-rootfs-squashfs.bin`
 
-Todo:
+2. Additionally, configure and copy the file named `GoHeishaMonConfig.new`.
 
-- queue command from a2wmain 
+3. Insert the USB drive with these files into your CZ-TAW1 device.
+
+4. Press all three buttons simultaneously and hold them for more than 10 seconds. Wait until the
+   middle LED on the CZ-TAW1 begins changing colors, cycling through green, blue, and red. You may
+   also notice the LED on the USB drive blinking if it has one.
+
+5. The update process will start, and it will take approximately 3 minutes. During this time, the
+   CZ-TAW1 will reboot. After a while, you will see the middle LED light up in white.
+
+6. Do not remove the drive from the module until the white LED turns off again. This indicates that
+   the GoHeishaMon has copied the config file from the drive and rebooted the CZ-TAW1. Remove the
+   drive before the white LED turns on again, as leaving the drive with the config file present will
+   result in it being copied again and triggering another reboot.
+
+## Configuration
+
+### SSH Connection
+
+ssh was not working and dropbear doesn't started automatically. The solution was to start it through
+MQTT messages. Topic for sending messages: `panasonic_heat_pump/commands/OSCommand` Topic for
+reading output: `panasonic_heat_pump/commands/OSCommand/out`
+
+Just send a `/usr/sbin/dropbear`. Example:
+
+```bash
+mosquitto_pub -t "panasonic_heat_pump/commands/OSCommand" -m "/usr/sbin/dropbear" -h <MQTT BROKER IP>
+```
+
+For connecting to ssh weaker algorithms are needed:
+
+```bash
+ssh -oHostkeyAlgorithms=+ssh-rsa -oKexAlgorithms=+diffie-hellman-group1-sha1 root@${PANASONIC_IP}
+```
+
+### Changing hostname
+
+`/etc/config/system`
+
+```bash
+uci set system.@system[0].hostname='cz-taw1b'
+uci commit system
+/etc/init.d/system reload
+```
+
+### Fix dropbear
+
+```bash
+root@cz-taw1b:~# cat /etc/config/dropbear
+config dropbear
+    option PasswordAuth 'on'
+    option RootPasswordAuth 'on'
+    option Port            '22'
+#    option BannerFile    '/etc/banner'
+```
+
+Set `~/.ssh/config`:
+
+```conf
+Host cz-taw1b
+    User root
+    PubkeyAcceptedKeyTypes +ssh-rsa
+    HostkeyAlgorithms +ssh-rsa
+    KexAlgorithms +diffie-hellman-group1-sha1
+```
+
+Add rsa key to `/etc/dropbear/authorized_keys` or use LuCi web UI.
+
+### Configure NTP
+
+Change NTP servers to your preferred ones.
+
+Screenshot from Homeassistant: ![Screenshot from Homeassistant](PompaCieplaScreen.PNG)
+
+## TODO
+
+- queue command from a2wmain
 - flag to point to config file
-- manuals 
-- tests 
+- manuals
+- tests
 
 ..... more....
