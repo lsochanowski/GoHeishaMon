@@ -105,6 +105,26 @@ To install the software, follow these steps:
    drive before the white LED turns on again, as leaving the drive with the config file present will
    result in it being copied again and triggering another reboot.
 
+## Board Functionality: Buttons and LEDs
+
+### Buttons
+
+- **WPS Button**: This button does not have a specific function and remains inactive.
+
+- **Reset Button**: Pressing the reset button will restart the GoHeishaMon application.
+
+- **Check Button**: The check button does not trigger any specific action.
+
+- **Simultaneous Button Press**: When all buttons are pressed together, the board will switch back to its original firmware.
+
+### LEDs
+
+- **Top LED**: This LED, illuminated in green, indicates whether the operating system (OS) is currently running.
+
+- **Mid LED**: The white light emitted from this LED signifies that the GoHeishaMon application is in operation.
+
+- **Bottom LED**: When this LED is lit in green, it indicates the data pin's status, which is either low or high, for communication with the main board.
+
 ## Configuration
 
 ### SSH Connection

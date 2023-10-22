@@ -1,6 +1,8 @@
 #!/bin/sh
+logger "the button was ${BUTTON} and the action was ${ACTION}"
 
-for dir in /var/run/hostapd-*; do
-	[ -d "$dir" ] || continue
-	hostapd_cli -p "$dir" wps_pbc
-done
+[ "${ACTION}" = "released" ] || exit 0
+
+. /lib/functions.sh
+
+logger "$BUTTON pressed for $SEEN seconds"
