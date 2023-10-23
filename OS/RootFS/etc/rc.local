@@ -1,15 +1,20 @@
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 
-echo "START WATCHDOG   =====" > /dev/ttyS0
+logger "Start watchdog"
 echo 300 > /proc/sys/kernel/panic
 echo 0 > /proc/sys/kernel/panic_on_oops
 
 (/usr/bin/check_buttons.sh > /dev/null 2>&1) &
-/etc/gh/nextboot.sh
-echo "" > /etc/gh/nextboot.sh
-echo "START GoHeishaMon APL=====" > /dev/ttyS0
 
+logger -t rc.local "Execute nextboot.sh"
+/etc/gh/nextboot.sh
+
+logger -t rc.local "Clean nextboot.sh"
+echo "" > /etc/gh/nextboot.sh
+
+logger -t rc.local "Start GoHeishaMon"
 /usr/bin/GoHeishaMon_MIPSUPX > /dev/ttyS0
+
 #/usr/bin/a2wmain > /dev/ttyS0
 #exit 0
