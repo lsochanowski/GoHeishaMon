@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.192
+
+* Use LEDs to monitor GoHeishaMon process and reset button to restart it.
+
 ## 1.0.191
 
 * Tested in CZ-TAW1B
