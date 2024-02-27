@@ -29,7 +29,7 @@ var PANASONICQUERYSIZE int = 110
 
 // should be the same number
 var NUMBER_OF_TOPICS int = 95
-var AllTopics [95]TopicData
+var AllTopics [115]TopicData
 var MqttKeepalive time.Duration
 var CommandsToSend map[xid.ID][]byte
 var GPIO map[string]string
@@ -1233,9 +1233,20 @@ func getEnergy(input byte) string {
 	return fmt.Sprintf("%d", value)
 }
 
+func getBit1(input byte) string {
+	return fmt.Sprintf("%d", (input >> 7))
+}
+
+func getFirstByte(input byte) string {
+	return fmt.Sprintf("%d", ((input >> 4) - 1))
+}
+
+func getSecondByte(input byte) string {
+	return fmt.Sprintf("%d", ((input & 0b1111) - 1))
+}
+
 func getBit3and4(input byte) string {
 	return fmt.Sprintf("%d", ((input>>4)&0b11)-1)
-
 }
 
 func getBit5and6(input byte) string {
@@ -1273,21 +1284,23 @@ func decode_heatpump_data(data []byte, mclient mqtt.Client, token mqtt.Token) {
 
 	var updatenow bool = false
 	m := map[string]func(byte) string{
+		"getBit1":             getBit1,
+		"getBit1and2":         getBit1and2,
+		"getBit3and4":         getBit3and4,
+		"getBit3and4and5":     getBit3and4and5,
+		"getBit5and6":         getBit5and6,
 		"getBit7and8":         getBit7and8,
-		"unknown":             unknown,
-		"getRight3bits":       getRight3bits,
+		"getEnergy":           getEnergy,
+		"getFirstByte":        getFirstByte,
+		"getIntMinus1":        getIntMinus1,
+		"getIntMinus128":      getIntMinus128,
 		"getIntMinus1Div5":    getIntMinus1Div5,
 		"getIntMinus1Times50": getIntMinus1Times50,
 		"getIntMinus1Times10": getIntMinus1Times10,
-		"getBit3and4and5":     getBit3and4and5,
-		"getIntMinus128":      getIntMinus128,
-		"getBit1and2":         getBit1and2,
 		"getOpMode":           getOpMode,
-		"getIntMinus1":        getIntMinus1,
-		"getEnergy":           getEnergy,
-		"getBit5and6":         getBit5and6,
-
-		"getBit3and4": getBit3and4,
+		"getRight3bits":       getRight3bits,
+		"getSecondByte":       getSecondByte,
+		"unknown":             unknown,
 	}
 
 	// 	if (millis() > nextalldatatime) {
@@ -1632,6 +1645,7 @@ func ParseTopicList3() {
 	AllTopics[39].TopicUnit = "Watt"
 	AllTopics[39].TopicA2M = ""
 
+	// static const char *OpModeDesc[] PROGMEM = {"9", "Heat", "Cool", "Auto(heat)", "DHW", "Heat+DHW", "Cool+DHW", "Auto(heat)+DHW", "Auto(cool)", "Auto(cool)+DHW"};
 	AllTopics[4].TopicNumber = 4
 	AllTopics[4].TopicName = "Operating_Mode_State"
 	AllTopics[4].TopicBit = 6
@@ -2117,4 +2131,168 @@ func ParseTopicList3() {
 	AllTopics[94].TopicUnit = "ZonesState"
 	AllTopics[94].TopicA2M = ""
 
+	AllTopics[95].TopicNumber = 95
+	AllTopics[95].TopicName = "Max_Pump_Duty"
+	AllTopics[95].TopicBit = 45
+	AllTopics[95].TopicDisplayUnit = "Duty"
+	AllTopics[95].TopicFunction = "getIntMinus1"
+	AllTopics[95].TopicUnit = "Duty"
+	AllTopics[95].TopicA2M = ""
+
+	AllTopics[96].TopicNumber = 96
+	AllTopics[96].TopicName = "Heater_Delay_Time"
+	AllTopics[96].TopicBit = 104
+	AllTopics[96].TopicDisplayUnit = "Minutes"
+	AllTopics[96].TopicFunction = "getIntMinus1"
+	AllTopics[96].TopicUnit = "Minutes"
+	AllTopics[96].TopicA2M = ""
+
+	AllTopics[97].TopicNumber = 97
+	AllTopics[97].TopicName = "Heater_Start_Delta"
+	AllTopics[97].TopicBit = 105
+	AllTopics[97].TopicDisplayUnit = "°K"
+	AllTopics[97].TopicFunction = "getIntMinus128"
+	AllTopics[97].TopicUnit = "Kelvin"
+	AllTopics[97].TopicA2M = ""
+
+	AllTopics[98].TopicNumber = 98
+	AllTopics[98].TopicName = "Heater_Stop_Delta"
+	AllTopics[98].TopicBit = 106
+	AllTopics[98].TopicDisplayUnit = "°K"
+	AllTopics[98].TopicFunction = "getIntMinus128"
+	AllTopics[98].TopicUnit = "Kelvin"
+	AllTopics[98].TopicA2M = ""
+
+	AllTopics[99].TopicNumber = 99
+	AllTopics[99].TopicName = "Buffer_Installed"
+	AllTopics[99].TopicBit = 24
+	AllTopics[99].TopicType = "binary_sensor"
+	AllTopics[99].TopicFunction = "getBit5and6"
+	AllTopics[99].TopicUnit = "DisabledEnabled"
+	AllTopics[99].TopicA2M = ""
+
+	AllTopics[100].TopicNumber = 100
+	AllTopics[100].TopicName = "DHW_Installed"
+	AllTopics[100].TopicBit = 24
+	AllTopics[100].TopicType = "binary_sensor"
+	AllTopics[100].TopicFunction = "getBit7and8"
+	AllTopics[100].TopicUnit = "DisabledEnabled"
+	AllTopics[100].TopicA2M = ""
+
+	// TODO: SolarModeDesc
+	AllTopics[101].TopicNumber = 101
+	AllTopics[101].TopicName = "Solar_Mode"
+	AllTopics[101].TopicBit = 24
+	AllTopics[101].TopicDisplayUnit = "SolarModeDesc"
+	AllTopics[101].TopicFunction = "getBit3and4"
+	AllTopics[101].TopicUnit = "SolarModeDesc"
+	AllTopics[101].TopicA2M = ""
+
+	AllTopics[102].TopicNumber = 102
+	AllTopics[102].TopicName = "Solar_On_Delta"
+	AllTopics[102].TopicBit = 61
+	AllTopics[102].TopicDisplayUnit = "°K"
+	AllTopics[102].TopicFunction = "getIntMinus128"
+	AllTopics[102].TopicUnit = "Kelvin"
+	AllTopics[102].TopicA2M = ""
+
+	AllTopics[103].TopicNumber = 103
+	AllTopics[103].TopicName = "Solar_Off_Delta"
+	AllTopics[103].TopicBit = 62
+	AllTopics[103].TopicDisplayUnit = "°K"
+	AllTopics[103].TopicFunction = "getIntMinus128"
+	AllTopics[103].TopicUnit = "Kelvin"
+	AllTopics[103].TopicA2M = ""
+
+	AllTopics[104].TopicNumber = 104
+	AllTopics[104].TopicName = "Solar_Frost_Protection"
+	AllTopics[104].TopicBit = 63
+	AllTopics[104].TopicDisplayUnit = "°C"
+	AllTopics[104].TopicFunction = "getIntMinus128"
+	AllTopics[104].TopicUnit = "Celsius"
+	AllTopics[104].TopicA2M = ""
+
+	AllTopics[105].TopicNumber = 105
+	AllTopics[105].TopicName = "Solar_High_Limit"
+	AllTopics[105].TopicBit = 64
+	AllTopics[105].TopicDisplayUnit = "°C"
+	AllTopics[105].TopicFunction = "getIntMinus128"
+	AllTopics[105].TopicUnit = "Celsius"
+	AllTopics[105].TopicA2M = ""
+
+	// static const char *PumpFlowRateMode[] PROGMEM = {"2", "DeltaT", "Max flow"};
+	AllTopics[106].TopicNumber = 106
+	AllTopics[106].TopicName = "Pump_Flowrate_Mode"
+	AllTopics[106].TopicBit = 29
+	AllTopics[106].TopicDisplayUnit = "PumpFlowRateMode"
+	AllTopics[106].TopicFunction = "getBit3and4"
+	AllTopics[106].TopicUnit = "PumpFlowRateMode"
+	AllTopics[106].TopicA2M = ""
+
+	// static const char *LiquidType[] PROGMEM = {"2", "Water", "Glycol"};s
+	AllTopics[107].TopicNumber = 107
+	AllTopics[107].TopicName = "Liquid_Type"
+	AllTopics[107].TopicBit = 20
+	AllTopics[107].TopicDisplayUnit = "LiquidType"
+	AllTopics[107].TopicFunction = "getBit1"
+	AllTopics[107].TopicUnit = "LiquidType"
+	AllTopics[107].TopicA2M = ""
+
+	AllTopics[108].TopicNumber = 108
+	AllTopics[108].TopicName = "Alt_External_Sensor"
+	AllTopics[108].TopicBit = 20
+	AllTopics[108].TopicType = "binary_sensor"
+	AllTopics[108].TopicFunction = "getBit3and4"
+	AllTopics[108].TopicUnit = "DisabledEnabled"
+	AllTopics[108].TopicA2M = ""
+
+	AllTopics[109].TopicNumber = 109
+	AllTopics[109].TopicName = "Anti_Freeze_Mode"
+	AllTopics[109].TopicBit = 20
+	AllTopics[109].TopicType = "binary_sensor"
+	AllTopics[109].TopicFunction = "getBit5and6"
+	AllTopics[109].TopicUnit = "DisabledEnabled"
+	AllTopics[109].TopicA2M = ""
+
+	AllTopics[110].TopicNumber = 110
+	AllTopics[110].TopicName = "Optional_PCB"
+	AllTopics[110].TopicBit = 20
+	AllTopics[110].TopicType = "binary_sensor"
+	AllTopics[110].TopicFunction = "getBit7and8"
+	AllTopics[110].TopicUnit = "DisabledEnabled"
+	AllTopics[110].TopicA2M = ""
+
+	// static const char *ZonesSensorType[] PROGMEM = {"4", "Water Temperature", "External Thermostat", "Internal Thermostat", "Thermistor"};
+	AllTopics[111].TopicNumber = 111
+	AllTopics[111].TopicName = "Z2_Sensor_Settings"
+	AllTopics[111].TopicBit = 22
+	AllTopics[111].TopicDisplayUnit = "ZonesSensorType"
+	AllTopics[111].TopicFunction = "getSecondByte"
+	AllTopics[111].TopicUnit = "ZonesSensorType"
+	AllTopics[111].TopicA2M = ""
+
+	AllTopics[112].TopicNumber = 112
+	AllTopics[112].TopicName = "Z1_Sensor_Settings"
+	AllTopics[112].TopicBit = 22
+	AllTopics[112].TopicDisplayUnit = "ZonesSensorType"
+	AllTopics[112].TopicFunction = "getFirstByte"
+	AllTopics[112].TopicUnit = "ZonesSensorType"
+	AllTopics[112].TopicA2M = ""
+
+	AllTopics[113].TopicNumber = 113
+	AllTopics[113].TopicName = "Buffer_Tank_Delta"
+	AllTopics[113].TopicBit = 59
+	AllTopics[113].TopicDisplayUnit = "°K"
+	AllTopics[113].TopicFunction = "getIntMinus128"
+	AllTopics[113].TopicUnit = "Kelvin"
+	AllTopics[113].TopicA2M = ""
+
+	// static const char *ExtPadHeaterType[] PROGMEM = {"3", "Disabled", "Type-A","Type-B"};
+	AllTopics[114].TopicNumber = 114
+	AllTopics[114].TopicName = "External_Pad_Heater"
+	AllTopics[114].TopicBit = 25
+	AllTopics[114].TopicDisplayUnit = "ExtPadHeaterType"
+	AllTopics[114].TopicFunction = "getBit3and4"
+	AllTopics[114].TopicUnit = "ExtPadHeaterType"
+	AllTopics[114].TopicA2M = ""
 }
