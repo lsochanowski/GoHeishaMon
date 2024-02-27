@@ -1228,7 +1228,7 @@ func getIntMinus1(input byte) string {
 	return fmt.Sprintf("%d", value)
 }
 
-func getEnergy(input byte) string {
+func getPower(input byte) string {
 	value := (int(input) - 1) * 200
 	return fmt.Sprintf("%d", value)
 }
@@ -1290,7 +1290,7 @@ func decode_heatpump_data(data []byte, mclient mqtt.Client, token mqtt.Token) {
 		"getBit3and4and5":     getBit3and4and5,
 		"getBit5and6":         getBit5and6,
 		"getBit7and8":         getBit7and8,
-		"getEnergy":           getEnergy,
+		"getPower":            getPower,
 		"getFirstByte":        getFirstByte,
 		"getIntMinus1":        getIntMinus1,
 		"getIntMinus128":      getIntMinus128,
@@ -1432,14 +1432,14 @@ func ParseTopicList3() {
 	AllTopics[15].TopicName = "Heat_Energy_Production"
 	AllTopics[15].TopicBit = 194
 	AllTopics[15].TopicDisplayUnit = "W"
-	AllTopics[15].TopicFunction = "getEnergy"
+	AllTopics[15].TopicFunction = "getPower"
 	AllTopics[15].TopicUnit = "Watt"
 	AllTopics[15].TopicA2M = ""
 
 	AllTopics[16].TopicNumber = 16
 	AllTopics[16].TopicName = "Heat_Energy_Consumption"
 	AllTopics[16].TopicBit = 193
-	AllTopics[16].TopicFunction = "getEnergy"
+	AllTopics[16].TopicFunction = "getPower"
 	AllTopics[16].TopicDisplayUnit = "W"
 	AllTopics[16].TopicUnit = "Watt"
 	AllTopics[16].TopicA2M = ""
@@ -1633,7 +1633,7 @@ func ParseTopicList3() {
 	AllTopics[38].TopicName = "Cool_Energy_Production"
 	AllTopics[38].TopicBit = 196
 	AllTopics[38].TopicDisplayUnit = "W"
-	AllTopics[38].TopicFunction = "getEnergy"
+	AllTopics[38].TopicFunction = "getPower"
 	AllTopics[38].TopicUnit = "Watt"
 	AllTopics[38].TopicA2M = ""
 
@@ -1641,7 +1641,7 @@ func ParseTopicList3() {
 	AllTopics[39].TopicName = "Cool_Energy_Consumption"
 	AllTopics[39].TopicBit = 195
 	AllTopics[39].TopicDisplayUnit = "W"
-	AllTopics[39].TopicFunction = "getEnergy"
+	AllTopics[39].TopicFunction = "getPower"
 	AllTopics[39].TopicUnit = "Watt"
 	AllTopics[39].TopicA2M = ""
 
@@ -1657,7 +1657,7 @@ func ParseTopicList3() {
 	AllTopics[40].TopicNumber = 40
 	AllTopics[40].TopicName = "DHW_Energy_Production"
 	AllTopics[40].TopicBit = 198
-	AllTopics[40].TopicFunction = "getEnergy"
+	AllTopics[40].TopicFunction = "getPower"
 	AllTopics[40].TopicUnit = "Watt"
 	AllTopics[40].TopicDisplayUnit = "W"
 	AllTopics[40].TopicA2M = ""
@@ -1665,7 +1665,7 @@ func ParseTopicList3() {
 	AllTopics[41].TopicNumber = 41
 	AllTopics[41].TopicName = "DHW_Energy_Consumption"
 	AllTopics[41].TopicBit = 197
-	AllTopics[41].TopicFunction = "getEnergy"
+	AllTopics[41].TopicFunction = "getPower"
 	AllTopics[41].TopicUnit = "Watt"
 	AllTopics[41].TopicDisplayUnit = "W"
 	AllTopics[41].TopicA2M = ""
