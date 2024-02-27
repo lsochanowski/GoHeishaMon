@@ -1937,7 +1937,7 @@ func ParseTopicList3() {
 
 	AllTopics[74].TopicNumber = 74
 	AllTopics[74].TopicName = "Z1_Cool_Curve_Outside_High_Temp"
-	AllTopics[74].TopicBit = 88
+	AllTopics[74].TopicBit = 89
 	AllTopics[74].TopicFunction = "getIntMinus128"
 	AllTopics[74].TopicUnit = "Celsius"
 	AllTopics[74].TopicDisplayUnit = "°C"
@@ -1945,7 +1945,7 @@ func ParseTopicList3() {
 
 	AllTopics[75].TopicNumber = 75
 	AllTopics[75].TopicName = "Z1_Cool_Curve_Outside_Low_Temp"
-	AllTopics[75].TopicBit = 89
+	AllTopics[75].TopicBit = 88
 	AllTopics[75].TopicFunction = "getIntMinus128"
 	AllTopics[75].TopicUnit = "Celsius"
 	AllTopics[75].TopicDisplayUnit = "°C"
@@ -2023,7 +2023,7 @@ func ParseTopicList3() {
 
 	AllTopics[84].TopicNumber = 84
 	AllTopics[84].TopicName = "Z2_Heat_Curve_Outside_High_Temp"
-	AllTopics[84].TopicBit = 81
+	AllTopics[84].TopicBit = 82
 	AllTopics[84].TopicDisplayUnit = "°C"
 	AllTopics[84].TopicFunction = "getIntMinus128"
 	AllTopics[84].TopicUnit = "Celsius"
@@ -2031,7 +2031,7 @@ func ParseTopicList3() {
 
 	AllTopics[85].TopicNumber = 85
 	AllTopics[85].TopicName = "Z2_Heat_Curve_Outside_Low_Temp"
-	AllTopics[85].TopicBit = 82
+	AllTopics[85].TopicBit = 81
 	AllTopics[85].TopicDisplayUnit = "°C"
 	AllTopics[85].TopicFunction = "getIntMinus128"
 	AllTopics[85].TopicUnit = "Celsius"
@@ -2055,7 +2055,7 @@ func ParseTopicList3() {
 
 	AllTopics[88].TopicNumber = 88
 	AllTopics[88].TopicName = "Z2_Cool_Curve_Outside_High_Temp"
-	AllTopics[88].TopicBit = 92
+	AllTopics[88].TopicBit = 93
 	AllTopics[88].TopicDisplayUnit = "°C"
 	AllTopics[88].TopicFunction = "getIntMinus128"
 	AllTopics[88].TopicUnit = "Celsius"
@@ -2063,7 +2063,7 @@ func ParseTopicList3() {
 
 	AllTopics[89].TopicNumber = 89
 	AllTopics[89].TopicName = "Z2_Cool_Curve_Outside_Low_Temp"
-	AllTopics[89].TopicBit = 93
+	AllTopics[89].TopicBit = 92
 	AllTopics[89].TopicFunction = "getIntMinus128"
 	AllTopics[89].TopicUnit = "Celsius"
 	AllTopics[89].TopicDisplayUnit = "°C"
