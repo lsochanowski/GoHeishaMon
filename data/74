@@ -1,6 +1,6 @@
 TopicNumber = 74
 TopicName = "Z1_Cool_Curve_Outside_High_Temp"
-TopicBit = 88
+TopicBit = 89
 TopicFunction = "getIntMinus128"
 TopicUnit = "Celsius"
 TopicA2M = ""
