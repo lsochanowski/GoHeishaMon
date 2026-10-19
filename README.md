@@ -5,6 +5,40 @@ Aquarea Cloud (there is some POC work proving there is a posiblity to send data 
 Aquarea Cloud and MQTT host using only modified CZ-TAW1 ,but it's not yet implemented in this
 project )
 
+## Active forks
+
+The last release here is 1.0.194 (2023-10). Work continues in these forks (as of October 2026):
+
+- [pando85/GoHeishaMon](https://github.com/pando85/GoHeishaMon) continues the GoHeishaMon app
+  with the same `SetXxx` command topics, so e.g. the
+  [NodeRed_Heishamon_control](https://github.com/edterbak/NodeRed_Heishamon_control) dashboard
+  keeps working. Its latest release is 1.2.0 (2025-11), which rewrote the serial communication,
+  and it runs on the firmware from this repo. Its main branch also has fixes that aren't released yet:
+  - data races (1.2.0 crashed with memory corruption after a few days);
+  - recovering the link when the USB serial adapter drops out.
+- [rondoval/GoHeishaMon](https://github.com/rondoval/GoHeishaMon) is a rewritten app with a
+  different topic scheme (`.../Heatpump_State/set` instead of `SetHeatpump`).
+  [rondoval/openwrt](https://github.com/rondoval/openwrt) (branches `panasonic-cz-taw1-*`) is
+  a full OpenWrt port for the CZ-TAW1, up to OpenWrt 24.10 with kernel 6.6. It replaces the two
+  Panasonic firmware sides with one partition.
+- [piomar123/GoHeishaMon](https://github.com/piomar123/GoHeishaMon) has this firmware with the app
+  binary in the overlay, so it can be replaced without reflashing. It adds a procd service with
+  respawn and crash logs, LEDs that show heat-pump traffic, and docs for updating the binary in the
+  small JFFS2 overlay. It runs the pando85 app. There are no prebuilt images; its README lists the branches.
+
+Choosing between this firmware and rondoval's OpenWrt port:
+
+| | This firmware (or piomar123's variant) + pando85 app | rondoval's OpenWrt port |
+|---|---|---|
+| Install | USB stick, button combination | serial console + TFTP, then sysupgrade |
+| Original Panasonic firmware | kept on the other side, switchable back | gone (restore only from your own flash backups) |
+| System | OpenWrt from ~2014, kernel 3.14 | OpenWrt 24.10, kernel 6.6, LuCI over HTTPS |
+| Free flash for the app | ~2 MB overlay (binary must stay under ~1.8 MB) | ~5.5 MB |
+| Risk | low | can brick the device without a serial console |
+
+rondoval's image can also be booted from RAM over TFTP (`bootm 0x81000000`) without writing the
+flash, which is a safe way to try it first.
+
 ## This Project Contains
 
 - Main software (called GoHeishaMon) responsible for parsing data from Heat Pump - it's golang
@@ -129,8 +163,13 @@ To install the software, follow these steps:
 
 ### SSH Connection
 
-ssh was not working and dropbear doesn't started automatically. The solution was to start it through
-MQTT messages. Topic for sending messages: `panasonic_heat_pump/commands/OSCommand` Topic for
+ssh was not working and dropbear doesn't started automatically. The cause is the first boot after
+flashing: `/etc/rc.d/S09fw` runs `fwupdate uci-load`, which does `rm -rf /etc/config/*` and restores
+the old (Panasonic) side's config. The image's `dropbear` and `uhttpd` configs end up hidden by
+overlay whiteouts, so neither SSH nor LuCI starts. LuCI comes back after
+`cp /rom/etc/config/uhttpd /etc/config/`.
+
+The solution for SSH was to start it through MQTT messages. Topic for sending messages: `panasonic_heat_pump/commands/OSCommand` Topic for
 reading output: `panasonic_heat_pump/commands/OSCommand/out`
 
 Just send a `/usr/sbin/dropbear`. Example:
