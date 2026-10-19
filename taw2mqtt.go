@@ -748,19 +748,27 @@ func HandleSetOperationMode(mclient mqtt.Client, msg mqtt.Message) {
 
 	switch a {
 	case 0:
-		set_mode = 82
+		set_mode = 18 // Heat
 	case 1:
-		set_mode = 83
+		set_mode = 19 // Cool
 	case 2:
-		set_mode = 89
+		set_mode = 24 // Auto(heat) -> Auto
 	case 3:
-		set_mode = 33
+		set_mode = 33 // DHW
 	case 4:
-		set_mode = 98
+		set_mode = 34 // Heat+DHW
 	case 5:
-		set_mode = 99
+		set_mode = 35 // Cool+DHW
 	case 6:
-		set_mode = 104
+		set_mode = 40 // Auto(heat)+DHW -> Auto+DHW
+	case 7:
+		set_mode = 24 // Auto(cool) -> Auto
+	case 8:
+		set_mode = 40 // Auto(cool)+DHW -> Auto+DHW
+	case 9:
+		set_mode = 24 // Auto
+	case 10:
+		set_mode = 40 // Auto+DHW
 	default:
 		set_mode = 0
 	}
@@ -1199,25 +1207,29 @@ func getBit1and2(input byte) string {
 }
 
 func getOpMode(input byte) string {
-	switch int(input) {
-	case 82:
-		return "0"
-	case 83:
-		return "1"
-	case 89:
-		return "2"
-	case 97:
-		return "3"
-	case 98:
-		return "4"
-	case 99:
-		return "5"
-	case 105:
-		return "6"
-	case 90:
-		return "7"
-	case 106:
-		return "8"
+	switch int(input & 0b111111) {
+	case 18:
+		return "0" // Heat
+	case 19:
+		return "1" // Cool
+	case 25:
+		return "2" // Auto(heat)
+	case 33:
+		return "3" // DHW
+	case 34:
+		return "4" // Heat+DHW
+	case 35:
+		return "5" // Cool+DHW
+	case 41:
+		return "6" // Auto(heat)+DHW
+	case 26:
+		return "7" // Auto(cool)
+	case 42:
+		return "8" // Auto(cool)+DHW
+	case 24:
+		return "9" // Auto
+	case 40:
+		return "10" // Auto+DHW
 	default:
 		return "-1"
 	}
