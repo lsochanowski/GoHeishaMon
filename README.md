@@ -163,8 +163,13 @@ To install the software, follow these steps:
 
 ### SSH Connection
 
-ssh was not working and dropbear doesn't started automatically. The solution was to start it through
-MQTT messages. Topic for sending messages: `panasonic_heat_pump/commands/OSCommand` Topic for
+ssh was not working and dropbear doesn't started automatically. The cause is the first boot after
+flashing: `/etc/rc.d/S09fw` runs `fwupdate uci-load`, which does `rm -rf /etc/config/*` and restores
+the old (Panasonic) side's config. The image's `dropbear` and `uhttpd` configs end up hidden by
+overlay whiteouts, so neither SSH nor LuCI starts. LuCI comes back after
+`cp /rom/etc/config/uhttpd /etc/config/`.
+
+The solution for SSH was to start it through MQTT messages. Topic for sending messages: `panasonic_heat_pump/commands/OSCommand` Topic for
 reading output: `panasonic_heat_pump/commands/OSCommand/out`
 
 Just send a `/usr/sbin/dropbear`. Example:
